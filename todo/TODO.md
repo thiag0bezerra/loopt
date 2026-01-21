@@ -1,5 +1,5 @@
-
 # LOOPT - Planner de Desenvolvimento
+
 ## Desafio Técnico | Engenheiro Full Stack Pleno
 
 ---
@@ -7,6 +7,7 @@
 ## 📋 Decisões Técnicas
 
 ### Monorepo
+
 - **Gerenciador:** Turborepo
 - **Package Manager:** pnpm
 - **Estrutura de packages:**
@@ -16,6 +17,7 @@
   - `packages/shared` - Tipos e utilitários compartilhados
 
 ### Backend
+
 - **Framework:** NestJS
 - **ORM:** TypeORM
 - **Validação:** class-validator + class-transformer
@@ -23,6 +25,7 @@
 - **Documentação:** @nestjs/swagger
 
 ### Frontend
+
 - **Framework:** Next.js 16 (App Router)
 - **Estilização:** TailwindCSS
 - **Estado Global:** Zustand
@@ -32,6 +35,7 @@
 - **Testes:** Vitest + Testing Library
 
 ### Infraestrutura
+
 - **Containerização:** Docker Compose
 - **Banco de Dados:** PostgreSQL 17
 - **Cache:** Redis 7
@@ -40,6 +44,7 @@
 ### Modelo de Dados
 
 #### User
+
 - id: UUID (PK, gerado automaticamente)
 - email: string (unique, not null)
 - password: string (hashed, not null)
@@ -48,6 +53,7 @@
 - updatedAt: timestamp (not null)
 
 #### Task
+
 - id: UUID (PK, gerado automaticamente)
 - title: string (not null, max 255)
 - description: string (nullable, max 1000)
@@ -68,22 +74,26 @@
 ## CICLO 1: Fundação do Projeto
 
 ### Situação
+
 O projeto será iniciado do zero. Será necessária uma estrutura de monorepo bem organizada com configurações compartilhadas e infraestrutura local containerizada.
 
 ### Task
+
 Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com todos os serviços necessários, e estabelecer as configurações compartilhadas.
 
 ### Ações
 
 #### 1.1 Inicialização do Monorepo
+
 - [x] Criar diretório do projeto
 - [x] Inicializar Git: `git init`
 - [x] Criar monorepo Turborepo: `pnpm dlx create-turbo@latest . --package-manager pnpm`
 - [ ] Remover apps de exemplo gerados pelo template
 - [ ] Ajustar `turbo.json` com pipelines: build, dev, test, lint, typecheck
-- [ ] Ajustar `pnpm-workspace.yaml` para incluir apps/* e packages/*
+- [ ] Ajustar `pnpm-workspace.yaml` para incluir apps/_ e packages/_
 
 #### 1.2 Configurações Compartilhadas
+
 - [ ] Criar `tsconfig.base.json` na raiz com configurações TypeScript 5 compartilhadas
 - [ ] Criar configuração ESLint na raiz (eslint.config.mjs - flat config)
 - [ ] Criar `.prettierrc` na raiz
@@ -91,6 +101,7 @@ Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com 
 - [ ] Criar `.env.example` com variáveis de ambiente
 
 #### 1.3 Docker Compose
+
 - [ ] Criar `docker-compose.yml` com serviços:
   - [ ] PostgreSQL 17 (porta 5432, volume para dados)
   - [ ] Redis 7 (porta 6379)
@@ -100,6 +111,7 @@ Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com 
 - [ ] Criar `docker-compose.prod.yml` para produção
 
 #### 1.4 Package Shared
+
 - [ ] Criar diretório `packages/shared`
 - [ ] Inicializar package: `pnpm init`
 - [ ] Criar `tsconfig.json` estendendo tsconfig.base.json
@@ -113,9 +125,11 @@ Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com 
 - [ ] Configurar package.json com exports e main apontando para src/index.ts
 
 ### Resultado Esperado
+
 Monorepo funcional com Turborepo, Docker Compose rodando PostgreSQL, Redis e RabbitMQ, e package shared pronto para ser consumido pelos apps.
 
 ### Checklist de Validação
+
 - [ ] `pnpm install` executa sem erros
 - [ ] `docker compose up -d` inicia todos os serviços sem erros
 - [ ] PostgreSQL acessível: `docker compose exec postgres psql -U loopt -d loopt -c '\l'`
@@ -128,14 +142,17 @@ Monorepo funcional com Turborepo, Docker Compose rodando PostgreSQL, Redis e Rab
 ## CICLO 2: Backend - Estrutura Base e Autenticação
 
 ### Situação
+
 Com a infraestrutura pronta, o backend será desenvolvido. A autenticação é a base do sistema, pois todas as rotas de tarefas dependem do usuário autenticado.
 
 ### Task
+
 Criar a aplicação NestJS com módulos de configuração, banco de dados, e sistema completo de autenticação JWT.
 
 ### Ações
 
 #### 2.1 Inicialização NestJS
+
 - [ ] Criar app NestJS: `pnpm dlx @nestjs/cli@latest new api --directory apps/api --package-manager pnpm --skip-git`
 - [ ] Remover arquivos de teste gerados (app.controller.spec.ts, etc.)
 - [ ] Adicionar dependência do @loopt/shared no package.json
@@ -150,10 +167,12 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Configurar Swagger no main.ts
 
 #### 2.2 Módulo de Configuração
+
 - [ ] Configurar ConfigModule.forRoot() como global em app.module.ts
 - [ ] Criar arquivo de validação de variáveis de ambiente com class-validator
 
 #### 2.3 Módulo de Banco de Dados
+
 - [ ] Configurar TypeOrmModule.forRootAsync() em app.module.ts
 - [ ] Configurar conexão PostgreSQL via variáveis de ambiente
 - [ ] Habilitar synchronize apenas em desenvolvimento
@@ -162,6 +181,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Configurar TypeORM CLI para migrations no package.json
 
 #### 2.4 Entity User
+
 - [ ] Criar diretório src/users
 - [ ] Criar entity User em src/users/entities/user.entity.ts
 - [ ] Definir campos: id (UUID PrimaryGeneratedColumn), email, password, name, createdAt, updatedAt
@@ -170,6 +190,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Criar migration inicial: `pnpm typeorm migration:generate src/database/migrations/CreateUsers`
 
 #### 2.5 Módulo Users
+
 - [ ] Criar UsersModule em src/users/users.module.ts
 - [ ] Criar UsersService em src/users/users.service.ts
 - [ ] Implementar método findByEmail(email: string)
@@ -178,6 +199,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Exportar UsersService para uso em AuthModule
 
 #### 2.6 Módulo Auth
+
 - [ ] Criar diretório src/auth
 - [ ] Criar AuthModule em src/auth/auth.module.ts
 - [ ] Criar AuthService em src/auth/auth.service.ts
@@ -189,6 +211,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Implementar AuthService.validateUser(): buscar usuário e comparar senha
 
 #### 2.7 JWT Strategy
+
 - [ ] Criar JwtStrategy em src/auth/strategies/jwt.strategy.ts
 - [ ] Configurar extração do token do header Authorization Bearer
 - [ ] Configurar validação do payload e retorno do usuário
@@ -197,6 +220,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Configurar JwtModule.registerAsync() com secret e expiresIn do .env
 
 #### 2.8 Controller Auth
+
 - [ ] Criar AuthController em src/auth/auth.controller.ts
 - [ ] Implementar POST /auth/register: rota pública, retorna usuário criado (sem senha)
 - [ ] Implementar POST /auth/login: rota pública, retorna { accessToken, user }
@@ -204,6 +228,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Adicionar decorators Swagger em todos os endpoints (@ApiTags, @ApiOperation, @ApiResponse)
 
 #### 2.9 Testes Auth
+
 - [ ] Configurar Vitest no apps/api
 - [ ] Criar src/auth/auth.service.spec.ts
 - [ ] Teste: register cria usuário com senha hasheada
@@ -212,9 +237,11 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [ ] Teste: login rejeita credenciais inválidas
 
 ### Resultado Esperado
+
 API com endpoints funcionais de registro e login retornando JWT válido. Swagger acessível em /api documentando os endpoints. Proteção de rotas funcionando com JwtAuthGuard.
 
 ### Checklist de Validação
+
 - [ ] Migration executada: `pnpm --filter api typeorm migration:run`
 - [ ] POST /auth/register cria usuário e retorna dados (sem campo password)
 - [ ] POST /auth/register retorna 409 para email duplicado
@@ -230,14 +257,17 @@ API com endpoints funcionais de registro e login retornando JWT válido. Swagger
 ## CICLO 3: Backend - CRUD de Tarefas
 
 ### Situação
+
 Com autenticação funcional, o próximo passo é implementar o core da aplicação: gerenciamento completo de tarefas com filtros, paginação e ordenação.
 
 ### Task
+
 Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só acessem suas próprias tarefas.
 
 ### Ações
 
 #### 3.1 Entity Task
+
 - [ ] Criar diretório src/tasks
 - [ ] Criar entity Task em src/tasks/entities/task.entity.ts
 - [ ] Definir campos conforme modelo de dados
@@ -247,6 +277,7 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 - [ ] Executar migration
 
 #### 3.2 DTOs Task
+
 - [ ] Criar CreateTaskDto em src/tasks/dto/create-task.dto.ts:
   - [ ] title: string (IsNotEmpty, MaxLength 255)
   - [ ] description: string opcional (MaxLength 1000)
@@ -264,6 +295,7 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
   - [ ] sortOrder: 'ASC' | 'DESC' (default 'DESC')
 
 #### 3.3 TasksService
+
 - [ ] Criar TasksModule em src/tasks/tasks.module.ts
 - [ ] Criar TasksService em src/tasks/tasks.service.ts
 - [ ] Implementar create(userId: string, dto: CreateTaskDto): criar tarefa vinculada ao usuário
@@ -283,6 +315,7 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 - [ ] Implementar remove(userId: string, taskId: string): deletar tarefa ou lançar NotFoundException
 
 #### 3.4 TasksController
+
 - [ ] Criar TasksController em src/tasks/tasks.controller.ts
 - [ ] Aplicar @UseGuards(JwtAuthGuard) no controller
 - [ ] Implementar POST /tasks: criar tarefa, retornar 201
@@ -293,6 +326,7 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 - [ ] Adicionar decorators Swagger em todos os endpoints
 
 #### 3.5 Testes Tasks
+
 - [ ] Criar src/tasks/tasks.service.spec.ts
 - [ ] Teste: create cria tarefa vinculada ao usuário
 - [ ] Teste: findAll retorna apenas tarefas do usuário
@@ -301,9 +335,11 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 - [ ] Teste: remove deleta tarefa existente
 
 ### Resultado Esperado
+
 API com CRUD completo de tarefas funcionando. Usuários autenticados podem criar, listar, atualizar e deletar suas tarefas. Listagem suporta filtros, busca, paginação e ordenação.
 
 ### Checklist de Validação
+
 - [ ] POST /tasks cria tarefa vinculada ao usuário autenticado
 - [ ] GET /tasks retorna apenas tarefas do usuário autenticado
 - [ ] GET /tasks?status=pending filtra por status
@@ -323,20 +359,24 @@ API com CRUD completo de tarefas funcionando. Usuários autenticados podem criar
 ## CICLO 4: Backend - Cache com Redis
 
 ### Situação
+
 O CRUD está funcional, mas cada requisição consulta o banco. Para otimizar performance, será implementado cache com Redis nas operações de leitura.
 
 ### Task
+
 Integrar Redis ao backend, implementando cache na listagem de tarefas e endpoints de analytics, com invalidação automática.
 
 ### Ações
 
 #### 4.1 Configuração Redis
+
 - [ ] Instalar dependências: `pnpm add @nestjs/cache-manager cache-manager cache-manager-redis-yet`
 - [ ] Criar CacheModule em src/cache/cache.module.ts
 - [ ] Configurar CacheModule.registerAsync() com Redis store
 - [ ] Exportar CacheModule como global
 
 #### 4.2 CacheService
+
 - [ ] Criar CacheService em src/cache/cache.service.ts
 - [ ] Injetar CACHE_MANAGER
 - [ ] Implementar get<T>(key: string): Promise<T | undefined>
@@ -346,6 +386,7 @@ Integrar Redis ao backend, implementando cache na listagem de tarefas e endpoint
 - [ ] Adicionar logs para debug de cache hits/misses
 
 #### 4.3 Cache na Listagem de Tarefas
+
 - [ ] Criar função para gerar chave de cache: `tasks:${userId}:${JSON.stringify(filters)}`
 - [ ] No TasksService.findAll:
   - [ ] Verificar cache antes de consultar banco
@@ -353,6 +394,7 @@ Integrar Redis ao backend, implementando cache na listagem de tarefas e endpoint
   - [ ] Se cache miss, consultar banco e salvar no cache com TTL 300 (5 minutos)
 
 #### 4.4 Invalidação de Cache
+
 - [ ] Criar método privado invalidateUserCache(userId: string) no TasksService
 - [ ] Usar delByPattern para invalidar todas as chaves `tasks:${userId}:*`
 - [ ] Chamar invalidateUserCache em:
@@ -361,9 +403,11 @@ Integrar Redis ao backend, implementando cache na listagem de tarefas e endpoint
   - [ ] TasksService.remove após deletar tarefa
 
 ### Resultado Esperado
+
 Requisições de listagem servidas do cache quando disponível. Qualquer modificação em tarefas invalida o cache automaticamente.
 
 ### Checklist de Validação
+
 - [ ] Primeira requisição GET /tasks consulta banco e salva no cache
 - [ ] Segunda requisição GET /tasks (mesmos filtros) retorna do cache (verificar logs)
 - [ ] Requisição com filtros diferentes cria nova entrada no cache
@@ -377,14 +421,17 @@ Requisições de listagem servidas do cache quando disponível. Qualquer modific
 ## CICLO 5: Backend - Sistema de Notificações (RabbitMQ)
 
 ### Situação
+
 Tarefas de alta prioridade requerem atenção especial. Será implementado um sistema de notificações assíncronas usando RabbitMQ com worker separado.
 
 ### Task
+
 Criar integração com RabbitMQ para enviar mensagens quando tarefas de alta prioridade forem criadas, e implementar worker separado para processar as mensagens.
 
 ### Ações
 
 #### 5.1 Configuração RabbitMQ no Backend
+
 - [ ] Instalar dependências: `pnpm add @nestjs/microservices amqplib amqp-connection-manager`
 - [ ] Instalar tipos: `pnpm add -D @types/amqplib`
 - [ ] Criar NotificationsModule em src/notifications/notifications.module.ts
@@ -392,6 +439,7 @@ Criar integração com RabbitMQ para enviar mensagens quando tarefas de alta pri
 - [ ] Definir nome da queue: high-priority-tasks
 
 #### 5.2 NotificationsService
+
 - [ ] Criar NotificationsService em src/notifications/notifications.service.ts
 - [ ] Injetar ClientProxy do RabbitMQ
 - [ ] Criar interface TaskNotificationPayload com: taskId, taskTitle, userId, userEmail, userName, createdAt
@@ -400,11 +448,13 @@ Criar integração com RabbitMQ para enviar mensagens quando tarefas de alta pri
   - [ ] Emitir mensagem com pattern 'task.created.high'
 
 #### 5.3 Integração no TasksService
+
 - [ ] Injetar NotificationsService no TasksService
 - [ ] No método create, após salvar tarefa:
   - [ ] Se priority === HIGH, chamar sendHighPriorityNotification
 
 #### 5.4 Worker Separado
+
 - [ ] Criar app worker: `pnpm dlx @nestjs/cli@latest new worker --directory apps/worker --package-manager pnpm --skip-git`
 - [ ] Remover arquivos desnecessários
 - [ ] Adicionar dependência do @loopt/shared
@@ -418,14 +468,17 @@ Criar integração com RabbitMQ para enviar mensagens quando tarefas de alta pri
 - [ ] Adicionar script de start no package.json
 
 #### 5.5 Docker Compose
+
 - [ ] Adicionar serviço worker no docker-compose.yml
 - [ ] Configurar dependência do RabbitMQ
 - [ ] Configurar variáveis de ambiente
 
 ### Resultado Esperado
+
 Ao criar tarefa com prioridade alta, mensagem é publicada no RabbitMQ. Worker separado consome e processa (logando como simulação).
 
 ### Checklist de Validação
+
 - [ ] Criar tarefa com priority=high publica mensagem na queue
 - [ ] Criar tarefa com priority=low ou medium não publica
 - [ ] Worker recebe mensagem e loga no console
@@ -437,35 +490,41 @@ Ao criar tarefa com prioridade alta, mensagem é publicada no RabbitMQ. Worker s
 ## CICLO 6: Backend - Analytics e Métricas
 
 ### Situação
+
 O dashboard de produtividade precisa de dados. Serão criados endpoints de analytics com métricas agregadas e dados para gráficos.
 
 ### Task
+
 Implementar módulo de analytics com endpoints para métricas gerais, distribuições e tendências, todos com cache.
 
 ### Ações
 
 #### 6.1 Módulo Analytics
+
 - [ ] Criar diretório src/analytics
 - [ ] Criar AnalyticsModule em src/analytics/analytics.module.ts
 - [ ] Importar TypeOrmModule.forFeature([Task])
 - [ ] Importar CacheModule
 
 #### 6.2 AnalyticsService
+
 - [ ] Criar AnalyticsService em src/analytics/analytics.service.ts
 - [ ] Injetar Repository<Task> e CacheService
 
 #### 6.3 Endpoint Overview
+
 - [ ] Implementar getOverview(userId: string) retornando:
   - [ ] totalTasks: número total de tarefas
   - [ ] completedTasks: tarefas com status COMPLETED
   - [ ] pendingTasks: tarefas com status PENDING
   - [ ] inProgressTasks: tarefas com status IN_PROGRESS
-  - [ ] completionRate: (completedTasks / totalTasks) * 100
+  - [ ] completionRate: (completedTasks / totalTasks) \* 100
   - [ ] overdueTasks: tarefas com dueDate < hoje e status != COMPLETED
   - [ ] dueSoon: tarefas com dueDate nos próximos 3 dias e status != COMPLETED
 - [ ] Aplicar cache com chave `analytics:${userId}:overview` e TTL 300
 
 #### 6.4 Endpoint By Status
+
 - [ ] Implementar getByStatus(userId: string) retornando array:
   - [ ] { status: 'pending', count: number }
   - [ ] { status: 'in_progress', count: number }
@@ -474,6 +533,7 @@ Implementar módulo de analytics com endpoints para métricas gerais, distribui�
 - [ ] Aplicar cache com chave `analytics:${userId}:by-status` e TTL 300
 
 #### 6.5 Endpoint By Priority
+
 - [ ] Implementar getByPriority(userId: string) retornando array:
   - [ ] { priority: 'low', count: number }
   - [ ] { priority: 'medium', count: number }
@@ -482,6 +542,7 @@ Implementar módulo de analytics com endpoints para métricas gerais, distribui�
 - [ ] Aplicar cache com chave `analytics:${userId}:by-priority` e TTL 300
 
 #### 6.6 Endpoint Completion Trend
+
 - [ ] Implementar getCompletionTrend(userId: string, days: number = 7) retornando array:
   - [ ] { date: 'YYYY-MM-DD', completed: number, created: number }
 - [ ] Gerar array com últimos N dias
@@ -490,16 +551,18 @@ Implementar módulo de analytics com endpoints para métricas gerais, distribui�
 - [ ] Aplicar cache com chave `analytics:${userId}:trend:${days}` e TTL 300
 
 #### 6.7 Endpoint Productivity
+
 - [ ] Implementar getProductivity(userId: string) retornando:
   - [ ] averageCompletionTime: média em horas de (completedAt - createdAt) para tarefas completadas
   - [ ] tasksCompletedThisWeek: tarefas completadas na semana atual
   - [ ] tasksCompletedLastWeek: tarefas completadas na semana anterior
-  - [ ] weekOverWeekChange: ((thisWeek - lastWeek) / lastWeek) * 100
+  - [ ] weekOverWeekChange: ((thisWeek - lastWeek) / lastWeek) \* 100
   - [ ] streakDays: dias consecutivos (até hoje) com pelo menos 1 tarefa completada
   - [ ] mostProductiveDay: dia da semana com mais tarefas completadas
 - [ ] Aplicar cache com chave `analytics:${userId}:productivity` e TTL 300
 
 #### 6.8 AnalyticsController
+
 - [ ] Criar AnalyticsController em src/analytics/analytics.controller.ts
 - [ ] Aplicar @UseGuards(JwtAuthGuard)
 - [ ] Implementar GET /analytics/overview
@@ -510,13 +573,16 @@ Implementar módulo de analytics com endpoints para métricas gerais, distribui�
 - [ ] Adicionar decorators Swagger
 
 #### 6.9 Invalidação de Cache Analytics
+
 - [ ] No TasksService, adicionar invalidação das chaves de analytics:
   - [ ] Invalidar `analytics:${userId}:*` em create, update e remove
 
 ### Resultado Esperado
+
 Frontend terá endpoints ricos para construir o dashboard. Todos os dados estarão em cache para performance.
 
 ### Checklist de Validação
+
 - [ ] GET /analytics/overview retorna métricas corretas
 - [ ] GET /analytics/by-status retorna distribuição por status
 - [ ] GET /analytics/by-priority retorna distribuição por prioridade
@@ -531,14 +597,17 @@ Frontend terá endpoints ricos para construir o dashboard. Todos os dados estar�
 ## CICLO 7: Frontend - Estrutura Base e Autenticação
 
 ### Situação
+
 O backend está completo. O frontend será iniciado com Next.js, configurando a estrutura base e sistema de autenticação.
 
 ### Task
+
 Criar a aplicação Next.js com App Router, configurar dependências, implementar páginas de login/registro e sistema de rotas protegidas.
 
 ### Ações
 
 #### 7.1 Inicialização Next.js
+
 - [ ] Criar app Next.js: `pnpm dlx create-next-app@latest apps/web --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"`
 - [ ] Adicionar dependência do @loopt/shared no package.json
 - [ ] Instalar dependências de estado: `pnpm add zustand`
@@ -550,18 +619,21 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Configurar path aliases no tsconfig.json
 
 #### 7.2 Configuração de API Client
+
 - [ ] Criar src/lib/api.ts
 - [ ] Criar instância Axios com baseURL do NEXT_PUBLIC_API_URL
 - [ ] Criar interceptor de request para adicionar token do localStorage
 - [ ] Criar interceptor de response para tratar 401 (limpar auth e redirecionar para /login)
 
 #### 7.3 Providers
+
 - [ ] Criar src/providers/query-provider.tsx com QueryClientProvider
 - [ ] Configurar defaultOptions: queries (staleTime: 5 minutos, retry: 1)
 - [ ] Criar src/app/providers.tsx combinando providers
 - [ ] Envolver children em layout.tsx com providers
 
 #### 7.4 Store de Autenticação (Zustand)
+
 - [ ] Criar src/stores/auth.store.ts
 - [ ] Definir interface AuthState: user, token, isAuthenticated, setAuth, logout, hydrate
 - [ ] Implementar setAuth: salvar user e token no state e localStorage
@@ -570,12 +642,14 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Usar persist middleware do Zustand para token
 
 #### 7.5 Hooks de Autenticação
+
 - [ ] Criar src/hooks/use-auth.ts
 - [ ] Implementar useLogin: mutation que chama POST /auth/login, onSuccess chama setAuth
 - [ ] Implementar useRegister: mutation que chama POST /auth/register, onSuccess chama setAuth
 - [ ] Implementar useCurrentUser: query que chama GET /auth/me, enabled quando tem token
 
 #### 7.6 Componentes de UI Base
+
 - [ ] Criar src/components/ui/button.tsx
 - [ ] Criar src/components/ui/input.tsx
 - [ ] Criar src/components/ui/label.tsx
@@ -583,6 +657,7 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Criar src/components/ui/alert.tsx para mensagens de erro
 
 #### 7.7 Página de Login
+
 - [ ] Criar src/app/(auth)/login/page.tsx
 - [ ] Criar formulário com react-hook-form e validação zod
 - [ ] Campos: email (required, email), password (required, min 6)
@@ -592,6 +667,7 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] onSuccess: redirecionar para /tasks
 
 #### 7.8 Página de Registro
+
 - [ ] Criar src/app/(auth)/register/page.tsx
 - [ ] Criar formulário com react-hook-form e validação zod
 - [ ] Campos: name (required), email (required, email), password (required, min 6), confirmPassword (deve ser igual a password)
@@ -601,12 +677,14 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] onSuccess: redirecionar para /tasks
 
 #### 7.9 Layout de Auth
+
 - [ ] Criar src/app/(auth)/layout.tsx
 - [ ] Layout centralizado e minimalista
 - [ ] Logo/título do app
 - [ ] Redirecionar para /tasks se já autenticado
 
 #### 7.10 Proteção de Rotas
+
 - [ ] Criar src/components/auth/protected-route.tsx
 - [ ] Verificar isAuthenticated do store
 - [ ] Se não autenticado, redirecionar para /login
@@ -614,9 +692,11 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Criar src/app/(protected)/layout.tsx usando ProtectedRoute
 
 ### Resultado Esperado
+
 Frontend com páginas funcionais de login e registro conectadas à API. Sistema de rotas protegidas funcional. Estado de autenticação gerenciado com Zustand.
 
 ### Checklist de Validação
+
 - [ ] Página /login renderiza formulário
 - [ ] Validação de formulário funciona (campos required, email válido, etc.)
 - [ ] Login com credenciais válidas redireciona para /tasks
@@ -632,14 +712,17 @@ Frontend com páginas funcionais de login e registro conectadas à API. Sistema 
 ## CICLO 8: Frontend - Gestão de Tarefas
 
 ### Situação
+
 Usuários autenticados precisam gerenciar suas tarefas. Esta é a página principal com todas as operações CRUD.
 
 ### Task
+
 Implementar a página de gestão de tarefas com listagem, criação, edição, exclusão, filtros, ordenação e paginação.
 
 ### Ações
 
 #### 8.1 Hooks de Tarefas
+
 - [ ] Criar src/hooks/use-tasks.ts
 - [ ] Implementar useTasks(filters): query GET /tasks com query params
 - [ ] Implementar useTask(id): query GET /tasks/:id
@@ -648,6 +731,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [ ] Implementar useDeleteTask: mutation DELETE /tasks/:id, invalidate useTasks
 
 #### 8.2 Componentes de Tarefa
+
 - [ ] Criar src/components/tasks/task-card.tsx:
   - [ ] Exibir título (truncado se muito longo)
   - [ ] Exibir descrição (truncada)
@@ -674,6 +758,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
   - [ ] Desabilitar Next na última página
 
 #### 8.3 Formulário de Tarefa
+
 - [ ] Criar src/components/tasks/task-form.tsx:
   - [ ] Campos: title, description, status, priority, dueDate
   - [ ] Validação com zod
@@ -682,6 +767,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
   - [ ] Loading state no botão
 
 #### 8.4 Modais
+
 - [ ] Criar src/components/tasks/create-task-modal.tsx:
   - [ ] Modal com TaskForm
   - [ ] onSubmit chama useCreateTask
@@ -698,11 +784,13 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
   - [ ] onConfirm chama useDeleteTask
 
 #### 8.5 Toast/Notificações
+
 - [ ] Criar src/components/ui/toast.tsx ou usar solução simples
 - [ ] Criar hook useToast para exibir mensagens de sucesso/erro
 - [ ] Integrar nos modais e operações
 
 #### 8.6 Página de Tarefas
+
 - [ ] Criar src/app/(protected)/tasks/page.tsx
 - [ ] Header com título "Minhas Tarefas" e botão "Nova Tarefa"
 - [ ] TaskFilters abaixo do header
@@ -713,6 +801,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [ ] Modais controlados por estado (createOpen, editOpen, deleteOpen, selectedTaskId)
 
 #### 8.7 Interações
+
 - [ ] Click em "Nova Tarefa" abre CreateTaskModal
 - [ ] Click em "Editar" no TaskCard abre EditTaskModal
 - [ ] Click em "Excluir" no TaskCard abre DeleteConfirmModal
@@ -721,9 +810,11 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [ ] Alterar página atualiza lista
 
 ### Resultado Esperado
+
 Página de tarefas completa e funcional. Usuários podem realizar todas as operações CRUD com feedback visual.
 
 ### Checklist de Validação
+
 - [ ] Lista de tarefas carrega ao acessar /tasks
 - [ ] Criar tarefa adiciona à lista e fecha modal
 - [ ] Editar tarefa atualiza na lista e fecha modal
@@ -743,14 +834,17 @@ Página de tarefas completa e funcional. Usuários podem realizar todas as opera
 ## CICLO 9: Frontend - Dashboard de Produtividade
 
 ### Situação
+
 Os dados de analytics estão disponíveis na API. O dashboard apresentará esses dados de forma visual e intuitiva.
 
 ### Task
+
 Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfico de tendência.
 
 ### Ações
 
 #### 9.1 Hooks de Analytics
+
 - [ ] Criar src/hooks/use-analytics.ts
 - [ ] Implementar useAnalyticsOverview: query GET /analytics/overview
 - [ ] Implementar useAnalyticsByStatus: query GET /analytics/by-status
@@ -759,6 +853,7 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
 - [ ] Implementar useProductivityMetrics: query GET /analytics/productivity
 
 #### 9.2 Componentes de Dashboard
+
 - [ ] Criar src/components/dashboard/kpi-card.tsx:
   - [ ] Props: title, value, icon, description opcional, trend opcional (up/down)
   - [ ] Ícone à esquerda
@@ -770,6 +865,7 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
   - [ ] Card com título e área para gráfico
 
 #### 9.3 Gráficos (Recharts)
+
 - [ ] Criar src/components/dashboard/status-pie-chart.tsx:
   - [ ] PieChart com dados de by-status
   - [ ] Cores distintas por status
@@ -788,6 +884,7 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
   - [ ] Legend
 
 #### 9.4 Insights de Produtividade
+
 - [ ] Criar src/components/dashboard/productivity-insights.tsx:
   - [ ] Card com métricas de produtividade
   - [ ] Exibir tempo médio de conclusão formatado (X horas)
@@ -796,6 +893,7 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
   - [ ] Exibir dia mais produtivo
 
 #### 9.5 Página de Dashboard
+
 - [ ] Criar src/app/(protected)/dashboard/page.tsx
 - [ ] Layout em grid responsivo (CSS Grid ou Flexbox)
 - [ ] Seção de KPIs (4 cards):
@@ -812,9 +910,11 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
 - [ ] Empty state se não há dados suficientes
 
 ### Resultado Esperado
+
 Dashboard de produtividade completo com pelo menos 3 gráficos interativos, cards de KPIs e insights. Design responsivo.
 
 ### Checklist de Validação
+
 - [ ] KPIs carregam com valores da API
 - [ ] Gráfico de status renderiza corretamente
 - [ ] Gráfico de prioridade renderiza corretamente
@@ -828,14 +928,17 @@ Dashboard de produtividade completo com pelo menos 3 gráficos interativos, card
 ## CICLO 10: Frontend - Navegação e Finalização
 
 ### Situação
+
 As páginas principais estão implementadas. Agora é necessário uma navegação clara e refinamentos de UI/UX.
 
 ### Task
+
 Implementar sistema de navegação (sidebar), adicionar dark mode como diferencial e garantir consistência visual.
 
 ### Ações
 
 #### 10.1 Sidebar
+
 - [ ] Criar src/components/layout/sidebar.tsx:
   - [ ] Logo/nome do app no topo
   - [ ] Link para /tasks com ícone (ex: CheckSquare)
@@ -852,6 +955,7 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
   - [ ] Logo e hamburger menu
 
 #### 10.2 Layout Protegido
+
 - [ ] Atualizar src/app/(protected)/layout.tsx:
   - [ ] Sidebar fixa à esquerda em desktop (w-64)
   - [ ] Conteúdo principal à direita (flex-1)
@@ -859,6 +963,7 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
   - [ ] Responsivo: sidebar escondida em mobile
 
 #### 10.3 Dark Mode
+
 - [ ] Configurar TailwindCSS para dark mode (class-based) em tailwind.config.ts
 - [ ] Criar src/stores/theme.store.ts:
   - [ ] theme: 'light' | 'dark' | 'system'
@@ -874,21 +979,25 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
 - [ ] Aplicar classes dark: em todos os componentes existentes
 
 #### 10.4 Refinamentos Visuais
+
 - [ ] Adicionar transições em hover de botões e cards
 - [ ] Adicionar animação de fade em modais
 - [ ] Adicionar focus-visible para acessibilidade
 - [ ] Revisar contraste de cores em ambos os temas
 
 #### 10.5 Responsividade
+
 - [ ] Testar todas as páginas em mobile (375px)
 - [ ] Testar todas as páginas em tablet (768px)
 - [ ] Testar todas as páginas em desktop (1280px+)
 - [ ] Ajustar grids e layouts conforme necessário
 
 ### Resultado Esperado
+
 Aplicação com navegação clara e intuitiva, dark mode funcional e totalmente responsiva.
 
 ### Checklist de Validação
+
 - [ ] Navegação entre /tasks e /dashboard funciona
 - [ ] Link ativo é destacado na sidebar
 - [ ] Dark mode alterna corretamente
@@ -902,20 +1011,24 @@ Aplicação com navegação clara e intuitiva, dark mode funcional e totalmente 
 ## CICLO 11: Testes
 
 ### Situação
+
 A aplicação está funcional, mas precisa de testes. O desafio requer mínimo de 5 testes no backend e 3 no frontend.
 
 ### Task
+
 Implementar testes unitários no backend e testes de componentes no frontend.
 
 ### Ações
 
 #### 11.1 Configuração Vitest Backend
+
 - [ ] Instalar: `pnpm add -D vitest @vitest/coverage-v8 unplugin-swc`
 - [ ] Criar vitest.config.ts no apps/api
 - [ ] Configurar para usar SWC (compatibilidade com decorators NestJS)
 - [ ] Ajustar scripts no package.json: test, test:cov
 
 #### 11.2 Testes Backend
+
 - [ ] Teste 1: AuthService.register cria usuário com senha hasheada
 - [ ] Teste 2: AuthService.login retorna token para credenciais válidas
 - [ ] Teste 3: TasksService.create cria tarefa vinculada ao usuário
@@ -924,18 +1037,21 @@ Implementar testes unitários no backend e testes de componentes no frontend.
 - [ ] Teste 6: AnalyticsService.getOverview calcula métricas corretamente (extra)
 
 #### 11.3 Configuração Vitest Frontend
+
 - [ ] Instalar: `pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react`
 - [ ] Criar vitest.config.ts no apps/web
 - [ ] Criar src/test/setup.ts com configuração do testing-library
 - [ ] Ajustar scripts no package.json: test, test:cov
 
 #### 11.4 Testes Frontend
+
 - [ ] Teste 1: TaskCard renderiza título e badges corretamente
 - [ ] Teste 2: TaskFilters chama callback ao alterar filtro
 - [ ] Teste 3: LoginForm exibe erro de validação para campos vazios
 - [ ] Teste 4: KPICard renderiza valor e título (extra)
 
 #### 11.5 GitHub Actions CI
+
 - [ ] Criar .github/workflows/ci.yml
 - [ ] Trigger: push para main, pull_request
 - [ ] Job lint: rodar ESLint em todos os packages
@@ -945,9 +1061,11 @@ Implementar testes unitários no backend e testes de componentes no frontend.
 - [ ] Configurar services para PostgreSQL, Redis e RabbitMQ nos testes
 
 ### Resultado Esperado
+
 Projeto com cobertura de testes adequada (mínimo 5 backend, 3 frontend). GitHub Actions executando lint e testes em cada push/PR.
 
 ### Checklist de Validação
+
 - [ ] `pnpm --filter api test` executa 5+ testes sem falhas
 - [ ] `pnpm --filter web test` executa 3+ testes sem falhas
 - [ ] CI executa em push para main
@@ -959,14 +1077,17 @@ Projeto com cobertura de testes adequada (mínimo 5 backend, 3 frontend). GitHub
 ## CICLO 12: Documentação e Finalização
 
 ### Situação
+
 O projeto está completo e testado. Agora é necessário documentar para facilitar a avaliação.
 
 ### Task
+
 Criar README.md completo, finalizar documentação Swagger, revisar código e preparar para entrega.
 
 ### Ações
 
 #### 12.1 README.md Principal
+
 - [ ] Escrever descrição do projeto
 - [ ] Listar tech stack utilizada
 - [ ] Descrever arquitetura e organização de pastas
@@ -986,6 +1107,7 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
 - [ ] Adicionar screenshots das telas principais
 
 #### 12.2 Swagger
+
 - [ ] Revisar todos os endpoints no Swagger
 - [ ] Verificar descriptions em cada operação
 - [ ] Verificar examples de request e response
@@ -993,6 +1115,7 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
 - [ ] Testar cada endpoint via Swagger UI
 
 #### 12.3 Arquivo .env.example
+
 - [ ] Incluir todas as variáveis com valores de exemplo:
   - [ ] DATABASE_URL
   - [ ] REDIS_URL
@@ -1003,6 +1126,7 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
   - [ ] NEXT_PUBLIC_API_URL
 
 #### 12.4 Revisão de Código
+
 - [ ] Remover console.log desnecessários
 - [ ] Remover código comentado
 - [ ] Remover imports não utilizados
@@ -1010,15 +1134,18 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
 - [ ] Executar `pnpm typecheck` e corrigir erros
 
 #### 12.5 Git
+
 - [ ] Revisar histórico de commits (mensagens descritivas)
 - [ ] Criar tag v1.0.0
 - [ ] Push para repositório público no GitHub
 - [ ] Verificar que README renderiza corretamente no GitHub
 
 ### Resultado Esperado
+
 Projeto pronto para entrega. README.md permite que avaliadores executem o projeto facilmente. Documentação Swagger completa. Código limpo.
 
 ### Checklist de Validação
+
 - [ ] README.md está completo e bem formatado
 - [ ] Seguir instruções do README permite rodar o projeto
 - [ ] Swagger documenta todos os endpoints corretamente
@@ -1032,17 +1159,17 @@ Projeto pronto para entrega. README.md permite que avaliadores executem o projet
 
 ## 📊 Resumo de Diferenciais Implementados
 
-| Diferencial | Ciclo | Status |
-|-------------|-------|--------|
-| Monorepo bem estruturado (Turborepo) | 1 | ⬜ |
-| Worker separado (RabbitMQ) | 5 | ⬜ |
-| Código compartilhado (packages/shared) | 1 | ⬜ |
-| Migrations commitadas | 2, 3 | ⬜ |
-| Docker Compose production-ready | 1 | ⬜ |
-| GitHub Actions CI | 11 | ⬜ |
-| Busca de tarefas | 3 | ⬜ |
-| Dark mode | 10 | ⬜ |
-| Gráficos interativos | 9 | ⬜ |
+| Diferencial                            | Ciclo | Status |
+| -------------------------------------- | ----- | ------ |
+| Monorepo bem estruturado (Turborepo)   | 1     | ⬜     |
+| Worker separado (RabbitMQ)             | 5     | ⬜     |
+| Código compartilhado (packages/shared) | 1     | ⬜     |
+| Migrations commitadas                  | 2, 3  | ⬜     |
+| Docker Compose production-ready        | 1     | ⬜     |
+| GitHub Actions CI                      | 11    | ⬜     |
+| Busca de tarefas                       | 3     | ⬜     |
+| Dark mode                              | 10    | ⬜     |
+| Gráficos interativos                   | 9     | ⬜     |
 
 ---
 
@@ -1077,4 +1204,7 @@ Ciclo 1 (Fundação)
 ---
 
 **Desafio Técnico - Loopt | Desenvolvedor Full Stack Pleno**
+
+```
+
 ```
