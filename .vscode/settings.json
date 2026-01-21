@@ -3,5 +3,10 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }
