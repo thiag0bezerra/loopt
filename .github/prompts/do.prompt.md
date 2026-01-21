@@ -1,6 +1,15 @@
 ---
 agent: agent
-tools: ['execute', 'read', 'edit', 'web', 'io.github.upstash/context7/*', 'agent', 'todo']
+tools:
+  [
+    'execute',
+    'read',
+    'edit',
+    'web',
+    'io.github.upstash/context7/*',
+    'agent',
+    'todo',
+  ]
 ---
 
 Este projeto consiste de um monorepo com backend Nestjs e frontend Nextjs, seguindo os requisitos técnicos e entregáveis especificados no arquivo [todo/TODO.md](../../todo/TODO.md).
