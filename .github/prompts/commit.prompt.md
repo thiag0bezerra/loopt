@@ -20,6 +20,7 @@ Regras:
 - Máximo 72 caracteres na primeira linha
 - Um commit por bloco semântico
 - Não commitar arquivos não relacionados juntos
+- Nunca use `git add -A` ou `git add .`
 
 Comandos Git multiplataforma:
 
