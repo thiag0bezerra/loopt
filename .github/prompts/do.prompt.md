@@ -1,6 +1,6 @@
 ---
 agent: agent
-tools: ['io.github.upstash/context7/*', 'todo']
+tools: ['execute', 'read', 'edit', 'web', 'io.github.upstash/context7/*', 'agent', 'todo']
 ---
 
 Este projeto consiste de um monorepo com backend Nestjs e frontend Nextjs, seguindo os requisitos técnicos e entregáveis especificados no arquivo [todo/TODO.md](../../todo/TODO.md).
@@ -17,3 +17,4 @@ Jamais utilize "any" em TypeScript.
 Restrinja-se ao que pede [todo/TODO.md](../../todo/TODO.md).
 Prefira o simples ao complexo. Prefira soluções diretas e óbvias.
 Documente e mantenha o código atualizado através de comentários TSDoc.
+Se completou alguma checkbox em [todo/TODO.md](../../todo/TODO.md), atualize o arquivo imediatamente.
