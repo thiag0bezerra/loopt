@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { envValidationSchema } from './config/env.validation';
+import { validate } from './config/env.validation';
 
 /**
  * Módulo principal da aplicação
@@ -15,7 +15,7 @@ import { envValidationSchema } from './config/env.validation';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: envValidationSchema,
+      validate,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

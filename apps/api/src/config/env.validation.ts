@@ -1,22 +1,93 @@
-import * as Joi from 'joi';
+import { plainToInstance } from 'class-transformer';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+  validateSync,
+} from 'class-validator';
 
 /**
- * Schema de validação das variáveis de ambiente
+ * Enum para ambientes da aplicação
  */
-export const envValidationSchema = Joi.object({
-  NODE_ENV: Joi.string()
-    .valid('development', 'production', 'test')
-    .default('development'),
-  API_PORT: Joi.number().default(3001),
+enum Environment {
+  Development = 'development',
+  Production = 'production',
+  Test = 'test',
+}
+
+/**
+ * Classe de validação das variáveis de ambiente usando class-validator
+ */
+class EnvironmentVariables {
+  @IsEnum(Environment)
+  NODE_ENV: Environment = Environment.Development;
+
+  @IsNumber()
+  @Min(1)
+  @Max(65535)
+  @IsOptional()
+  API_PORT: number = 3001;
 
   // Database
-  DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number().default(5432),
-  DB_USERNAME: Joi.string().required(),
-  DB_PASSWORD: Joi.string().required(),
-  DB_DATABASE: Joi.string().required(),
+  @IsString()
+  @IsNotEmpty()
+  DB_HOST!: string;
+
+  @IsNumber()
+  @Min(1)
+  @Max(65535)
+  @IsOptional()
+  DB_PORT: number = 5432;
+
+  @IsString()
+  @IsNotEmpty()
+  DB_USERNAME!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  DB_PASSWORD!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  DB_DATABASE!: string;
 
   // JWT
-  JWT_SECRET: Joi.string().required(),
-  JWT_EXPIRES_IN: Joi.string().default('1d'),
-});
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET!: string;
+
+  @IsString()
+  @IsOptional()
+  JWT_EXPIRES_IN: string = '1d';
+}
+
+/**
+ * Função de validação das variáveis de ambiente
+ * @param config - Objeto com as variáveis de ambiente
+ * @returns Objeto validado e transformado
+ * @throws Error se a validação falhar
+ */
+export function validate(
+  config: Record<string, unknown>,
+): EnvironmentVariables {
+  const validatedConfig = plainToInstance(EnvironmentVariables, config, {
+    enableImplicitConversion: true,
+  });
+
+  const errors = validateSync(validatedConfig, {
+    skipMissingProperties: false,
+  });
+
+  if (errors.length > 0) {
+    const errorMessages = errors
+      .map((error) => Object.values(error.constraints ?? {}).join(', '))
+      .join('; ');
+    throw new Error(`Environment validation failed: ${errorMessages}`);
+  }
+
+  return validatedConfig;
+}
