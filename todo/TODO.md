@@ -95,34 +95,34 @@ Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com 
 #### 1.2 Configurações Compartilhadas
 
 - [ ] Criar `tsconfig.base.json` na raiz com configurações TypeScript 5 compartilhadas
-- [ ] Criar configuração ESLint na raiz (eslint.config.mjs - flat config)
-- [ ] Criar `.prettierrc` na raiz
-- [ ] Criar `.gitignore` incluindo: node_modules, dist, .env, .turbo, coverage
-- [ ] Criar `.env.example` com variáveis de ambiente
+- [x] Criar configuração ESLint na raiz (eslint.config.mjs - flat config)
+- [x] Criar `.prettierrc` na raiz
+- [x] Criar `.gitignore` incluindo: node_modules, dist, .env, .turbo, coverage
+- [x] Criar `.env.example` com variáveis de ambiente
 
 #### 1.3 Docker Compose
 
-- [ ] Criar `docker-compose.yml` com serviços:
-  - [ ] PostgreSQL 17 (porta 5432, volume para dados)
-  - [ ] Redis 7 (porta 6379)
-  - [ ] RabbitMQ 4 com management plugin (portas 5672, 15672)
-- [ ] Definir healthchecks para cada serviço
-- [ ] Definir rede interna para comunicação entre serviços
-- [ ] Criar `docker-compose.prod.yml` para produção
+- [x] Criar `docker-compose.yml` com serviços:
+  - [x] PostgreSQL 17 (porta 5432, volume para dados)
+  - [x] Redis 7 (porta 6379)
+  - [x] RabbitMQ 4 com management plugin (portas 5672, 15672)
+- [x] Definir healthchecks para cada serviço
+- [x] Definir rede interna para comunicação entre serviços
+- [x] Criar `docker-compose.prod.yml` para produção
 
 #### 1.4 Package Shared
 
-- [ ] Criar diretório `packages/shared`
-- [ ] Inicializar package: `pnpm init`
-- [ ] Criar `tsconfig.json` estendendo tsconfig.base.json
-- [ ] Criar estrutura de diretórios: src/types, src/enums, src/utils
-- [ ] Criar `src/enums/task-status.enum.ts` com: PENDING, IN_PROGRESS, COMPLETED
-- [ ] Criar `src/enums/task-priority.enum.ts` com: LOW, MEDIUM, HIGH
-- [ ] Criar `src/types/user.types.ts` com interfaces User e CreateUser
-- [ ] Criar `src/types/task.types.ts` com interfaces Task, CreateTask, UpdateTask
-- [ ] Criar `src/types/api.types.ts` com interfaces de response padrão (ApiResponse, PaginatedResponse)
-- [ ] Criar `src/index.ts` exportando todos os tipos e enums
-- [ ] Configurar package.json com exports e main apontando para src/index.ts
+- [x] Criar diretório `packages/shared`
+- [x] Inicializar package: `pnpm init`
+- [x] Criar `tsconfig.json` estendendo tsconfig.base.json
+- [x] Criar estrutura de diretórios: src/types, src/enums, src/utils
+- [x] Criar `src/enums/task-status.enum.ts` com: PENDING, IN_PROGRESS, COMPLETED
+- [x] Criar `src/enums/task-priority.enum.ts` com: LOW, MEDIUM, HIGH
+- [x] Criar `src/types/user.types.ts` com interfaces User e CreateUser
+- [x] Criar `src/types/task.types.ts` com interfaces Task, CreateTask, UpdateTask
+- [x] Criar `src/types/api.types.ts` com interfaces de response padrão (ApiResponse, PaginatedResponse)
+- [x] Criar `src/index.ts` exportando todos os tipos e enums
+- [x] Configurar package.json com exports e main apontando para src/index.ts
 
 ### Resultado Esperado
 
@@ -153,88 +153,88 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 
 #### 2.1 Inicialização NestJS
 
-- [ ] Criar app NestJS: `pnpm dlx @nestjs/cli@latest new api --directory apps/api --package-manager pnpm --skip-git`
-- [ ] Remover arquivos de teste gerados (app.controller.spec.ts, etc.)
-- [ ] Adicionar dependência do @loopt/shared no package.json
-- [ ] Criar `tsconfig.json` estendendo tsconfig.base.json da raiz
-- [ ] Instalar dependências de configuração: `pnpm add @nestjs/config`
-- [ ] Instalar dependências de banco: `pnpm add @nestjs/typeorm typeorm pg`
-- [ ] Instalar dependências de auth: `pnpm add @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt`
-- [ ] Instalar dependências de validação: `pnpm add class-validator class-transformer`
-- [ ] Instalar dependências de documentação: `pnpm add @nestjs/swagger`
-- [ ] Instalar tipos: `pnpm add -D @types/passport-jwt @types/bcrypt`
-- [ ] Configurar ValidationPipe global no main.ts
-- [ ] Configurar Swagger no main.ts
+- [x] Criar app NestJS: `pnpm dlx @nestjs/cli@latest new api --directory apps/api --package-manager pnpm --skip-git`
+- [x] Remover arquivos de teste gerados (app.controller.spec.ts, etc.)
+- [x] Adicionar dependência do @loopt/shared no package.json
+- [x] Criar `tsconfig.json` estendendo tsconfig.base.json da raiz
+- [x] Instalar dependências de configuração: `pnpm add @nestjs/config`
+- [x] Instalar dependências de banco: `pnpm add @nestjs/typeorm typeorm pg`
+- [x] Instalar dependências de auth: `pnpm add @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt`
+- [x] Instalar dependências de validação: `pnpm add class-validator class-transformer`
+- [x] Instalar dependências de documentação: `pnpm add @nestjs/swagger`
+- [x] Instalar tipos: `pnpm add -D @types/passport-jwt @types/bcrypt`
+- [x] Configurar ValidationPipe global no main.ts
+- [x] Configurar Swagger no main.ts
 
 #### 2.2 Módulo de Configuração
 
-- [ ] Configurar ConfigModule.forRoot() como global em app.module.ts
-- [ ] Criar arquivo de validação de variáveis de ambiente com class-validator
+- [x] Configurar ConfigModule.forRoot() como global em app.module.ts
+- [x] Criar arquivo de validação de variáveis de ambiente com class-validator
 
 #### 2.3 Módulo de Banco de Dados
 
-- [ ] Configurar TypeOrmModule.forRootAsync() em app.module.ts
-- [ ] Configurar conexão PostgreSQL via variáveis de ambiente
-- [ ] Habilitar synchronize apenas em desenvolvimento
-- [ ] Configurar logging de queries em desenvolvimento
-- [ ] Criar diretório src/database/migrations
-- [ ] Configurar TypeORM CLI para migrations no package.json
+- [x] Configurar TypeOrmModule.forRootAsync() em app.module.ts
+- [x] Configurar conexão PostgreSQL via variáveis de ambiente
+- [x] Habilitar synchronize apenas em desenvolvimento
+- [x] Configurar logging de queries em desenvolvimento
+- [x] Criar diretório src/database/migrations
+- [x] Configurar TypeORM CLI para migrations no package.json
 
 #### 2.4 Entity User
 
-- [ ] Criar diretório src/users
-- [ ] Criar entity User em src/users/entities/user.entity.ts
-- [ ] Definir campos: id (UUID PrimaryGeneratedColumn), email, password, name, createdAt, updatedAt
-- [ ] Adicionar constraint unique no email
-- [ ] Adicionar decorators de validação
+- [x] Criar diretório src/users
+- [x] Criar entity User em src/users/entities/user.entity.ts
+- [x] Definir campos: id (UUID PrimaryGeneratedColumn), email, password, name, createdAt, updatedAt
+- [x] Adicionar constraint unique no email
+- [x] Adicionar decorators de validação
 - [ ] Criar migration inicial: `pnpm typeorm migration:generate src/database/migrations/CreateUsers`
 
 #### 2.5 Módulo Users
 
-- [ ] Criar UsersModule em src/users/users.module.ts
-- [ ] Criar UsersService em src/users/users.service.ts
-- [ ] Implementar método findByEmail(email: string)
-- [ ] Implementar método findById(id: string)
-- [ ] Implementar método create(data: CreateUserDto)
-- [ ] Exportar UsersService para uso em AuthModule
+- [x] Criar UsersModule em src/users/users.module.ts
+- [x] Criar UsersService em src/users/users.service.ts
+- [x] Implementar método findByEmail(email: string)
+- [x] Implementar método findById(id: string)
+- [x] Implementar método create(data: CreateUserDto)
+- [x] Exportar UsersService para uso em AuthModule
 
 #### 2.6 Módulo Auth
 
-- [ ] Criar diretório src/auth
-- [ ] Criar AuthModule em src/auth/auth.module.ts
-- [ ] Criar AuthService em src/auth/auth.service.ts
-- [ ] Criar DTOs com validação:
-  - [ ] RegisterDto: name (string, not empty), email (email válido), password (min 6 caracteres)
-  - [ ] LoginDto: email (email válido), password (string, not empty)
-- [ ] Implementar AuthService.register(): validar email único, hashear senha com bcrypt, criar usuário
-- [ ] Implementar AuthService.login(): validar credenciais, gerar JWT
-- [ ] Implementar AuthService.validateUser(): buscar usuário e comparar senha
+- [x] Criar diretório src/auth
+- [x] Criar AuthModule em src/auth/auth.module.ts
+- [x] Criar AuthService em src/auth/auth.service.ts
+- [x] Criar DTOs com validação:
+  - [x] RegisterDto: name (string, not empty), email (email válido), password (min 6 caracteres)
+  - [x] LoginDto: email (email válido), password (string, not empty)
+- [x] Implementar AuthService.register(): validar email único, hashear senha com bcrypt, criar usuário
+- [x] Implementar AuthService.login(): validar credenciais, gerar JWT
+- [x] Implementar AuthService.validateUser(): buscar usuário e comparar senha
 
 #### 2.7 JWT Strategy
 
-- [ ] Criar JwtStrategy em src/auth/strategies/jwt.strategy.ts
-- [ ] Configurar extração do token do header Authorization Bearer
-- [ ] Configurar validação do payload e retorno do usuário
-- [ ] Criar JwtAuthGuard em src/auth/guards/jwt-auth.guard.ts
-- [ ] Criar decorator @CurrentUser() em src/auth/decorators/current-user.decorator.ts
-- [ ] Configurar JwtModule.registerAsync() com secret e expiresIn do .env
+- [x] Criar JwtStrategy em src/auth/strategies/jwt.strategy.ts
+- [x] Configurar extração do token do header Authorization Bearer
+- [x] Configurar validação do payload e retorno do usuário
+- [x] Criar JwtAuthGuard em src/auth/guards/jwt-auth.guard.ts
+- [x] Criar decorator @CurrentUser() em src/auth/decorators/current-user.decorator.ts
+- [x] Configurar JwtModule.registerAsync() com secret e expiresIn do .env
 
 #### 2.8 Controller Auth
 
-- [ ] Criar AuthController em src/auth/auth.controller.ts
-- [ ] Implementar POST /auth/register: rota pública, retorna usuário criado (sem senha)
-- [ ] Implementar POST /auth/login: rota pública, retorna { accessToken, user }
-- [ ] Implementar GET /auth/me: rota protegida com JwtAuthGuard, retorna usuário atual
-- [ ] Adicionar decorators Swagger em todos os endpoints (@ApiTags, @ApiOperation, @ApiResponse)
+- [x] Criar AuthController em src/auth/auth.controller.ts
+- [x] Implementar POST /auth/register: rota pública, retorna usuário criado (sem senha)
+- [x] Implementar POST /auth/login: rota pública, retorna { accessToken, user }
+- [x] Implementar GET /auth/me: rota protegida com JwtAuthGuard, retorna usuário atual
+- [x] Adicionar decorators Swagger em todos os endpoints (@ApiTags, @ApiOperation, @ApiResponse)
 
 #### 2.9 Testes Auth
 
-- [ ] Configurar Vitest no apps/api
-- [ ] Criar src/auth/auth.service.spec.ts
-- [ ] Teste: register cria usuário com senha hasheada
-- [ ] Teste: register rejeita email duplicado
-- [ ] Teste: login retorna token para credenciais válidas
-- [ ] Teste: login rejeita credenciais inválidas
+- [x] Configurar Vitest no apps/api
+- [x] Criar src/auth/auth.service.spec.ts
+- [x] Teste: register cria usuário com senha hasheada
+- [x] Teste: register rejeita email duplicado
+- [x] Teste: login retorna token para credenciais válidas
+- [x] Teste: login rejeita credenciais inválidas
 
 ### Resultado Esperado
 
