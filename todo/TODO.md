@@ -370,37 +370,37 @@ Integrar Redis ao backend, implementando cache na listagem de tarefas e endpoint
 
 #### 4.1 Configuração Redis
 
-- [ ] Instalar dependências: `pnpm add @nestjs/cache-manager cache-manager cache-manager-redis-yet`
-- [ ] Criar CacheModule em src/cache/cache.module.ts
-- [ ] Configurar CacheModule.registerAsync() com Redis store
-- [ ] Exportar CacheModule como global
+- [x] Instalar dependências: `pnpm add @nestjs/cache-manager cache-manager cache-manager-redis-yet`
+- [x] Criar CacheModule em src/cache/cache.module.ts
+- [x] Configurar CacheModule.registerAsync() com Redis store
+- [x] Exportar CacheModule como global
 
 #### 4.2 CacheService
 
-- [ ] Criar CacheService em src/cache/cache.service.ts
-- [ ] Injetar CACHE_MANAGER
-- [ ] Implementar get<T>(key: string): Promise<T | undefined>
-- [ ] Implementar set(key: string, value: unknown, ttl?: number): Promise<void>
-- [ ] Implementar del(key: string): Promise<void>
-- [ ] Implementar delByPattern(pattern: string): Promise<void> usando scan do Redis
-- [ ] Adicionar logs para debug de cache hits/misses
+- [x] Criar CacheService em src/cache/cache.service.ts
+- [x] Injetar CACHE_MANAGER
+- [x] Implementar get<T>(key: string): Promise<T | undefined>
+- [x] Implementar set(key: string, value: unknown, ttl?: number): Promise<void>
+- [x] Implementar del(key: string): Promise<void>
+- [x] Implementar delByPattern(pattern: string): Promise<void> usando scan do Redis
+- [x] Adicionar logs para debug de cache hits/misses
 
 #### 4.3 Cache na Listagem de Tarefas
 
-- [ ] Criar função para gerar chave de cache: `tasks:${userId}:${JSON.stringify(filters)}`
-- [ ] No TasksService.findAll:
-  - [ ] Verificar cache antes de consultar banco
-  - [ ] Se cache hit, retornar dados do cache
-  - [ ] Se cache miss, consultar banco e salvar no cache com TTL 300 (5 minutos)
+- [x] Criar função para gerar chave de cache: `tasks:${userId}:${JSON.stringify(filters)}`
+- [x] No TasksService.findAll:
+  - [x] Verificar cache antes de consultar banco
+  - [x] Se cache hit, retornar dados do cache
+  - [x] Se cache miss, consultar banco e salvar no cache com TTL 300 (5 minutos)
 
 #### 4.4 Invalidação de Cache
 
-- [ ] Criar método privado invalidateUserCache(userId: string) no TasksService
-- [ ] Usar delByPattern para invalidar todas as chaves `tasks:${userId}:*`
-- [ ] Chamar invalidateUserCache em:
-  - [ ] TasksService.create após criar tarefa
-  - [ ] TasksService.update após atualizar tarefa
-  - [ ] TasksService.remove após deletar tarefa
+- [x] Criar método privado invalidateUserCache(userId: string) no TasksService
+- [x] Usar delByPattern para invalidar todas as chaves `tasks:${userId}:*`
+- [x] Chamar invalidateUserCache em:
+  - [x] TasksService.create após criar tarefa
+  - [x] TasksService.update após atualizar tarefa
+  - [x] TasksService.remove após deletar tarefa
 
 ### Resultado Esperado
 
