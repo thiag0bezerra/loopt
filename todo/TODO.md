@@ -693,119 +693,119 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 
 #### 7.1 Inicialização Next.js
 
-- [ ] Criar app Next.js: `pnpm dlx create-next-app@latest apps/web --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"`
-- [ ] Adicionar dependência do @loopt/shared no package.json
-- [ ] Instalar dependências de estado: `pnpm add zustand`
-- [ ] Instalar dependências de data fetching: `pnpm add @tanstack/react-query`
-- [ ] Instalar dependências HTTP: `pnpm add axios`
-- [ ] Instalar dependências de formulário: `pnpm add react-hook-form @hookform/resolvers zod`
-- [ ] Instalar dependências de gráficos: `pnpm add recharts`
-- [ ] Configurar path aliases no tsconfig.json
+- [x] Criar app Next.js: `pnpm dlx create-next-app@latest apps/web --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"`
+- [x] Adicionar dependência do @loopt/shared no package.json
+- [x] Instalar dependências de estado: `pnpm add zustand`
+- [x] Instalar dependências de data fetching: `pnpm add @tanstack/react-query`
+- [x] Instalar dependências HTTP: `pnpm add axios`
+- [x] Instalar dependências de formulário: `pnpm add react-hook-form @hookform/resolvers zod`
+- [x] Instalar dependências de gráficos: `pnpm add recharts`
+- [x] Configurar path aliases no tsconfig.json
 
 #### 7.2 Configuração shadcn/ui
 
-- [ ] Inicializar shadcn: `pnpm dlx shadcn@latest init`
-  - [ ] Style: Default
-  - [ ] Base color: Slate (ou preferência)
-  - [ ] CSS variables: Yes (obrigatório para theming)
-  - [ ] Tailwind config: tailwind.config.ts
-  - [ ] Components path: src/components/ui
-  - [ ] Utils path: src/lib/utils
-- [ ] Instalar componentes base: `pnpm dlx shadcn@latest add button input label card badge`
-- [ ] Instalar componentes de formulário: `pnpm dlx shadcn@latest add form select checkbox`
-- [ ] Instalar componentes de modal: `pnpm dlx shadcn@latest add dialog alert-dialog sheet`
-- [ ] Instalar componentes de feedback: `pnpm dlx shadcn@latest add toast sonner skeleton`
-- [ ] Instalar componentes de navegação: `pnpm dlx shadcn@latest add dropdown-menu separator`
-- [ ] Instalar componentes de tabela: `pnpm dlx shadcn@latest add table pagination`
-- [ ] Verificar que lucide-react foi instalado como dependência do shadcn
-- [ ] Configurar globals.css com CSS variables do shadcn (light e dark themes)
+- [x] Inicializar shadcn: `pnpm dlx shadcn@latest init`
+  - [x] Style: Default
+  - [x] Base color: Slate (ou preferência)
+  - [x] CSS variables: Yes (obrigatório para theming)
+  - [x] Tailwind config: tailwind.config.ts
+  - [x] Components path: src/components/ui
+  - [x] Utils path: src/lib/utils
+- [x] Instalar componentes base: `pnpm dlx shadcn@latest add button input label card badge`
+- [x] Instalar componentes de formulário: `pnpm dlx shadcn@latest add form select checkbox`
+- [x] Instalar componentes de modal: `pnpm dlx shadcn@latest add dialog alert-dialog sheet`
+- [x] Instalar componentes de feedback: `pnpm dlx shadcn@latest add toast sonner skeleton`
+- [x] Instalar componentes de navegação: `pnpm dlx shadcn@latest add dropdown-menu separator`
+- [x] Instalar componentes de tabela: `pnpm dlx shadcn@latest add table pagination`
+- [x] Verificar que lucide-react foi instalado como dependência do shadcn
+- [x] Configurar globals.css com CSS variables do shadcn (light e dark themes)
 
 #### 7.3 Configuração Storybook
 
-- [ ] Instalar Storybook: `pnpm dlx storybook@latest init`
-- [ ] Configurar para Next.js e TailwindCSS
-- [ ] Criar src/stories/ para organização
-- [ ] Configurar .storybook/preview.ts para carregar globals.css e CSS variables do shadcn
+- [x] Instalar Storybook: `pnpm dlx storybook@latest init`
+- [x] Configurar para Next.js e TailwindCSS
+- [x] Criar src/stories/ para organização
+- [x] Configurar .storybook/preview.ts para carregar globals.css e CSS variables do shadcn
 - [ ] Configurar dark mode toggle no Storybook (addon-themes ou backgrounds)
-- [ ] Criar stories para componentes base instalados:
-  - [ ] Button.stories.tsx (variants: default, destructive, outline, secondary, ghost, link)
-  - [ ] Input.stories.tsx (states: default, disabled, with error)
-  - [ ] Card.stories.tsx (composição: CardHeader, CardContent, CardFooter)
-  - [ ] Badge.stories.tsx (variants: default, secondary, destructive, outline)
-- [ ] Adicionar script no package.json: `"storybook": "storybook dev -p 6006"`
+- [x] Criar stories para componentes base instalados:
+  - [x] Button.stories.tsx (variants: default, destructive, outline, secondary, ghost, link)
+  - [x] Input.stories.tsx (states: default, disabled, with error)
+  - [x] Card.stories.tsx (composição: CardHeader, CardContent, CardFooter)
+  - [x] Badge.stories.tsx (variants: default, secondary, destructive, outline)
+- [x] Adicionar script no package.json: `"storybook": "storybook dev -p 6006"`
 
 #### 7.4 Configuração de API Client
 
-- [ ] Criar src/lib/api.ts
-- [ ] Criar instância Axios com baseURL do NEXT_PUBLIC_API_URL
-- [ ] Criar interceptor de request para adicionar token do localStorage
-- [ ] Criar interceptor de response para tratar 401 (limpar auth e redirecionar para /login)
+- [x] Criar src/lib/api.ts
+- [x] Criar instância Axios com baseURL do NEXT_PUBLIC_API_URL
+- [x] Criar interceptor de request para adicionar token do localStorage
+- [x] Criar interceptor de response para tratar 401 (limpar auth e redirecionar para /login)
 
 #### 7.5 Providers
 
-- [ ] Criar src/providers/query-provider.tsx com QueryClientProvider
-- [ ] Configurar defaultOptions: queries (staleTime: 5 minutos, retry: 1)
-- [ ] Criar src/providers/toast-provider.tsx para Sonner/Toast do shadcn
-- [ ] Criar src/app/providers.tsx combinando providers
-- [ ] Envolver children em layout.tsx com providers
+- [x] Criar src/providers/query-provider.tsx com QueryClientProvider
+- [x] Configurar defaultOptions: queries (staleTime: 5 minutos, retry: 1)
+- [x] Criar src/providers/toast-provider.tsx para Sonner/Toast do shadcn
+- [x] Criar src/app/providers.tsx combinando providers
+- [x] Envolver children em layout.tsx com providers
 
 #### 7.6 Store de Autenticação (Zustand)
 
-- [ ] Criar src/stores/auth.store.ts
-- [ ] Definir interface AuthState: user, token, isAuthenticated, setAuth, logout, hydrate
-- [ ] Implementar setAuth: salvar user e token no state e localStorage
-- [ ] Implementar logout: limpar state e localStorage, redirecionar para /login
-- [ ] Implementar hydrate: carregar token do localStorage e buscar usuário da API
-- [ ] Usar persist middleware do Zustand para token
+- [x] Criar src/stores/auth.store.ts
+- [x] Definir interface AuthState: user, token, isAuthenticated, setAuth, logout, hydrate
+- [x] Implementar setAuth: salvar user e token no state e localStorage
+- [x] Implementar logout: limpar state e localStorage, redirecionar para /login
+- [x] Implementar hydrate: carregar token do localStorage e buscar usuário da API
+- [x] Usar persist middleware do Zustand para token
 
 #### 7.7 Hooks de Autenticação
 
-- [ ] Criar src/hooks/use-auth.ts
-- [ ] Implementar useLogin: mutation que chama POST /auth/login, onSuccess chama setAuth (salva accessToken e refreshToken)
-- [ ] Implementar useRegister: mutation que chama POST /auth/register, onSuccess chama setAuth
-- [ ] Implementar useCurrentUser: query que chama GET /auth/me, enabled quando tem token
-- [ ] Implementar useRefreshToken: mutation que chama POST /auth/refresh com refreshToken
+- [x] Criar src/hooks/use-auth.ts
+- [x] Implementar useLogin: mutation que chama POST /auth/login, onSuccess chama setAuth (salva accessToken e refreshToken)
+- [x] Implementar useRegister: mutation que chama POST /auth/register, onSuccess chama setAuth
+- [x] Implementar useCurrentUser: query que chama GET /auth/me, enabled quando tem token
+- [x] Implementar useRefreshToken: mutation que chama POST /auth/refresh com refreshToken
 
 #### 7.8 Página de Login (usando shadcn/ui)
 
-- [ ] Criar src/app/(auth)/login/page.tsx
-- [ ] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
-- [ ] Usar shadcn Form com react-hook-form e validação zod
-- [ ] Usar shadcn Input e Label para campos
-- [ ] Campos: email (required, email), password (required, min 6)
-- [ ] Usar shadcn Button com loading state (disabled + ícone Loader2)
-- [ ] Exibir mensagens de erro usando FormMessage do shadcn
-- [ ] Link para página de registro
-- [ ] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
+- [x] Criar src/app/(auth)/login/page.tsx
+- [x] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
+- [x] Usar shadcn Form com react-hook-form e validação zod
+- [x] Usar shadcn Input e Label para campos
+- [x] Campos: email (required, email), password (required, min 6)
+- [x] Usar shadcn Button com loading state (disabled + ícone Loader2)
+- [x] Exibir mensagens de erro usando FormMessage do shadcn
+- [x] Link para página de registro
+- [x] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
 
 #### 7.9 Página de Registro (usando shadcn/ui)
 
-- [ ] Criar src/app/(auth)/register/page.tsx
-- [ ] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
-- [ ] Usar shadcn Form com react-hook-form e validação zod
-- [ ] Usar shadcn Input e Label para campos
-- [ ] Campos: name (required), email (required, email), password (required, min 6), confirmPassword (deve ser igual a password)
-- [ ] Usar shadcn Button com loading state
-- [ ] Exibir mensagens de erro usando FormMessage do shadcn
-- [ ] Link para página de login
-- [ ] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
+- [x] Criar src/app/(auth)/register/page.tsx
+- [x] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
+- [x] Usar shadcn Form com react-hook-form e validação zod
+- [x] Usar shadcn Input e Label para campos
+- [x] Campos: name (required), email (required, email), password (required, min 6), confirmPassword (deve ser igual a password)
+- [x] Usar shadcn Button com loading state
+- [x] Exibir mensagens de erro usando FormMessage do shadcn
+- [x] Link para página de login
+- [x] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
 
 #### 7.10 Layout de Auth
 
-- [ ] Criar src/app/(auth)/layout.tsx
-- [ ] Layout centralizado e minimalista (flex center)
-- [ ] Logo/título do app com ícone lucide-react
-- [ ] Background com cores CSS variables (funciona em dark mode)
-- [ ] Redirecionar para /tasks se já autenticado
+- [x] Criar src/app/(auth)/layout.tsx
+- [x] Layout centralizado e minimalista (flex center)
+- [x] Logo/título do app com ícone lucide-react
+- [x] Background com cores CSS variables (funciona em dark mode)
+- [x] Redirecionar para /tasks se já autenticado
 
 #### 7.11 Proteção de Rotas
 
-- [ ] Criar src/components/auth/protected-route.tsx
-- [ ] Verificar isAuthenticated do store
-- [ ] Se não autenticado, redirecionar para /login
-- [ ] Mostrar loading com shadcn Skeleton enquanto hidrata estado
-- [ ] Criar src/app/(protected)/layout.tsx usando ProtectedRoute
-- [ ] Integrar refresh token no interceptor do Axios (renovar token automaticamente ao receber 401)
+- [x] Criar src/components/auth/protected-route.tsx
+- [x] Verificar isAuthenticated do store
+- [x] Se não autenticado, redirecionar para /login
+- [x] Mostrar loading com shadcn Skeleton enquanto hidrata estado
+- [x] Criar src/app/(protected)/layout.tsx usando ProtectedRoute
+- [x] Integrar refresh token no interceptor do Axios (renovar token automaticamente ao receber 401)
 
 ### Resultado Esperado
 
