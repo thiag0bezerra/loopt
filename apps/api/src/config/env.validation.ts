@@ -74,6 +74,11 @@ class EnvironmentVariables {
   @Max(65535)
   @IsOptional()
   REDIS_PORT: number = 6379;
+
+  // RabbitMQ
+  @IsString()
+  @IsNotEmpty()
+  RABBITMQ_URL!: string;
 }
 
 /**

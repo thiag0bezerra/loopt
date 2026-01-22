@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CacheConfigModule } from './cache';
+import { NotificationsModule } from './notifications';
 import { validate } from './config/env.validation';
 
 /**
@@ -39,6 +40,7 @@ import { validate } from './config/env.validation';
     UsersModule,
     AuthModule,
     TasksModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
