@@ -1025,79 +1025,79 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
 
 #### 9.1 Hooks de Analytics
 
-- [ ] Criar src/hooks/use-analytics.ts
-- [ ] Implementar useAnalyticsOverview: query GET /analytics/overview
-- [ ] Implementar useAnalyticsByStatus: query GET /analytics/by-status
-- [ ] Implementar useAnalyticsByPriority: query GET /analytics/by-priority
-- [ ] Implementar useCompletionTrend: query GET /analytics/completion-trend
-- [ ] Implementar useProductivityMetrics: query GET /analytics/productivity
+- [x] Criar src/hooks/use-analytics.ts
+- [x] Implementar useAnalyticsOverview: query GET /analytics/overview
+- [x] Implementar useAnalyticsByStatus: query GET /analytics/by-status
+- [x] Implementar useAnalyticsByPriority: query GET /analytics/by-priority
+- [x] Implementar useCompletionTrend: query GET /analytics/completion-trend
+- [x] Implementar useProductivityMetrics: query GET /analytics/productivity
 
 #### 9.2 Componentes de Dashboard (usando shadcn/ui)
 
-- [ ] Criar src/components/dashboard/kpi-card.tsx:
-  - [ ] Usar shadcn Card, CardHeader, CardTitle, CardContent
-  - [ ] Props: title, value, icon, description opcional, trend opcional (up/down)
-  - [ ] Ícone lucide-react à esquerda no CardHeader
-  - [ ] Valor grande e destacado no CardContent
-  - [ ] Título menor usando CardTitle ou CardDescription
-  - [ ] Indicador de trend com cor (text-green-500 up, text-red-500 down) e ícones TrendingUp/TrendingDown
-  - [ ] Criar src/stories/KPICard.stories.tsx (variants: up trend, down trend, neutral)
-- [ ] Criar src/components/dashboard/chart-card.tsx:
-  - [ ] Usar shadcn Card, CardHeader, CardTitle, CardContent
-  - [ ] Props: title, children
-  - [ ] Card com título no header e área para gráfico no content
-  - [ ] Criar src/stories/ChartCard.stories.tsx
+- [x] Criar src/components/dashboard/kpi-card.tsx:
+  - [x] Usar shadcn Card, CardHeader, CardTitle, CardContent
+  - [x] Props: title, value, icon, description opcional, trend opcional (up/down)
+  - [x] Ícone lucide-react à esquerda no CardHeader
+  - [x] Valor grande e destacado no CardContent
+  - [x] Título menor usando CardTitle ou CardDescription
+  - [x] Indicador de trend com cor (text-green-500 up, text-red-500 down) e ícones TrendingUp/TrendingDown
+  - [x] Criar src/stories/KPICard.stories.tsx (variants: up trend, down trend, neutral)
+- [x] Criar src/components/dashboard/chart-card.tsx:
+  - [x] Usar shadcn Card, CardHeader, CardTitle, CardContent
+  - [x] Props: title, children
+  - [x] Card com título no header e área para gráfico no content
+  - [x] Criar src/stories/ChartCard.stories.tsx
 
 #### 9.3 Gráficos Interativos (Recharts)
 
-- [ ] Criar src/components/dashboard/status-pie-chart.tsx:
-  - [ ] PieChart com dados de by-status
-  - [ ] Cores distintas por status
-  - [ ] Tooltip customizado com valor e percentual
-  - [ ] Legend clicável (drill-down: filtrar tarefas por status ao clicar)
-  - [ ] Animação de entrada (animationDuration, animationEasing)
-  - [ ] Criar src/stories/StatusPieChart.stories.tsx
-- [ ] Criar src/components/dashboard/priority-bar-chart.tsx:
-  - [ ] BarChart com dados de by-priority
-  - [ ] Cores distintas por prioridade
-  - [ ] Tooltip customizado com valor
-  - [ ] Labels nos eixos
-  - [ ] Click em barra para drill-down (filtrar tarefas por prioridade)
-  - [ ] Criar src/stories/PriorityBarChart.stories.tsx
-- [ ] Criar src/components/dashboard/completion-trend-chart.tsx:
-  - [ ] AreaChart com dados de completion-trend
-  - [ ] Duas áreas: created e completed
-  - [ ] Eixo X com datas formatadas
-  - [ ] Tooltip customizado com valores
-  - [ ] Legend
-  - [ ] Brush component para zoom/scroll em período
-  - [ ] Criar src/stories/CompletionTrendChart.stories.tsx
+- [x] Criar src/components/dashboard/status-pie-chart.tsx:
+  - [x] PieChart com dados de by-status
+  - [x] Cores distintas por status
+  - [x] Tooltip customizado com valor e percentual
+  - [x] Legend clicável (drill-down: filtrar tarefas por status ao clicar)
+  - [x] Animação de entrada (animationDuration, animationEasing)
+  - [x] Criar src/stories/StatusPieChart.stories.tsx
+- [x] Criar src/components/dashboard/priority-bar-chart.tsx:
+  - [x] BarChart com dados de by-priority
+  - [x] Cores distintas por prioridade
+  - [x] Tooltip customizado com valor
+  - [x] Labels nos eixos
+  - [x] Click em barra para drill-down (filtrar tarefas por prioridade)
+  - [x] Criar src/stories/PriorityBarChart.stories.tsx
+- [x] Criar src/components/dashboard/completion-trend-chart.tsx:
+  - [x] AreaChart com dados de completion-trend
+  - [x] Duas áreas: created e completed
+  - [x] Eixo X com datas formatadas
+  - [x] Tooltip customizado com valores
+  - [x] Legend
+  - [x] Brush component para zoom/scroll em período
+  - [x] Criar src/stories/CompletionTrendChart.stories.tsx
 
 #### 9.4 Insights de Produtividade
 
-- [ ] Criar src/components/dashboard/productivity-insights.tsx:
-  - [ ] Card com métricas de produtividade
-  - [ ] Exibir tempo médio de conclusão formatado (X horas)
-  - [ ] Exibir comparação semana a semana com seta e percentual
-  - [ ] Exibir streak com ícone de fogo
-  - [ ] Exibir dia mais produtivo
+- [x] Criar src/components/dashboard/productivity-insights.tsx:
+  - [x] Card com métricas de produtividade
+  - [x] Exibir tempo médio de conclusão formatado (X horas)
+  - [x] Exibir comparação semana a semana com seta e percentual
+  - [x] Exibir streak com ícone de fogo
+  - [x] Exibir dia mais produtivo
 
 #### 9.5 Página de Dashboard
 
-- [ ] Criar src/app/(protected)/dashboard/page.tsx
-- [ ] Layout em grid responsivo (CSS Grid ou Flexbox)
-- [ ] Seção de KPIs (4 cards):
-  - [ ] Total de Tarefas
-  - [ ] Taxa de Conclusão
-  - [ ] Tarefas Atrasadas
-  - [ ] Tarefas Concluídas Esta Semana
-- [ ] Seção de Gráficos (3 gráficos em grid):
-  - [ ] Distribuição por Status (PieChart)
-  - [ ] Distribuição por Prioridade (BarChart)
-  - [ ] Tendência de Conclusão (LineChart)
-- [ ] Seção de Insights
-- [ ] Usar shadcn Skeleton para loading states em cada seção
-- [ ] Empty state com shadcn Card e ícone lucide-react se não há dados suficientes
+- [x] Criar src/app/(protected)/dashboard/page.tsx
+- [x] Layout em grid responsivo (CSS Grid ou Flexbox)
+- [x] Seção de KPIs (4 cards):
+  - [x] Total de Tarefas
+  - [x] Taxa de Conclusão
+  - [x] Tarefas Atrasadas
+  - [x] Tarefas Concluídas Esta Semana
+- [x] Seção de Gráficos (3 gráficos em grid):
+  - [x] Distribuição por Status (PieChart)
+  - [x] Distribuição por Prioridade (BarChart)
+  - [x] Tendência de Conclusão (LineChart)
+- [x] Seção de Insights
+- [x] Usar shadcn Skeleton para loading states em cada seção
+- [x] Empty state com shadcn Card e ícone lucide-react se não há dados suficientes
 
 ### Resultado Esperado
 
