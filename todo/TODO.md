@@ -647,23 +647,23 @@ Implementar Websockets com Socket.IO para notificar clientes sobre mudanças em 
 
 #### 6.5.1 Configuração Websockets no Backend
 
-- [ ] Instalar dependências: `pnpm add @nestjs/websockets @nestjs/platform-socket.io socket.io`
-- [ ] Criar TasksGateway em src/tasks/tasks.gateway.ts
-- [ ] Configurar WebSocketGateway com namespace /tasks
-- [ ] Implementar autenticação JWT no handshake do socket
-- [ ] Criar room por userId para isolar eventos
+- [x] Instalar dependências: `pnpm add @nestjs/websockets @nestjs/platform-socket.io socket.io`
+- [x] Criar TasksGateway em src/tasks/tasks.gateway.ts
+- [x] Configurar WebSocketGateway com namespace /tasks
+- [x] Implementar autenticação JWT no handshake do socket
+- [x] Criar room por userId para isolar eventos
 
 #### 6.5.2 Eventos de Websocket
 
-- [ ] Emitir evento 'task:created' ao criar tarefa
-- [ ] Emitir evento 'task:updated' ao atualizar tarefa
-- [ ] Emitir evento 'task:deleted' ao deletar tarefa
-- [ ] Payload dos eventos: { task, action }
+- [x] Emitir evento 'task:created' ao criar tarefa
+- [x] Emitir evento 'task:updated' ao atualizar tarefa
+- [x] Emitir evento 'task:deleted' ao deletar tarefa
+- [x] Payload dos eventos: { task, action }
 
 #### 6.5.3 Integração no TasksService
 
-- [ ] Injetar TasksGateway no TasksService
-- [ ] Chamar gateway.emitToUser(userId, event, payload) em create, update, remove
+- [x] Injetar TasksGateway no TasksService
+- [x] Chamar gateway.emitToUser(userId, event, payload) em create, update, remove
 
 ### Resultado Esperado
 
