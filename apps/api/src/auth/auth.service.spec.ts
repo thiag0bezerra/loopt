@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
@@ -35,6 +36,11 @@ describe('AuthService', () => {
 
   const mockJwtService = {
     sign: vi.fn().mockReturnValue('mock_token'),
+    verify: vi.fn(),
+  };
+
+  const mockConfigService = {
+    get: vi.fn().mockReturnValue('7d'),
   };
 
   beforeEach(async () => {
@@ -45,6 +51,7 @@ describe('AuthService', () => {
         AuthService,
         { provide: UsersService, useValue: mockUsersService },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
@@ -75,6 +82,7 @@ describe('AuthService', () => {
         password: 'hashed_password',
       });
       expect(result.accessToken).toBe('mock_token');
+      expect(result.refreshToken).toBe('mock_token');
       expect(result.user).not.toHaveProperty('password');
     });
 
@@ -106,6 +114,7 @@ describe('AuthService', () => {
       const result = await authService.login(loginDto);
 
       expect(result.accessToken).toBe('mock_token');
+      expect(result.refreshToken).toBe('mock_token');
       expect(result.user.email).toBe(mockUser.email);
       expect(result.user).not.toHaveProperty('password');
     });
@@ -176,6 +185,64 @@ describe('AuthService', () => {
       );
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe('refreshToken', () => {
+    it('deve retornar novo access token para refresh token válido', async () => {
+      const validPayload = {
+        sub: mockUser.id,
+        email: mockUser.email,
+        type: 'refresh',
+      };
+
+      mockJwtService.verify.mockReturnValue(validPayload);
+      mockUsersService.findById.mockResolvedValue(mockUser);
+
+      const result = await authService.refreshToken('valid_refresh_token');
+
+      expect(result.accessToken).toBe('mock_token');
+      expect(mockJwtService.verify).toHaveBeenCalledWith('valid_refresh_token');
+      expect(mockUsersService.findById).toHaveBeenCalledWith(mockUser.id);
+    });
+
+    it('deve rejeitar refresh token inválido', async () => {
+      mockJwtService.verify.mockImplementation(() => {
+        throw new Error('Invalid token');
+      });
+
+      await expect(
+        authService.refreshToken('invalid_refresh_token'),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('deve rejeitar token do tipo access', async () => {
+      const accessPayload = {
+        sub: mockUser.id,
+        email: mockUser.email,
+        type: 'access',
+      };
+
+      mockJwtService.verify.mockReturnValue(accessPayload);
+
+      await expect(
+        authService.refreshToken('access_token_instead_of_refresh'),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('deve rejeitar se usuário não existe mais', async () => {
+      const validPayload = {
+        sub: 'deleted-user-id',
+        email: 'deleted@example.com',
+        type: 'refresh',
+      };
+
+      mockJwtService.verify.mockReturnValue(validPayload);
+      mockUsersService.findById.mockResolvedValue(null);
+
+      await expect(
+        authService.refreshToken('valid_refresh_token'),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 });

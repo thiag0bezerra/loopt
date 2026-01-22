@@ -6,8 +6,8 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { AuthService, AuthResponse } from './auth.service';
-import { RegisterDto, LoginDto } from './dto';
+import { AuthService, AuthResponse, RefreshResponse } from './auth.service';
+import { RegisterDto, LoginDto, RefreshTokenDto } from './dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {
   CurrentUser,
@@ -77,5 +77,22 @@ export class AuthController {
   })
   me(@CurrentUser() user: CurrentUserPayload): CurrentUserPayload {
     return user;
+  }
+
+  /**
+   * Gera novo access token usando refresh token
+   */
+  @Post('refresh')
+  @ApiOperation({ summary: 'Renovar access token usando refresh token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Access token renovado com sucesso',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Refresh token inválido ou expirado',
+  })
+  async refresh(@Body() dto: RefreshTokenDto): Promise<RefreshResponse> {
+    return this.authService.refreshToken(dto.refreshToken);
   }
 }
