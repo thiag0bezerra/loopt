@@ -268,71 +268,71 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 
 #### 3.1 Entity Task
 
-- [ ] Criar diretório src/tasks
-- [ ] Criar entity Task em src/tasks/entities/task.entity.ts
-- [ ] Definir campos conforme modelo de dados
-- [ ] Criar relacionamento ManyToOne com User (userId como FK)
-- [ ] Adicionar índices em userId, status, priority para otimização de queries
-- [ ] Criar migration: `pnpm typeorm migration:generate src/database/migrations/CreateTasks`
-- [ ] Executar migration
+- [x] Criar diretório src/tasks
+- [x] Criar entity Task em src/tasks/entities/task.entity.ts
+- [x] Definir campos conforme modelo de dados
+- [x] Criar relacionamento ManyToOne com User (userId como FK)
+- [x] Adicionar índices em userId, status, priority para otimização de queries
+- [x] Criar migration: `pnpm typeorm migration:generate src/database/migrations/CreateTasks`
+- [x] Executar migration
 
 #### 3.2 DTOs Task
 
-- [ ] Criar CreateTaskDto em src/tasks/dto/create-task.dto.ts:
-  - [ ] title: string (IsNotEmpty, MaxLength 255)
-  - [ ] description: string opcional (MaxLength 1000)
-  - [ ] status: TaskStatus opcional (IsEnum, default PENDING)
-  - [ ] priority: TaskPriority opcional (IsEnum, default MEDIUM)
-  - [ ] dueDate: Date opcional (IsDateString)
-- [ ] Criar UpdateTaskDto em src/tasks/dto/update-task.dto.ts usando PartialType(CreateTaskDto)
-- [ ] Criar TaskFilterDto em src/tasks/dto/task-filter.dto.ts:
-  - [ ] status: TaskStatus opcional
-  - [ ] priority: TaskPriority opcional
-  - [ ] search: string opcional (busca em título e descrição)
-  - [ ] page: number (default 1, Min 1)
-  - [ ] limit: number (default 10, Min 1, Max 50)
-  - [ ] sortBy: string (default 'createdAt')
-  - [ ] sortOrder: 'ASC' | 'DESC' (default 'DESC')
+- [x] Criar CreateTaskDto em src/tasks/dto/create-task.dto.ts:
+  - [x] title: string (IsNotEmpty, MaxLength 255)
+  - [x] description: string opcional (MaxLength 1000)
+  - [x] status: TaskStatus opcional (IsEnum, default PENDING)
+  - [x] priority: TaskPriority opcional (IsEnum, default MEDIUM)
+  - [x] dueDate: Date opcional (IsDateString)
+- [x] Criar UpdateTaskDto em src/tasks/dto/update-task.dto.ts usando PartialType(CreateTaskDto)
+- [x] Criar TaskFilterDto em src/tasks/dto/task-filter.dto.ts:
+  - [x] status: TaskStatus opcional
+  - [x] priority: TaskPriority opcional
+  - [x] search: string opcional (busca em título e descrição)
+  - [x] page: number (default 1, Min 1)
+  - [x] limit: number (default 10, Min 1, Max 50)
+  - [x] sortBy: string (default 'createdAt')
+  - [x] sortOrder: 'ASC' | 'DESC' (default 'DESC')
 
 #### 3.3 TasksService
 
-- [ ] Criar TasksModule em src/tasks/tasks.module.ts
-- [ ] Criar TasksService em src/tasks/tasks.service.ts
-- [ ] Implementar create(userId: string, dto: CreateTaskDto): criar tarefa vinculada ao usuário
-- [ ] Implementar findAll(userId: string, filters: TaskFilterDto): retornar PaginatedResponse
-  - [ ] Aplicar filtro por status se fornecido
-  - [ ] Aplicar filtro por priority se fornecido
-  - [ ] Aplicar busca ILIKE em title e description se search fornecido
-  - [ ] Aplicar ordenação por sortBy e sortOrder
-  - [ ] Aplicar paginação com skip e take
-  - [ ] Retornar { data, meta: { total, page, limit, totalPages } }
-- [ ] Implementar findOne(userId: string, taskId: string): buscar tarefa ou lançar NotFoundException
-- [ ] Implementar update(userId: string, taskId: string, dto: UpdateTaskDto):
-  - [ ] Buscar tarefa (validar ownership)
-  - [ ] Se status mudando para COMPLETED, preencher completedAt
-  - [ ] Se status mudando de COMPLETED para outro, limpar completedAt
-  - [ ] Salvar e retornar tarefa atualizada
-- [ ] Implementar remove(userId: string, taskId: string): deletar tarefa ou lançar NotFoundException
+- [x] Criar TasksModule em src/tasks/tasks.module.ts
+- [x] Criar TasksService em src/tasks/tasks.service.ts
+- [x] Implementar create(userId: string, dto: CreateTaskDto): criar tarefa vinculada ao usuário
+- [x] Implementar findAll(userId: string, filters: TaskFilterDto): retornar PaginatedResponse
+  - [x] Aplicar filtro por status se fornecido
+  - [x] Aplicar filtro por priority se fornecido
+  - [x] Aplicar busca ILIKE em title e description se search fornecido
+  - [x] Aplicar ordenação por sortBy e sortOrder
+  - [x] Aplicar paginação com skip e take
+  - [x] Retornar { data, meta: { total, page, limit, totalPages } }
+- [x] Implementar findOne(userId: string, taskId: string): buscar tarefa ou lançar NotFoundException
+- [x] Implementar update(userId: string, taskId: string, dto: UpdateTaskDto):
+  - [x] Buscar tarefa (validar ownership)
+  - [x] Se status mudando para COMPLETED, preencher completedAt
+  - [x] Se status mudando de COMPLETED para outro, limpar completedAt
+  - [x] Salvar e retornar tarefa atualizada
+- [x] Implementar remove(userId: string, taskId: string): deletar tarefa ou lançar NotFoundException
 
 #### 3.4 TasksController
 
-- [ ] Criar TasksController em src/tasks/tasks.controller.ts
-- [ ] Aplicar @UseGuards(JwtAuthGuard) no controller
-- [ ] Implementar POST /tasks: criar tarefa, retornar 201
-- [ ] Implementar GET /tasks: listar tarefas com query params do TaskFilterDto
-- [ ] Implementar GET /tasks/:id: buscar tarefa específica
-- [ ] Implementar PATCH /tasks/:id: atualizar tarefa
-- [ ] Implementar DELETE /tasks/:id: deletar tarefa, retornar 204
-- [ ] Adicionar decorators Swagger em todos os endpoints
+- [x] Criar TasksController em src/tasks/tasks.controller.ts
+- [x] Aplicar @UseGuards(JwtAuthGuard) no controller
+- [x] Implementar POST /tasks: criar tarefa, retornar 201
+- [x] Implementar GET /tasks: listar tarefas com query params do TaskFilterDto
+- [x] Implementar GET /tasks/:id: buscar tarefa específica
+- [x] Implementar PATCH /tasks/:id: atualizar tarefa
+- [x] Implementar DELETE /tasks/:id: deletar tarefa, retornar 204
+- [x] Adicionar decorators Swagger em todos os endpoints
 
 #### 3.5 Testes Tasks
 
-- [ ] Criar src/tasks/tasks.service.spec.ts
-- [ ] Teste: create cria tarefa vinculada ao usuário
-- [ ] Teste: findAll retorna apenas tarefas do usuário
-- [ ] Teste: findAll aplica filtros corretamente
-- [ ] Teste: update atualiza campos e preenche completedAt quando status = COMPLETED
-- [ ] Teste: remove deleta tarefa existente
+- [x] Criar src/tasks/tasks.service.spec.ts
+- [x] Teste: create cria tarefa vinculada ao usuário
+- [x] Teste: findAll retorna apenas tarefas do usuário
+- [x] Teste: findAll aplica filtros corretamente
+- [x] Teste: update atualiza campos e preenche completedAt quando status = COMPLETED
+- [x] Teste: remove deleta tarefa existente
 
 ### Resultado Esperado
 
