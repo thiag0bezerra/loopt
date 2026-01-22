@@ -103,13 +103,13 @@ Criar a estrutura base do monorepo com Turborepo, configurar Docker Compose com 
 - [x] Criar diretório do projeto
 - [x] Inicializar Git: `git init`
 - [x] Criar monorepo Turborepo: `pnpm dlx create-turbo@latest . --package-manager pnpm`
-- [ ] Remover apps de exemplo gerados pelo template
-- [ ] Ajustar `turbo.json` com pipelines: build, dev, test, lint, typecheck
-- [ ] Ajustar `pnpm-workspace.yaml` para incluir apps/_ e packages/_
+- [x] Remover apps de exemplo gerados pelo template
+- [x] Ajustar `turbo.json` com pipelines: build, dev, test, lint, typecheck
+- [x] Ajustar `pnpm-workspace.yaml` para incluir apps/_ e packages/_
 
 #### 1.2 Configurações Compartilhadas
 
-- [ ] Criar `tsconfig.base.json` na raiz com configurações TypeScript 5 compartilhadas
+- [x] Criar `tsconfig.base.json` na raiz com configurações TypeScript 5 compartilhadas
 - [x] Criar configuração ESLint na raiz (eslint.config.mjs - flat config)
 - [x] Criar `.prettierrc` na raiz
 - [x] Criar `.gitignore` incluindo: node_modules, dist, .env, .turbo, coverage
@@ -224,11 +224,11 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [x] Implementar AuthService.register(): validar email único, hashear senha com bcrypt, criar usuário
 - [x] Implementar AuthService.login(): validar credenciais, gerar JWT
 - [x] Implementar AuthService.validateUser(): buscar usuário e comparar senha
-- [ ] Implementar refresh token:
-  - [ ] Criar RefreshTokenDto
-  - [ ] Gerar refreshToken com expiração maior (7 dias)
-  - [ ] Implementar AuthService.refreshToken(): validar refresh token, gerar novo access token
-  - [ ] Implementar POST /auth/refresh no controller
+- [x] Implementar refresh token:
+  - [x] Criar RefreshTokenDto
+  - [x] Gerar refreshToken com expiração maior (7 dias)
+  - [x] Implementar AuthService.refreshToken(): validar refresh token, gerar novo access token
+  - [x] Implementar POST /auth/refresh no controller
 
 #### 2.7 JWT Strategy
 
