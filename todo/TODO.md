@@ -175,7 +175,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 
 - [x] Configurar TypeOrmModule.forRootAsync() em app.module.ts
 - [x] Configurar conexão PostgreSQL via variáveis de ambiente
-- [x] Habilitar synchronize apenas em desenvolvimento
+- [x] Desabilitar synchronize (usar migrations)
 - [x] Configurar logging de queries em desenvolvimento
 - [x] Criar diretório src/database/migrations
 - [x] Configurar TypeORM CLI para migrations no package.json
@@ -187,7 +187,7 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [x] Definir campos: id (UUID PrimaryGeneratedColumn), email, password, name, createdAt, updatedAt
 - [x] Adicionar constraint unique no email
 - [x] Adicionar decorators de validação
-- [ ] Criar migration inicial: `pnpm typeorm migration:generate src/database/migrations/CreateUsers`
+- [x] Criar migration inicial: `pnpm typeorm migration:generate src/database/migrations/CreateUsers`
 
 #### 2.5 Módulo Users
 
