@@ -1,6 +1,5 @@
 ---
 agent: agent
-model: Grok Code Fast 1 (copilot)
 tools: [search/changes, execute/runInTerminal]
 ---
 
