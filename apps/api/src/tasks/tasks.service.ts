@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ILike, FindOptionsWhere } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TaskStatus, TaskPriority, PaginatedResponse } from '@loopt/shared';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto, UpdateTaskDto, TaskFilterDto } from './dto';
 import { CacheService } from '../cache';
 import { NotificationsService } from '../notifications';
 import { UsersService } from '../users/users.service';
+import { TagsService } from './tags.service';
 
 /** TTL do cache em milissegundos (5 minutos) */
 const CACHE_TTL = 300_000;
@@ -22,6 +23,7 @@ export class TasksService {
     private readonly cacheService: CacheService,
     private readonly notificationsService: NotificationsService,
     private readonly usersService: UsersService,
+    private readonly tagsService: TagsService,
   ) {}
 
   /**
@@ -31,10 +33,16 @@ export class TasksService {
    * @returns Tarefa criada
    */
   async create(userId: string, dto: CreateTaskDto): Promise<Task> {
+    // Busca tags se fornecidas
+    const tags = dto.tagIds
+      ? await this.tagsService.findByIds(userId, dto.tagIds)
+      : [];
+
     const task = this.tasksRepository.create({
       ...dto,
       dueDate: dto.dueDate ? new Date(dto.dueDate) : null,
       userId,
+      tags,
     });
 
     const savedTask = await this.tasksRepository.save(task);
@@ -67,6 +75,7 @@ export class TasksService {
       status,
       priority,
       search,
+      tagId,
       page = 1,
       limit = 10,
       sortBy = 'createdAt',
@@ -82,33 +91,40 @@ export class TasksService {
       return cached;
     }
 
-    const where: FindOptionsWhere<Task>[] = [];
-    const baseWhere: FindOptionsWhere<Task> = { userId };
+    // Usa QueryBuilder para suportar filtro por tagId via relacionamento
+    const queryBuilder = this.tasksRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.tags', 'tag')
+      .where('task.userId = :userId', { userId });
 
     // Filtros básicos
     if (status) {
-      baseWhere.status = status;
+      queryBuilder.andWhere('task.status = :status', { status });
     }
     if (priority) {
-      baseWhere.priority = priority;
+      queryBuilder.andWhere('task.priority = :priority', { priority });
+    }
+
+    // Filtro por tagId
+    if (tagId) {
+      queryBuilder.andWhere('tag.id = :tagId', { tagId });
     }
 
     // Busca por texto em título e descrição
     if (search) {
-      where.push(
-        { ...baseWhere, title: ILike(`%${search}%`) },
-        { ...baseWhere, description: ILike(`%${search}%`) },
+      queryBuilder.andWhere(
+        '(task.title ILIKE :search OR task.description ILIKE :search)',
+        { search: `%${search}%` },
       );
-    } else {
-      where.push(baseWhere);
     }
 
-    const [data, total] = await this.tasksRepository.findAndCount({
-      where,
-      order: { [sortBy]: sortOrder },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    // Ordenação e paginação
+    queryBuilder
+      .orderBy(`task.${sortBy}`, sortOrder)
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
 
     const totalPages = Math.ceil(total / limit);
 
@@ -138,6 +154,7 @@ export class TasksService {
   async findOne(userId: string, taskId: string): Promise<Task> {
     const task = await this.tasksRepository.findOne({
       where: { id: taskId, userId },
+      relations: ['tags'],
     });
 
     if (!task) {
@@ -177,9 +194,18 @@ export class TasksService {
       }
     }
 
-    // Mescla os dados atualizados
+    // Atualiza tags se fornecidas
+    if (dto.tagIds !== undefined) {
+      task.tags =
+        dto.tagIds.length > 0
+          ? await this.tagsService.findByIds(userId, dto.tagIds)
+          : [];
+    }
+
+    // Mescla os dados atualizados (exceto tagIds que já foi tratado)
+    const { tagIds, ...updateData } = dto;
     Object.assign(task, {
-      ...dto,
+      ...updateData,
       dueDate:
         dto.dueDate !== undefined
           ? dto.dueDate

@@ -5,6 +5,8 @@ import {
   IsEnum,
   IsDateString,
   MaxLength,
+  IsArray,
+  IsUUID,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
@@ -67,4 +69,15 @@ export class CreateTaskDto {
   @IsOptional()
   @IsDateString({}, { message: 'Data de vencimento inválida' })
   dueDate?: string;
+
+  /** IDs das tags associadas (opcional) */
+  @ApiPropertyOptional({
+    description: 'IDs das tags a serem associadas à tarefa',
+    example: ['550e8400-e29b-41d4-a716-446655440000'],
+    type: [String],
+  })
+  @IsOptional()
+  @IsArray({ message: 'tagIds deve ser um array' })
+  @IsUUID('4', { each: true, message: 'Cada tagId deve ser um UUID válido' })
+  tagIds?: string[];
 }

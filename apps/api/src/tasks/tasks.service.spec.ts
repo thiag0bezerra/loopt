@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { Repository, ILike } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
@@ -10,6 +10,7 @@ import { TaskStatus, TaskPriority } from '@loopt/shared';
 import { CacheService } from '../cache';
 import { NotificationsService } from '../notifications';
 import { UsersService } from '../users/users.service';
+import { TagsService } from './tags.service';
 
 describe('TasksService', () => {
   let tasksService: TasksService;
@@ -29,6 +30,7 @@ describe('TasksService', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: null,
+    tags: [],
   };
 
   const mockUser = {
@@ -46,6 +48,7 @@ describe('TasksService', () => {
     findOne: vi.fn(),
     findAndCount: vi.fn(),
     remove: vi.fn(),
+    createQueryBuilder: vi.fn(),
   };
 
   const mockCacheService = {
@@ -64,6 +67,10 @@ describe('TasksService', () => {
     findById: vi.fn().mockResolvedValue(mockUser),
     findByEmail: vi.fn(),
     create: vi.fn(),
+  };
+
+  const mockTagsService = {
+    findByIds: vi.fn().mockResolvedValue([]),
   };
 
   beforeEach(async () => {
@@ -87,6 +94,10 @@ describe('TasksService', () => {
         {
           provide: UsersService,
           useValue: mockUsersService,
+        },
+        {
+          provide: TagsService,
+          useValue: mockTagsService,
         },
       ],
     }).compile();
@@ -119,6 +130,7 @@ describe('TasksService', () => {
         ...createTaskDto,
         dueDate: null,
         userId: mockUserId,
+        tags: [],
       });
       expect(mockTasksRepository.save).toHaveBeenCalledWith(expectedTask);
       expect(result.userId).toBe(mockUserId);
@@ -129,26 +141,51 @@ describe('TasksService', () => {
   });
 
   describe('findAll', () => {
+    let mockQueryBuilder: {
+      leftJoinAndSelect: ReturnType<typeof vi.fn>;
+      where: ReturnType<typeof vi.fn>;
+      andWhere: ReturnType<typeof vi.fn>;
+      orderBy: ReturnType<typeof vi.fn>;
+      skip: ReturnType<typeof vi.fn>;
+      take: ReturnType<typeof vi.fn>;
+      getManyAndCount: ReturnType<typeof vi.fn>;
+    };
+
+    beforeEach(() => {
+      mockQueryBuilder = {
+        leftJoinAndSelect: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        andWhere: vi.fn().mockReturnThis(),
+        orderBy: vi.fn().mockReturnThis(),
+        skip: vi.fn().mockReturnThis(),
+        take: vi.fn().mockReturnThis(),
+        getManyAndCount: vi.fn().mockResolvedValue([[mockTask], 1]),
+      };
+      mockTasksRepository.createQueryBuilder.mockReturnValue(mockQueryBuilder);
+    });
+
     it('deve retornar apenas tarefas do usuário', async () => {
-      const tasks = [mockTask];
-      mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
       mockCacheService.get.mockResolvedValue(undefined);
       mockCacheService.set.mockResolvedValue(undefined);
 
       const result = await tasksService.findAll(mockUserId, {});
 
-      expect(mockTasksRepository.findAndCount).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: [{ userId: mockUserId }],
-        }),
+      expect(mockTasksRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'task',
       );
-      expect(result.data).toEqual(tasks);
+      expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith(
+        'task.tags',
+        'tag',
+      );
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'task.userId = :userId',
+        { userId: mockUserId },
+      );
+      expect(result.data).toEqual([mockTask]);
       expect(result.meta.total).toBe(1);
     });
 
     it('deve aplicar filtros corretamente', async () => {
-      const tasks = [mockTask];
-      mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
       mockCacheService.get.mockResolvedValue(undefined);
       mockCacheService.set.mockResolvedValue(undefined);
 
@@ -163,25 +200,23 @@ describe('TasksService', () => {
 
       await tasksService.findAll(mockUserId, filters);
 
-      expect(mockTasksRepository.findAndCount).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: [
-            {
-              userId: mockUserId,
-              status: TaskStatus.PENDING,
-              priority: TaskPriority.HIGH,
-            },
-          ],
-          order: { createdAt: 'DESC' },
-          skip: 0,
-          take: 10,
-        }),
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'task.status = :status',
+        { status: TaskStatus.PENDING },
       );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'task.priority = :priority',
+        { priority: TaskPriority.HIGH },
+      );
+      expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+        'task.createdAt',
+        'DESC',
+      );
+      expect(mockQueryBuilder.skip).toHaveBeenCalledWith(0);
+      expect(mockQueryBuilder.take).toHaveBeenCalledWith(10);
     });
 
     it('deve aplicar busca em título e descrição', async () => {
-      const tasks = [mockTask];
-      mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
       mockCacheService.get.mockResolvedValue(undefined);
       mockCacheService.set.mockResolvedValue(undefined);
 
@@ -191,19 +226,14 @@ describe('TasksService', () => {
 
       await tasksService.findAll(mockUserId, filters);
 
-      expect(mockTasksRepository.findAndCount).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: [
-            { userId: mockUserId, title: ILike('%test%') },
-            { userId: mockUserId, description: ILike('%test%') },
-          ],
-        }),
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        '(task.title ILIKE :search OR task.description ILIKE :search)',
+        { search: '%test%' },
       );
     });
 
     it('deve retornar paginação correta', async () => {
-      const tasks = [mockTask];
-      mockTasksRepository.findAndCount.mockResolvedValue([tasks, 25]);
+      mockQueryBuilder.getManyAndCount.mockResolvedValue([[mockTask], 25]);
       mockCacheService.get.mockResolvedValue(undefined);
       mockCacheService.set.mockResolvedValue(undefined);
 
@@ -230,7 +260,7 @@ describe('TasksService', () => {
       const result = await tasksService.findAll(mockUserId, {});
 
       expect(result).toEqual(cachedResult);
-      expect(mockTasksRepository.findAndCount).not.toHaveBeenCalled();
+      expect(mockTasksRepository.createQueryBuilder).not.toHaveBeenCalled();
     });
   });
 
@@ -243,6 +273,7 @@ describe('TasksService', () => {
       expect(result).toEqual(mockTask);
       expect(mockTasksRepository.findOne).toHaveBeenCalledWith({
         where: { id: mockTask.id, userId: mockUserId },
+        relations: ['tags'],
       });
     });
 

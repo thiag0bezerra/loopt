@@ -5,11 +5,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  ManyToMany,
   JoinColumn,
+  JoinTable,
   Index,
 } from 'typeorm';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
 import { User } from '../../users/entities/user.entity';
+import { Tag } from './tag.entity';
 
 /**
  * Entidade que representa uma tarefa no banco de dados
@@ -71,4 +74,13 @@ export class Task {
   /** Data de conclusão (preenchida quando status = COMPLETED) */
   @Column({ type: 'timestamp', nullable: true, name: 'completed_at' })
   completedAt: Date | null;
+
+  /** Relacionamento ManyToMany com tags */
+  @ManyToMany(() => Tag, (tag) => tag.tasks, { cascade: ['insert'] })
+  @JoinTable({
+    name: 'task_tags',
+    joinColumn: { name: 'task_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
+  })
+  tags: Tag[];
 }

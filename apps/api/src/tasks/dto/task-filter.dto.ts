@@ -6,6 +6,7 @@ import {
   Min,
   Max,
   IsIn,
+  IsUUID,
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -43,6 +44,15 @@ export class TaskFilterDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  /** Filtrar por tag */
+  @ApiPropertyOptional({
+    description: 'Filtrar por ID da tag',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @IsOptional()
+  @IsUUID('4', { message: 'tagId deve ser um UUID válido' })
+  tagId?: string;
 
   /** Número da página (default: 1) */
   @ApiPropertyOptional({
