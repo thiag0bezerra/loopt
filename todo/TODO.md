@@ -501,81 +501,81 @@ Implementar módulo de analytics com endpoints para métricas gerais, distribui�
 
 #### 6.1 Módulo Analytics
 
-- [ ] Criar diretório src/analytics
-- [ ] Criar AnalyticsModule em src/analytics/analytics.module.ts
-- [ ] Importar TypeOrmModule.forFeature([Task])
-- [ ] Importar CacheModule
+- [x] Criar diretório src/analytics
+- [x] Criar AnalyticsModule em src/analytics/analytics.module.ts
+- [x] Importar TypeOrmModule.forFeature([Task])
+- [x] Importar CacheModule
 
 #### 6.2 AnalyticsService
 
-- [ ] Criar AnalyticsService em src/analytics/analytics.service.ts
-- [ ] Injetar Repository<Task> e CacheService
+- [x] Criar AnalyticsService em src/analytics/analytics.service.ts
+- [x] Injetar Repository<Task> e CacheService
 
 #### 6.3 Endpoint Overview
 
-- [ ] Implementar getOverview(userId: string) retornando:
-  - [ ] totalTasks: número total de tarefas
-  - [ ] completedTasks: tarefas com status COMPLETED
-  - [ ] pendingTasks: tarefas com status PENDING
-  - [ ] inProgressTasks: tarefas com status IN_PROGRESS
-  - [ ] completionRate: (completedTasks / totalTasks) \* 100
-  - [ ] overdueTasks: tarefas com dueDate < hoje e status != COMPLETED
-  - [ ] dueSoon: tarefas com dueDate nos próximos 3 dias e status != COMPLETED
-- [ ] Aplicar cache com chave `analytics:${userId}:overview` e TTL 300
+- [x] Implementar getOverview(userId: string) retornando:
+  - [x] totalTasks: número total de tarefas
+  - [x] completedTasks: tarefas com status COMPLETED
+  - [x] pendingTasks: tarefas com status PENDING
+  - [x] inProgressTasks: tarefas com status IN_PROGRESS
+  - [x] completionRate: (completedTasks / totalTasks) \* 100
+  - [x] overdueTasks: tarefas com dueDate < hoje e status != COMPLETED
+  - [x] dueSoon: tarefas com dueDate nos próximos 3 dias e status != COMPLETED
+- [x] Aplicar cache com chave `analytics:${userId}:overview` e TTL 300
 
 #### 6.4 Endpoint By Status
 
-- [ ] Implementar getByStatus(userId: string) retornando array:
-  - [ ] { status: 'pending', count: number }
-  - [ ] { status: 'in_progress', count: number }
-  - [ ] { status: 'completed', count: number }
-- [ ] Usar GROUP BY status na query
-- [ ] Aplicar cache com chave `analytics:${userId}:by-status` e TTL 300
+- [x] Implementar getByStatus(userId: string) retornando array:
+  - [x] { status: 'pending', count: number }
+  - [x] { status: 'in_progress', count: number }
+  - [x] { status: 'completed', count: number }
+- [x] Usar GROUP BY status na query
+- [x] Aplicar cache com chave `analytics:${userId}:by-status` e TTL 300
 
 #### 6.5 Endpoint By Priority
 
-- [ ] Implementar getByPriority(userId: string) retornando array:
-  - [ ] { priority: 'low', count: number }
-  - [ ] { priority: 'medium', count: number }
-  - [ ] { priority: 'high', count: number }
-- [ ] Usar GROUP BY priority na query
-- [ ] Aplicar cache com chave `analytics:${userId}:by-priority` e TTL 300
+- [x] Implementar getByPriority(userId: string) retornando array:
+  - [x] { priority: 'low', count: number }
+  - [x] { priority: 'medium', count: number }
+  - [x] { priority: 'high', count: number }
+- [x] Usar GROUP BY priority na query
+- [x] Aplicar cache com chave `analytics:${userId}:by-priority` e TTL 300
 
 #### 6.6 Endpoint Completion Trend
 
-- [ ] Implementar getCompletionTrend(userId: string, days: number = 7) retornando array:
-  - [ ] { date: 'YYYY-MM-DD', completed: number, created: number }
-- [ ] Gerar array com últimos N dias
-- [ ] Contar tarefas criadas por dia (usando createdAt)
-- [ ] Contar tarefas completadas por dia (usando completedAt)
-- [ ] Aplicar cache com chave `analytics:${userId}:trend:${days}` e TTL 300
+- [x] Implementar getCompletionTrend(userId: string, days: number = 7) retornando array:
+  - [x] { date: 'YYYY-MM-DD', completed: number, created: number }
+- [x] Gerar array com últimos N dias
+- [x] Contar tarefas criadas por dia (usando createdAt)
+- [x] Contar tarefas completadas por dia (usando completedAt)
+- [x] Aplicar cache com chave `analytics:${userId}:trend:${days}` e TTL 300
 
 #### 6.7 Endpoint Productivity
 
-- [ ] Implementar getProductivity(userId: string) retornando:
-  - [ ] averageCompletionTime: média em horas de (completedAt - createdAt) para tarefas completadas
-  - [ ] tasksCompletedThisWeek: tarefas completadas na semana atual
-  - [ ] tasksCompletedLastWeek: tarefas completadas na semana anterior
-  - [ ] weekOverWeekChange: ((thisWeek - lastWeek) / lastWeek) \* 100
-  - [ ] streakDays: dias consecutivos (até hoje) com pelo menos 1 tarefa completada
-  - [ ] mostProductiveDay: dia da semana com mais tarefas completadas
-- [ ] Aplicar cache com chave `analytics:${userId}:productivity` e TTL 300
+- [x] Implementar getProductivity(userId: string) retornando:
+  - [x] averageCompletionTime: média em horas de (completedAt - createdAt) para tarefas completadas
+  - [x] tasksCompletedThisWeek: tarefas completadas na semana atual
+  - [x] tasksCompletedLastWeek: tarefas completadas na semana anterior
+  - [x] weekOverWeekChange: ((thisWeek - lastWeek) / lastWeek) \* 100
+  - [x] streakDays: dias consecutivos (até hoje) com pelo menos 1 tarefa completada
+  - [x] mostProductiveDay: dia da semana com mais tarefas completadas
+- [x] Aplicar cache com chave `analytics:${userId}:productivity` e TTL 300
 
 #### 6.8 AnalyticsController
 
-- [ ] Criar AnalyticsController em src/analytics/analytics.controller.ts
-- [ ] Aplicar @UseGuards(JwtAuthGuard)
-- [ ] Implementar GET /analytics/overview
-- [ ] Implementar GET /analytics/by-status
-- [ ] Implementar GET /analytics/by-priority
-- [ ] Implementar GET /analytics/completion-trend com query param days opcional
-- [ ] Implementar GET /analytics/productivity
-- [ ] Adicionar decorators Swagger
+- [x] Criar AnalyticsController em src/analytics/analytics.controller.ts
+- [x] Aplicar @UseGuards(JwtAuthGuard)
+- [x] Implementar GET /analytics/overview
+- [x] Implementar GET /analytics/by-status
+- [x] Implementar GET /analytics/by-priority
+- [x] Implementar GET /analytics/completion-trend com query param days opcional
+- [x] Implementar GET /analytics/productivity
+- [x] Adicionar decorators Swagger
 
 #### 6.9 Invalidação de Cache Analytics
 
-- [ ] No TasksService, adicionar invalidação das chaves de analytics:
-  - [ ] Invalidar `analytics:${userId}:*` em create, update e remove
+- [x] No TasksService, adicionar invalidação das chaves de analytics:
+  - [x] Invalidar `analytics:${userId}:*` em create, update e remove
 
 ### Resultado Esperado
 

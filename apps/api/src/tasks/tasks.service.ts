@@ -215,6 +215,9 @@ export class TasksService {
    * @param userId ID do usuário
    */
   private async invalidateUserCache(userId: string): Promise<void> {
-    await this.cacheService.delByPattern(`tasks:${userId}:*`);
+    await Promise.all([
+      this.cacheService.delByPattern(`tasks:${userId}:*`),
+      this.cacheService.delByPattern(`analytics:${userId}:*`),
+    ]);
   }
 }
