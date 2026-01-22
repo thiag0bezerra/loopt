@@ -63,7 +63,8 @@ export class TasksService {
 
     // Gera chave de cache e verifica se existe
     const cacheKey = this.cacheService.generateTasksCacheKey(userId, filters);
-    const cached = await this.cacheService.get<PaginatedResponse<Task>>(cacheKey);
+    const cached =
+      await this.cacheService.get<PaginatedResponse<Task>>(cacheKey);
 
     if (cached) {
       return cached;
