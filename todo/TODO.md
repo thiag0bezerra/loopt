@@ -27,12 +27,27 @@
 ### Frontend
 
 - **Framework:** Next.js 16 (App Router)
-- **Estilização:** TailwindCSS
+- **Component Library:** shadcn/ui (Radix UI + Tailwind)
+- **Estilização:** TailwindCSS 4 + CSS Variables (theming)
 - **Estado Global:** Zustand
 - **Data Fetching:** TanStack Query
 - **HTTP Client:** Axios
 - **Gráficos:** Recharts
 - **Testes:** Vitest + Testing Library
+
+### shadcn/ui - Arquitetura
+
+- **Filosofia:** Componentes copiados para o projeto (não é dependência npm)
+- **Localização:** `src/components/ui/` (componentes base do shadcn)
+- **Primitivos:** Radix UI para acessibilidade e comportamento
+- **Theming:** CSS Variables para light/dark mode
+- **Componentes planejados:**
+  - Button, Input, Label, Card, Badge
+  - Dialog, AlertDialog, Sheet (modais e drawers)
+  - Select, Checkbox, Form (formulários)
+  - Table, Pagination (listagem)
+  - Toast/Sonner (notificações)
+  - DropdownMenu, Skeleton, Separator
 
 ### Infraestrutura
 
@@ -209,6 +224,11 @@ Criar a aplicação NestJS com módulos de configuração, banco de dados, e sis
 - [x] Implementar AuthService.register(): validar email único, hashear senha com bcrypt, criar usuário
 - [x] Implementar AuthService.login(): validar credenciais, gerar JWT
 - [x] Implementar AuthService.validateUser(): buscar usuário e comparar senha
+- [ ] Implementar refresh token:
+  - [ ] Criar RefreshTokenDto
+  - [ ] Gerar refreshToken com expiração maior (7 dias)
+  - [ ] Implementar AuthService.refreshToken(): validar refresh token, gerar novo access token
+  - [ ] Implementar POST /auth/refresh no controller
 
 #### 2.7 JWT Strategy
 
@@ -333,6 +353,25 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 - [x] Teste: findAll aplica filtros corretamente
 - [x] Teste: update atualiza campos e preenche completedAt quando status = COMPLETED
 - [x] Teste: remove deleta tarefa existente
+
+#### 3.6 Entity Tag (Categorias)
+
+- [ ] Criar entity Tag em src/tasks/entities/tag.entity.ts:
+  - [ ] id: UUID (PK)
+  - [ ] name: string (not null, max 50)
+  - [ ] color: string (hex color, default #6366f1)
+  - [ ] userId: UUID (FK -> User)
+  - [ ] Relacionamento ManyToMany com Task
+- [ ] Criar migration para Tag e tabela de junção task_tags
+- [ ] Criar CreateTagDto e UpdateTagDto
+- [ ] Implementar CRUD de tags no TasksService ou TagsService separado:
+  - [ ] POST /tags: criar tag do usuário
+  - [ ] GET /tags: listar tags do usuário
+  - [ ] PATCH /tags/:id: atualizar tag
+  - [ ] DELETE /tags/:id: deletar tag
+- [ ] Atualizar CreateTaskDto e UpdateTaskDto para incluir tagIds: string[]
+- [ ] Atualizar TasksService para associar tags às tarefas
+- [ ] Atualizar TaskFilterDto para incluir filtro por tagId
 
 ### Resultado Esperado
 
@@ -594,6 +633,52 @@ Frontend terá endpoints ricos para construir o dashboard. Todos os dados estar�
 
 ---
 
+## CICLO 6.5: Backend - Websockets para Atualizações em Tempo Real
+
+### Situação
+
+Para melhorar a experiência do usuário, mudanças em tarefas devem ser refletidas em tempo real sem necessidade de refresh manual.
+
+### Task
+
+Implementar Websockets com Socket.IO para notificar clientes sobre mudanças em tarefas.
+
+### Ações
+
+#### 6.5.1 Configuração Websockets no Backend
+
+- [ ] Instalar dependências: `pnpm add @nestjs/websockets @nestjs/platform-socket.io socket.io`
+- [ ] Criar TasksGateway em src/tasks/tasks.gateway.ts
+- [ ] Configurar WebSocketGateway com namespace /tasks
+- [ ] Implementar autenticação JWT no handshake do socket
+- [ ] Criar room por userId para isolar eventos
+
+#### 6.5.2 Eventos de Websocket
+
+- [ ] Emitir evento 'task:created' ao criar tarefa
+- [ ] Emitir evento 'task:updated' ao atualizar tarefa
+- [ ] Emitir evento 'task:deleted' ao deletar tarefa
+- [ ] Payload dos eventos: { task, action }
+
+#### 6.5.3 Integração no TasksService
+
+- [ ] Injetar TasksGateway no TasksService
+- [ ] Chamar gateway.emitToUser(userId, event, payload) em create, update, remove
+
+### Resultado Esperado
+
+Clientes conectados via Websocket recebem atualizações em tempo real quando tarefas são modificadas.
+
+### Checklist de Validação
+
+- [ ] Conexão websocket estabelecida com autenticação
+- [ ] Criar tarefa emite evento para cliente
+- [ ] Atualizar tarefa emite evento para cliente
+- [ ] Deletar tarefa emite evento para cliente
+- [ ] Eventos são isolados por usuário
+
+---
+
 ## CICLO 7: Frontend - Estrutura Base e Autenticação
 
 ### Situação
@@ -615,24 +700,56 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Instalar dependências HTTP: `pnpm add axios`
 - [ ] Instalar dependências de formulário: `pnpm add react-hook-form @hookform/resolvers zod`
 - [ ] Instalar dependências de gráficos: `pnpm add recharts`
-- [ ] Instalar dependências de ícones: `pnpm add lucide-react`
 - [ ] Configurar path aliases no tsconfig.json
 
-#### 7.2 Configuração de API Client
+#### 7.2 Configuração shadcn/ui
+
+- [ ] Inicializar shadcn: `pnpm dlx shadcn@latest init`
+  - [ ] Style: Default
+  - [ ] Base color: Slate (ou preferência)
+  - [ ] CSS variables: Yes (obrigatório para theming)
+  - [ ] Tailwind config: tailwind.config.ts
+  - [ ] Components path: src/components/ui
+  - [ ] Utils path: src/lib/utils
+- [ ] Instalar componentes base: `pnpm dlx shadcn@latest add button input label card badge`
+- [ ] Instalar componentes de formulário: `pnpm dlx shadcn@latest add form select checkbox`
+- [ ] Instalar componentes de modal: `pnpm dlx shadcn@latest add dialog alert-dialog sheet`
+- [ ] Instalar componentes de feedback: `pnpm dlx shadcn@latest add toast sonner skeleton`
+- [ ] Instalar componentes de navegação: `pnpm dlx shadcn@latest add dropdown-menu separator`
+- [ ] Instalar componentes de tabela: `pnpm dlx shadcn@latest add table pagination`
+- [ ] Verificar que lucide-react foi instalado como dependência do shadcn
+- [ ] Configurar globals.css com CSS variables do shadcn (light e dark themes)
+
+#### 7.3 Configuração Storybook
+
+- [ ] Instalar Storybook: `pnpm dlx storybook@latest init`
+- [ ] Configurar para Next.js e TailwindCSS
+- [ ] Criar src/stories/ para organização
+- [ ] Configurar .storybook/preview.ts para carregar globals.css e CSS variables do shadcn
+- [ ] Configurar dark mode toggle no Storybook (addon-themes ou backgrounds)
+- [ ] Criar stories para componentes base instalados:
+  - [ ] Button.stories.tsx (variants: default, destructive, outline, secondary, ghost, link)
+  - [ ] Input.stories.tsx (states: default, disabled, with error)
+  - [ ] Card.stories.tsx (composição: CardHeader, CardContent, CardFooter)
+  - [ ] Badge.stories.tsx (variants: default, secondary, destructive, outline)
+- [ ] Adicionar script no package.json: `"storybook": "storybook dev -p 6006"`
+
+#### 7.4 Configuração de API Client
 
 - [ ] Criar src/lib/api.ts
 - [ ] Criar instância Axios com baseURL do NEXT_PUBLIC_API_URL
 - [ ] Criar interceptor de request para adicionar token do localStorage
 - [ ] Criar interceptor de response para tratar 401 (limpar auth e redirecionar para /login)
 
-#### 7.3 Providers
+#### 7.5 Providers
 
 - [ ] Criar src/providers/query-provider.tsx com QueryClientProvider
 - [ ] Configurar defaultOptions: queries (staleTime: 5 minutos, retry: 1)
+- [ ] Criar src/providers/toast-provider.tsx para Sonner/Toast do shadcn
 - [ ] Criar src/app/providers.tsx combinando providers
 - [ ] Envolver children em layout.tsx com providers
 
-#### 7.4 Store de Autenticação (Zustand)
+#### 7.6 Store de Autenticação (Zustand)
 
 - [ ] Criar src/stores/auth.store.ts
 - [ ] Definir interface AuthState: user, token, isAuthenticated, setAuth, logout, hydrate
@@ -641,55 +758,54 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [ ] Implementar hydrate: carregar token do localStorage e buscar usuário da API
 - [ ] Usar persist middleware do Zustand para token
 
-#### 7.5 Hooks de Autenticação
+#### 7.7 Hooks de Autenticação
 
 - [ ] Criar src/hooks/use-auth.ts
-- [ ] Implementar useLogin: mutation que chama POST /auth/login, onSuccess chama setAuth
+- [ ] Implementar useLogin: mutation que chama POST /auth/login, onSuccess chama setAuth (salva accessToken e refreshToken)
 - [ ] Implementar useRegister: mutation que chama POST /auth/register, onSuccess chama setAuth
 - [ ] Implementar useCurrentUser: query que chama GET /auth/me, enabled quando tem token
+- [ ] Implementar useRefreshToken: mutation que chama POST /auth/refresh com refreshToken
 
-#### 7.6 Componentes de UI Base
-
-- [ ] Criar src/components/ui/button.tsx
-- [ ] Criar src/components/ui/input.tsx
-- [ ] Criar src/components/ui/label.tsx
-- [ ] Criar src/components/ui/card.tsx
-- [ ] Criar src/components/ui/alert.tsx para mensagens de erro
-
-#### 7.7 Página de Login
+#### 7.8 Página de Login (usando shadcn/ui)
 
 - [ ] Criar src/app/(auth)/login/page.tsx
-- [ ] Criar formulário com react-hook-form e validação zod
+- [ ] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
+- [ ] Usar shadcn Form com react-hook-form e validação zod
+- [ ] Usar shadcn Input e Label para campos
 - [ ] Campos: email (required, email), password (required, min 6)
-- [ ] Botão de submit com loading state (disabled + spinner)
-- [ ] Exibir mensagens de erro da API
+- [ ] Usar shadcn Button com loading state (disabled + ícone Loader2)
+- [ ] Exibir mensagens de erro usando FormMessage do shadcn
 - [ ] Link para página de registro
-- [ ] onSuccess: redirecionar para /tasks
+- [ ] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
 
-#### 7.8 Página de Registro
+#### 7.9 Página de Registro (usando shadcn/ui)
 
 - [ ] Criar src/app/(auth)/register/page.tsx
-- [ ] Criar formulário com react-hook-form e validação zod
+- [ ] Usar componentes shadcn: Card, CardHeader, CardContent, CardFooter
+- [ ] Usar shadcn Form com react-hook-form e validação zod
+- [ ] Usar shadcn Input e Label para campos
 - [ ] Campos: name (required), email (required, email), password (required, min 6), confirmPassword (deve ser igual a password)
-- [ ] Botão de submit com loading state
-- [ ] Exibir mensagens de erro da API
+- [ ] Usar shadcn Button com loading state
+- [ ] Exibir mensagens de erro usando FormMessage do shadcn
 - [ ] Link para página de login
-- [ ] onSuccess: redirecionar para /tasks
+- [ ] onSuccess: redirecionar para /tasks, mostrar toast de sucesso
 
-#### 7.9 Layout de Auth
+#### 7.10 Layout de Auth
 
 - [ ] Criar src/app/(auth)/layout.tsx
-- [ ] Layout centralizado e minimalista
-- [ ] Logo/título do app
+- [ ] Layout centralizado e minimalista (flex center)
+- [ ] Logo/título do app com ícone lucide-react
+- [ ] Background com cores CSS variables (funciona em dark mode)
 - [ ] Redirecionar para /tasks se já autenticado
 
-#### 7.10 Proteção de Rotas
+#### 7.11 Proteção de Rotas
 
 - [ ] Criar src/components/auth/protected-route.tsx
 - [ ] Verificar isAuthenticated do store
 - [ ] Se não autenticado, redirecionar para /login
-- [ ] Mostrar loading enquanto hidrata estado
+- [ ] Mostrar loading com shadcn Skeleton enquanto hidrata estado
 - [ ] Criar src/app/(protected)/layout.tsx usando ProtectedRoute
+- [ ] Integrar refresh token no interceptor do Axios (renovar token automaticamente ao receber 401)
 
 ### Resultado Esperado
 
@@ -729,78 +845,141 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [ ] Implementar useCreateTask: mutation POST /tasks, invalidate useTasks
 - [ ] Implementar useUpdateTask: mutation PATCH /tasks/:id, invalidate useTasks e useTask
 - [ ] Implementar useDeleteTask: mutation DELETE /tasks/:id, invalidate useTasks
+- [ ] Implementar useTasksWebsocket: conectar ao socket e invalidar queries ao receber eventos
+  - [ ] Instalar dependência: `pnpm add socket.io-client`
+  - [ ] Conectar ao namespace /tasks com token JWT
+  - [ ] Ouvir eventos task:created, task:updated, task:deleted
+  - [ ] Invalidar queryClient.invalidateQueries(['tasks']) ao receber eventos
 
-#### 8.2 Componentes de Tarefa
+#### 8.2 Componentes de Tarefa (usando shadcn/ui)
 
 - [ ] Criar src/components/tasks/task-card.tsx:
+  - [ ] Usar shadcn Card, CardHeader, CardContent, CardFooter
   - [ ] Exibir título (truncado se muito longo)
   - [ ] Exibir descrição (truncada)
-  - [ ] Badge de status com cores (pending: amarelo, in_progress: azul, completed: verde)
-  - [ ] Badge de prioridade com cores (low: cinza, medium: amarelo, high: vermelho)
-  - [ ] Data de vencimento formatada (vermelho se overdue)
-  - [ ] Checkbox para marcar como concluída
-  - [ ] Botão de menu com opções: Editar, Excluir
+  - [ ] Usar shadcn Badge para status com variants (pending: secondary, in_progress: default, completed: success)
+  - [ ] Usar shadcn Badge para prioridade com variants (low: outline, medium: secondary, high: destructive)
+  - [ ] Data de vencimento formatada (texto destructive se overdue)
+  - [ ] Usar shadcn Checkbox para marcar como concluída
+  - [ ] Usar shadcn DropdownMenu para opções: Editar, Excluir
+  - [ ] Criar src/stories/TaskCard.stories.tsx (estados: default, overdue, completed, high priority)
 - [ ] Criar src/components/tasks/task-list.tsx:
   - [ ] Receber array de tasks
   - [ ] Mapear TaskCard para cada task
-  - [ ] Loading skeleton enquanto carrega
-  - [ ] Empty state quando não há tarefas
+  - [ ] Usar shadcn Skeleton para loading state
+  - [ ] Empty state com ícone lucide-react quando não há tarefas
+  - [ ] Criar src/stories/TaskList.stories.tsx (estados: loading, empty, with tasks)
 - [ ] Criar src/components/tasks/task-filters.tsx:
-  - [ ] Select para filtrar por status (Todos, Pendente, Em Progresso, Concluída)
-  - [ ] Select para filtrar por prioridade (Todas, Baixa, Média, Alta)
-  - [ ] Input de busca com debounce de 300ms
-  - [ ] Select para ordenação (Data de criação, Data de vencimento, Prioridade)
-  - [ ] Botão para toggle ordem (ASC/DESC)
+  - [ ] Usar shadcn Select para filtrar por status (Todos, Pendente, Em Progresso, Concluída)
+  - [ ] Usar shadcn Select para filtrar por prioridade (Todas, Baixa, Média, Alta)
+  - [ ] Usar shadcn Input para busca com debounce de 300ms
+  - [ ] Usar shadcn Select para ordenação (Data de criação, Data de vencimento, Prioridade)
+  - [ ] Usar shadcn Button com ícone para toggle ordem (ASC/DESC)
+  - [ ] Usar shadcn Select para filtrar por tag (se implementado)
+  - [ ] Criar src/stories/TaskFilters.stories.tsx
 - [ ] Criar src/components/tasks/pagination.tsx:
+  - [ ] Usar shadcn Pagination, PaginationContent, PaginationItem
   - [ ] Exibir página atual e total de páginas
-  - [ ] Botões Previous/Next
+  - [ ] Usar PaginationPrevious e PaginationNext
   - [ ] Desabilitar Previous na primeira página
   - [ ] Desabilitar Next na última página
+  - [ ] Criar src/stories/Pagination.stories.tsx
 
-#### 8.3 Formulário de Tarefa
+#### 8.3 Formulário de Tarefa (usando shadcn/ui)
 
 - [ ] Criar src/components/tasks/task-form.tsx:
-  - [ ] Campos: title, description, status, priority, dueDate
-  - [ ] Validação com zod
+  - [ ] Usar shadcn Form com react-hook-form
+  - [ ] Usar shadcn Input para title e description (Textarea)
+  - [ ] Usar shadcn Select para status e priority
+  - [ ] Usar shadcn DatePicker (Popover + Calendar) para dueDate
+  - [ ] Instalar shadcn calendar se necessário: `pnpm dlx shadcn@latest add calendar popover`
+  - [ ] Usar multi-select ou combobox para tags (shadcn Combobox ou custom)
+  - [ ] Validação com zod via FormField
   - [ ] Receber initialData opcional para modo edição
   - [ ] Callback onSubmit
-  - [ ] Loading state no botão
+  - [ ] Usar shadcn Button com loading state
+  - [ ] Criar src/stories/TaskForm.stories.tsx
 
-#### 8.4 Modais
+#### 8.3.1 Gerenciamento de Tags
+
+- [ ] Criar src/hooks/use-tags.ts:
+  - [ ] Implementar useTags(): query GET /tags
+  - [ ] Implementar useCreateTag: mutation POST /tags
+  - [ ] Implementar useDeleteTag: mutation DELETE /tags/:id
+- [ ] Criar src/components/tasks/tag-badge.tsx:
+  - [ ] Usar shadcn Badge com cor dinâmica baseada na tag.color
+  - [ ] Criar src/stories/TagBadge.stories.tsx
+- [ ] Criar src/components/tasks/tag-manager.tsx:
+  - [ ] Modal para criar/editar/deletar tags do usuário
+  - [ ] Color picker para cor da tag
+  - [ ] Criar src/stories/TagManager.stories.tsx
+
+#### 8.4 Modais (usando shadcn/ui)
 
 - [ ] Criar src/components/tasks/create-task-modal.tsx:
-  - [ ] Modal com TaskForm
+  - [ ] Usar shadcn Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
+  - [ ] Incluir TaskForm no DialogContent
   - [ ] onSubmit chama useCreateTask
-  - [ ] Fecha modal e mostra toast de sucesso
+  - [ ] Fecha modal e mostra toast de sucesso (Sonner)
 - [ ] Criar src/components/tasks/edit-task-modal.tsx:
+  - [ ] Usar shadcn Dialog
   - [ ] Receber taskId
   - [ ] Buscar dados da tarefa com useTask
+  - [ ] Usar shadcn Skeleton enquanto carrega
   - [ ] Modal com TaskForm preenchido
   - [ ] onSubmit chama useUpdateTask
 - [ ] Criar src/components/tasks/delete-confirm-modal.tsx:
-  - [ ] Receber taskId e taskTitle
-  - [ ] Mensagem de confirmação
-  - [ ] Botões Cancelar e Confirmar
+  - [ ] Usar shadcn AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter
+  - [ ] AlertDialogTitle e AlertDialogDescription com mensagem de confirmação
+  - [ ] AlertDialogCancel e AlertDialogAction para botões
   - [ ] onConfirm chama useDeleteTask
 
-#### 8.5 Toast/Notificações
+#### 8.5 Toast/Notificações (usando shadcn Sonner)
 
-- [ ] Criar src/components/ui/toast.tsx ou usar solução simples
-- [ ] Criar hook useToast para exibir mensagens de sucesso/erro
-- [ ] Integrar nos modais e operações
+- [ ] shadcn Sonner já instalado no Ciclo 7.2
+- [ ] Toaster já configurado no providers (Ciclo 7.4)
+- [ ] Usar `toast.success()`, `toast.error()` do sonner para feedback
+- [ ] Integrar nos modais e operações CRUD
 
 #### 8.6 Página de Tarefas
 
 - [ ] Criar src/app/(protected)/tasks/page.tsx
-- [ ] Header com título "Minhas Tarefas" e botão "Nova Tarefa"
+- [ ] Header com título "Minhas Tarefas" e shadcn Button "Nova Tarefa" com ícone Plus
 - [ ] TaskFilters abaixo do header
 - [ ] TaskList no conteúdo principal
 - [ ] Pagination no footer
+- [ ] Usar shadcn Separator para dividir seções
 - [ ] Gerenciar estado local de filtros (useState)
 - [ ] Passar filtros para useTasks
 - [ ] Modais controlados por estado (createOpen, editOpen, deleteOpen, selectedTaskId)
 
-#### 8.7 Interações
+#### 8.7 Drag & Drop para Reordenação
+
+- [ ] Instalar dependência: `pnpm add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`
+- [ ] Criar src/components/tasks/task-board.tsx (visão Kanban opcional):
+  - [ ] Colunas por status: Pendente, Em Progresso, Concluída
+  - [ ] Usar DndContext e SortableContext do @dnd-kit
+  - [ ] Permitir arrastar tarefas entre colunas (atualiza status)
+  - [ ] Permitir reordenar tarefas dentro da coluna
+- [ ] Adicionar campo `order` na entity Task para persistir ordenação
+- [ ] Implementar PATCH /tasks/reorder no backend para atualizar ordem em batch
+- [ ] Criar src/stories/TaskBoard.stories.tsx
+
+#### 8.8 Export de Dados
+
+- [ ] Criar src/components/tasks/export-button.tsx:
+  - [ ] Usar shadcn DropdownMenu com opções: CSV, PDF
+  - [ ] Ícone Download do lucide-react
+- [ ] Implementar exportação CSV:
+  - [ ] Gerar CSV client-side com dados das tarefas filtradas
+  - [ ] Download automático do arquivo
+- [ ] Implementar exportação PDF:
+  - [ ] Instalar dependência: `pnpm add jspdf jspdf-autotable`
+  - [ ] Gerar PDF com tabela de tarefas
+  - [ ] Incluir filtros aplicados no cabeçalho
+- [ ] Criar src/stories/ExportButton.stories.tsx
+
+#### 8.9 Interações
 
 - [ ] Click em "Nova Tarefa" abre CreateTaskModal
 - [ ] Click em "Editar" no TaskCard abre EditTaskModal
@@ -808,6 +987,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [ ] Click no checkbox do TaskCard chama useUpdateTask com status: COMPLETED
 - [ ] Alterar filtros atualiza lista
 - [ ] Alterar página atualiza lista
+- [ ] Drag & Drop atualiza status/ordem da tarefa
 
 ### Resultado Esperado
 
@@ -852,36 +1032,46 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
 - [ ] Implementar useCompletionTrend: query GET /analytics/completion-trend
 - [ ] Implementar useProductivityMetrics: query GET /analytics/productivity
 
-#### 9.2 Componentes de Dashboard
+#### 9.2 Componentes de Dashboard (usando shadcn/ui)
 
 - [ ] Criar src/components/dashboard/kpi-card.tsx:
+  - [ ] Usar shadcn Card, CardHeader, CardTitle, CardContent
   - [ ] Props: title, value, icon, description opcional, trend opcional (up/down)
-  - [ ] Ícone à esquerda
-  - [ ] Valor grande e destacado
-  - [ ] Título menor abaixo
-  - [ ] Indicador de trend com cor (verde up, vermelho down)
+  - [ ] Ícone lucide-react à esquerda no CardHeader
+  - [ ] Valor grande e destacado no CardContent
+  - [ ] Título menor usando CardTitle ou CardDescription
+  - [ ] Indicador de trend com cor (text-green-500 up, text-red-500 down) e ícones TrendingUp/TrendingDown
+  - [ ] Criar src/stories/KPICard.stories.tsx (variants: up trend, down trend, neutral)
 - [ ] Criar src/components/dashboard/chart-card.tsx:
+  - [ ] Usar shadcn Card, CardHeader, CardTitle, CardContent
   - [ ] Props: title, children
-  - [ ] Card com título e área para gráfico
+  - [ ] Card com título no header e área para gráfico no content
+  - [ ] Criar src/stories/ChartCard.stories.tsx
 
-#### 9.3 Gráficos (Recharts)
+#### 9.3 Gráficos Interativos (Recharts)
 
 - [ ] Criar src/components/dashboard/status-pie-chart.tsx:
   - [ ] PieChart com dados de by-status
   - [ ] Cores distintas por status
-  - [ ] Tooltip com valor e percentual
-  - [ ] Legend clicável
+  - [ ] Tooltip customizado com valor e percentual
+  - [ ] Legend clicável (drill-down: filtrar tarefas por status ao clicar)
+  - [ ] Animação de entrada (animationDuration, animationEasing)
+  - [ ] Criar src/stories/StatusPieChart.stories.tsx
 - [ ] Criar src/components/dashboard/priority-bar-chart.tsx:
   - [ ] BarChart com dados de by-priority
   - [ ] Cores distintas por prioridade
-  - [ ] Tooltip com valor
+  - [ ] Tooltip customizado com valor
   - [ ] Labels nos eixos
+  - [ ] Click em barra para drill-down (filtrar tarefas por prioridade)
+  - [ ] Criar src/stories/PriorityBarChart.stories.tsx
 - [ ] Criar src/components/dashboard/completion-trend-chart.tsx:
-  - [ ] LineChart ou AreaChart com dados de completion-trend
-  - [ ] Duas linhas: created e completed
+  - [ ] AreaChart com dados de completion-trend
+  - [ ] Duas áreas: created e completed
   - [ ] Eixo X com datas formatadas
-  - [ ] Tooltip com valores
+  - [ ] Tooltip customizado com valores
   - [ ] Legend
+  - [ ] Brush component para zoom/scroll em período
+  - [ ] Criar src/stories/CompletionTrendChart.stories.tsx
 
 #### 9.4 Insights de Produtividade
 
@@ -906,8 +1096,8 @@ Implementar o dashboard com cards de KPIs, gráficos de distribuição e gráfic
   - [ ] Distribuição por Prioridade (BarChart)
   - [ ] Tendência de Conclusão (LineChart)
 - [ ] Seção de Insights
-- [ ] Loading skeletons para cada seção
-- [ ] Empty state se não há dados suficientes
+- [ ] Usar shadcn Skeleton para loading states em cada seção
+- [ ] Empty state com shadcn Card e ícone lucide-react se não há dados suficientes
 
 ### Resultado Esperado
 
@@ -937,22 +1127,24 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
 
 ### Ações
 
-#### 10.1 Sidebar
+#### 10.1 Sidebar (usando shadcn/ui)
 
 - [ ] Criar src/components/layout/sidebar.tsx:
-  - [ ] Logo/nome do app no topo
-  - [ ] Link para /tasks com ícone (ex: CheckSquare)
-  - [ ] Link para /dashboard com ícone (ex: BarChart2)
-  - [ ] Destacar link ativo (usar usePathname)
-  - [ ] Divider
+  - [ ] Logo/nome do app no topo com ícone lucide-react
+  - [ ] Usar shadcn Button variant="ghost" para links de navegação
+  - [ ] Link para /tasks com ícone CheckSquare
+  - [ ] Link para /dashboard com ícone BarChart2
+  - [ ] Destacar link ativo (usePathname + variant="secondary")
+  - [ ] Usar shadcn Separator como divider
   - [ ] Seção do usuário: nome e email do user logado
-  - [ ] Botão de logout
+  - [ ] Usar shadcn Button variant="outline" para logout
 - [ ] Criar src/components/layout/mobile-nav.tsx:
-  - [ ] Hamburger menu para mobile
-  - [ ] Drawer/Sheet com mesmos links da sidebar
+  - [ ] Usar shadcn Sheet, SheetTrigger, SheetContent para drawer mobile
+  - [ ] Usar shadcn Button com ícone Menu para hamburger
+  - [ ] Mesmos links da sidebar dentro do SheetContent
 - [ ] Criar src/components/layout/header.tsx:
-  - [ ] Exibir apenas em mobile
-  - [ ] Logo e hamburger menu
+  - [ ] Exibir apenas em mobile (hidden md:hidden)
+  - [ ] Logo e MobileNav (hamburger menu)
 
 #### 10.2 Layout Protegido
 
@@ -962,30 +1154,59 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
   - [ ] Header mobile com menu
   - [ ] Responsivo: sidebar escondida em mobile
 
-#### 10.3 Dark Mode
+#### 10.3 Dark Mode (integrado com shadcn/ui)
 
-- [ ] Configurar TailwindCSS para dark mode (class-based) em tailwind.config.ts
-- [ ] Criar src/stores/theme.store.ts:
-  - [ ] theme: 'light' | 'dark' | 'system'
-  - [ ] setTheme(theme)
-  - [ ] Persistir no localStorage
+- [ ] shadcn já usa CSS variables, dark mode suportado nativamente
+- [ ] Instalar next-themes: `pnpm add next-themes`
+- [ ] Criar src/providers/theme-provider.tsx usando ThemeProvider do next-themes:
+  - [ ] Configurar attribute="class" e defaultTheme="system"
+  - [ ] Envolver app com ThemeProvider
 - [ ] Criar src/components/layout/theme-toggle.tsx:
-  - [ ] Botão para alternar entre light/dark
-  - [ ] Ícone de sol/lua
+  - [ ] Usar shadcn Button variant="ghost" para toggle
+  - [ ] Usar shadcn DropdownMenu para opções: Light, Dark, System
+  - [ ] Ícones: Sun, Moon, Laptop do lucide-react
+  - [ ] Usar useTheme() do next-themes para setTheme
 - [ ] Adicionar ThemeToggle na sidebar
-- [ ] Criar src/providers/theme-provider.tsx:
-  - [ ] Aplicar classe 'dark' no document.documentElement
-  - [ ] Respeitar preferência do sistema se 'system'
-- [ ] Aplicar classes dark: em todos os componentes existentes
+- [ ] CSS variables do shadcn já definem cores para :root e .dark
+- [ ] Não precisa adicionar classes dark: manualmente - shadcn components já suportam
 
-#### 10.4 Refinamentos Visuais
+#### 10.4 Notificações In-App
 
-- [ ] Adicionar transições em hover de botões e cards
-- [ ] Adicionar animação de fade em modais
-- [ ] Adicionar focus-visible para acessibilidade
-- [ ] Revisar contraste de cores em ambos os temas
+- [ ] Criar src/components/layout/notifications-dropdown.tsx:
+  - [ ] Usar shadcn DropdownMenu com ícone Bell do lucide-react
+  - [ ] Badge com contador de não lidas
+  - [ ] Lista de notificações recentes (tarefas próximas do vencimento, tarefas atrasadas)
+  - [ ] Marcar como lida ao clicar
+  - [ ] Link para a tarefa relacionada
+- [ ] Criar src/stores/notifications.store.ts (Zustand):
+  - [ ] Estado: notifications[], unreadCount
+  - [ ] Actions: addNotification, markAsRead, markAllAsRead
+- [ ] Integrar com dados de analytics (dueSoon, overdueTasks)
+- [ ] Criar src/stories/NotificationsDropdown.stories.tsx
 
-#### 10.5 Responsividade
+#### 10.5 Animações e Transições
+
+- [ ] shadcn components já possuem transições em hover
+- [ ] shadcn Dialog/AlertDialog já possuem animações de fade/scale
+- [ ] Adicionar animações de entrada nas listas:
+  - [ ] Usar CSS transitions ou framer-motion para stagger em TaskList
+  - [ ] Animação de slide-in para novos itens
+- [ ] Adicionar animações nos KPI cards:
+  - [ ] Contador animado para valores numéricos
+- [ ] Adicionar animações de feedback:
+  - [ ] Shake animation em erros de formulário
+  - [ ] Pulse animation em botões de ação
+
+#### 10.6 Refinamentos Visuais e Acessibilidade
+
+- [ ] shadcn components já possuem focus-visible para acessibilidade (Radix UI)
+- [ ] Revisar contraste de cores em ambos os temas usando CSS variables
+- [ ] Customizar tailwind.config.ts se necessário ajustar cores do tema
+- [ ] Garantir ARIA labels em todos os ícones interativos
+- [ ] Testar navegação por teclado em todas as páginas
+- [ ] Verificar screen reader compatibility
+
+#### 10.7 Responsividade
 
 - [ ] Testar todas as páginas em mobile (375px)
 - [ ] Testar todas as páginas em tablet (768px)
@@ -1043,12 +1264,12 @@ Implementar testes unitários no backend e testes de componentes no frontend.
 - [ ] Criar src/test/setup.ts com configuração do testing-library
 - [ ] Ajustar scripts no package.json: test, test:cov
 
-#### 11.4 Testes Frontend
+#### 11.4 Testes Frontend (componentes shadcn/ui)
 
-- [ ] Teste 1: TaskCard renderiza título e badges corretamente
-- [ ] Teste 2: TaskFilters chama callback ao alterar filtro
-- [ ] Teste 3: LoginForm exibe erro de validação para campos vazios
-- [ ] Teste 4: KPICard renderiza valor e título (extra)
+- [ ] Teste 1: TaskCard renderiza título e shadcn Badges corretamente
+- [ ] Teste 2: TaskFilters chama callback ao alterar shadcn Select
+- [ ] Teste 3: LoginForm exibe erro de validação para campos vazios (shadcn Form)
+- [ ] Teste 4: KPICard renderiza valor e título no shadcn Card (extra)
 
 #### 11.5 GitHub Actions CI
 
@@ -1071,6 +1292,72 @@ Projeto com cobertura de testes adequada (mínimo 5 backend, 3 frontend). GitHub
 - [ ] CI executa em push para main
 - [ ] CI executa em pull requests
 - [ ] Falha em lint ou teste quebra o CI
+
+---
+
+## CICLO 11.5: Deploy
+
+### Situação
+
+O projeto está testado e pronto para deploy. Será disponibilizado em ambiente de produção.
+
+### Task
+
+Configurar deploy do frontend no Vercel e backend no Railway ou Render.
+
+### Ações
+
+#### 11.5.1 Preparação para Deploy
+
+- [ ] Revisar variáveis de ambiente de produção
+- [ ] Configurar CORS no backend para domínio do frontend
+- [ ] Verificar que docker-compose.prod.yml está correto
+- [ ] Criar Dockerfile para api se necessário
+- [ ] Criar Dockerfile para worker se necessário
+
+#### 11.5.2 Deploy Backend (Railway ou Render)
+
+- [ ] Criar conta no Railway ou Render
+- [ ] Criar serviço PostgreSQL
+- [ ] Criar serviço Redis
+- [ ] Criar serviço RabbitMQ (ou usar CloudAMQP)
+- [ ] Deploy da API:
+  - [ ] Conectar repositório GitHub
+  - [ ] Configurar variáveis de ambiente
+  - [ ] Configurar comando de build e start
+  - [ ] Executar migrations em produção
+- [ ] Deploy do Worker:
+  - [ ] Configurar como serviço separado
+  - [ ] Configurar variáveis de ambiente
+
+#### 11.5.3 Deploy Frontend (Vercel)
+
+- [ ] Criar conta no Vercel
+- [ ] Conectar repositório GitHub
+- [ ] Configurar root directory: apps/web
+- [ ] Configurar variáveis de ambiente:
+  - [ ] NEXT_PUBLIC_API_URL apontando para backend em produção
+- [ ] Verificar build e deploy automático
+
+#### 11.5.4 Validação de Produção
+
+- [ ] Testar registro e login em produção
+- [ ] Testar CRUD de tarefas em produção
+- [ ] Testar dashboard em produção
+- [ ] Verificar logs de erro
+- [ ] Verificar performance
+
+### Resultado Esperado
+
+Aplicação disponível publicamente com frontend no Vercel e backend no Railway/Render.
+
+### Checklist de Validação
+
+- [ ] Frontend acessível via URL do Vercel
+- [ ] API acessível via URL do Railway/Render
+- [ ] Swagger acessível em produção
+- [ ] Todas as funcionalidades operacionais
+- [ ] Websockets funcionando em produção
 
 ---
 
@@ -1159,17 +1446,34 @@ Projeto pronto para entrega. README.md permite que avaliadores executem o projet
 
 ## 📊 Resumo de Diferenciais Implementados
 
-| Diferencial                            | Ciclo | Status |
-| -------------------------------------- | ----- | ------ |
-| Monorepo bem estruturado (Turborepo)   | 1     | ⬜     |
-| Worker separado (RabbitMQ)             | 5     | ⬜     |
-| Código compartilhado (packages/shared) | 1     | ⬜     |
-| Migrations commitadas                  | 2, 3  | ⬜     |
-| Docker Compose production-ready        | 1     | ⬜     |
-| GitHub Actions CI                      | 11    | ⬜     |
-| Busca de tarefas                       | 3     | ⬜     |
-| Dark mode                              | 10    | ⬜     |
-| Gráficos interativos                   | 9     | ⬜     |
+| Diferencial                            | Ciclo  | Status |
+| -------------------------------------- | ------ | ------ |
+| **Arquitetura & Organização**          |        |        |
+| Monorepo bem estruturado (Turborepo)   | 1      | ⬜     |
+| Worker separado (RabbitMQ)             | 5      | ⬜     |
+| Código compartilhado (packages/shared) | 1      | ⬜     |
+| Migrations commitadas                  | 2, 3   | ⬜     |
+| **DevOps & Qualidade**                 |        |        |
+| Docker Compose production-ready        | 1      | ⬜     |
+| GitHub Actions CI                      | 11     | ⬜     |
+| Deploy funcionando (Vercel + Railway)  | 11.5   | ⬜     |
+| Cobertura de testes alta               | 11     | ⬜     |
+| **Features**                           |        |        |
+| Busca de tarefas                       | 3      | ⬜     |
+| Filtros avançados e combinados         | 3, 8   | ⬜     |
+| Drag & Drop (reordenação)              | 8      | ⬜     |
+| Dark mode (next-themes + shadcn)       | 10     | ⬜     |
+| Websockets (tempo real)                | 6.5, 8 | ⬜     |
+| Refresh token                          | 2, 7   | ⬜     |
+| Export de dados (CSV, PDF)             | 8      | ⬜     |
+| Notificações in-app                    | 10     | ⬜     |
+| Categorias/Tags para tarefas           | 3, 8   | ⬜     |
+| **UI/UX**                              |        |        |
+| Storybook com componentes              | 7-10   | ⬜     |
+| Animações e transições elegantes       | 10     | ⬜     |
+| Gráficos interativos (tooltips, zoom)  | 9      | ⬜     |
+| Design system (shadcn/ui)              | 7      | ⬜     |
+| Acessibilidade (Radix UI + ARIA)       | 7-10   | ⬜     |
 
 ---
 
@@ -1178,27 +1482,31 @@ Projeto pronto para entrega. README.md permite que avaliadores executem o projet
 ```
 Ciclo 1 (Fundação)
     │
-    ├── Ciclo 2 (Backend Auth)
+    ├── Ciclo 2 (Backend Auth + Refresh Token)
     │       │
-    │       └── Ciclo 3 (Backend Tasks)
+    │       └── Ciclo 3 (Backend Tasks + Tags)
     │               │
     │               ├── Ciclo 4 (Backend Cache)
     │               │
     │               ├── Ciclo 5 (Backend RabbitMQ)
     │               │
-    │               └── Ciclo 6 (Backend Analytics)
+    │               ├── Ciclo 6 (Backend Analytics)
+    │               │
+    │               └── Ciclo 6.5 (Backend Websockets)
     │
-    └── Ciclo 7 (Frontend Auth) ──────┐
-            │                         │
-            └── Ciclo 8 (Frontend Tasks)
+    └── Ciclo 7 (Frontend Auth + Storybook) ──────┐
+            │                                      │
+            └── Ciclo 8 (Frontend Tasks + Drag&Drop + Export + Tags)
                     │
-                    └── Ciclo 9 (Frontend Dashboard)
+                    └── Ciclo 9 (Frontend Dashboard + Gráficos Interativos)
                             │
-                            └── Ciclo 10 (Frontend Nav/Polish)
+                            └── Ciclo 10 (Nav + Notificações + Animações)
                                     │
                                     └── Ciclo 11 (Testes)
                                             │
-                                            └── Ciclo 12 (Documentação)
+                                            └── Ciclo 11.5 (Deploy)
+                                                    │
+                                                    └── Ciclo 12 (Documentação)
 ```
 
 ---
