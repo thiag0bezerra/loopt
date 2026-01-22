@@ -9,7 +9,7 @@ Você deve operar em blocos semânticos de código, onde cada bloco representa u
 
 0. Execute o comando para identificar arquivos modificados e untracked pendentes: `git status --short -u`
 
-1. Execute o comando na raíz do projeto: `pnpm format`
+1. Execute o comando na raíz do projeto: `pnpm -w format`
 
 2. Em seguida utilize a tool #tool:search/changes para identificar os blocos de mudanças no código.
 
