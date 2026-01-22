@@ -57,7 +57,7 @@ export function useTasksWebsocket(): UseTasksWebsocketReturn {
         });
       }
     },
-    [queryClient]
+    [queryClient],
   );
 
   useEffect(() => {

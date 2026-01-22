@@ -26,7 +26,13 @@ export interface TaskFilters {
   /** Limite por página (default: 10, max: 50) */
   limit?: number;
   /** Campo para ordenação (default: createdAt) */
-  sortBy?: 'createdAt' | 'updatedAt' | 'dueDate' | 'title' | 'priority' | 'status';
+  sortBy?:
+    | 'createdAt'
+    | 'updatedAt'
+    | 'dueDate'
+    | 'title'
+    | 'priority'
+    | 'status';
   /** Direção da ordenação (default: DESC) */
   sortOrder?: 'ASC' | 'DESC';
 }
@@ -108,7 +114,7 @@ export function useTasks(filters: TaskFilters = {}) {
       if (filters.sortOrder) params.append('sortOrder', filters.sortOrder);
 
       const response = await api.get<PaginatedResponse<Task>>(
-        `/tasks?${params.toString()}`
+        `/tasks?${params.toString()}`,
       );
       return response.data;
     },
@@ -150,7 +156,8 @@ export function useCreateTask() {
     },
     onError: (error: AxiosError<ApiError>) => {
       const message =
-        error.response?.data?.message ?? 'Erro ao criar tarefa. Tente novamente.';
+        error.response?.data?.message ??
+        'Erro ao criar tarefa. Tente novamente.';
       toast.error(message);
     },
   });
@@ -170,7 +177,9 @@ export function useUpdateTask() {
     },
     onSuccess: (updatedTask) => {
       queryClient.invalidateQueries({ queryKey: [TASKS_QUERY_KEY] });
-      queryClient.invalidateQueries({ queryKey: [TASK_QUERY_KEY, updatedTask.id] });
+      queryClient.invalidateQueries({
+        queryKey: [TASK_QUERY_KEY, updatedTask.id],
+      });
       toast.success('Tarefa atualizada com sucesso!');
     },
     onError: (error: AxiosError<ApiError>) => {
