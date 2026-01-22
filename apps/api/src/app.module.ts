@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
+import { CacheConfigModule } from './cache';
 import { validate } from './config/env.validation';
 
 /**
@@ -34,6 +35,7 @@ import { validate } from './config/env.validation';
         logging: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
+    CacheConfigModule,
     UsersModule,
     AuthModule,
     TasksModule,

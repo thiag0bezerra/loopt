@@ -7,6 +7,7 @@ import { Repository, ILike } from 'typeorm';
 import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
+import { CacheService } from '../cache';
 
 describe('TasksService', () => {
   let tasksService: TasksService;
@@ -36,6 +37,14 @@ describe('TasksService', () => {
     remove: vi.fn(),
   };
 
+  const mockCacheService = {
+    get: vi.fn(),
+    set: vi.fn(),
+    del: vi.fn(),
+    delByPattern: vi.fn(),
+    generateTasksCacheKey: vi.fn().mockReturnValue('tasks:user-uuid-123:{}'),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -45,6 +54,10 @@ describe('TasksService', () => {
         {
           provide: getRepositoryToken(Task),
           useValue: mockTasksRepository,
+        },
+        {
+          provide: CacheService,
+          useValue: mockCacheService,
         },
       ],
     }).compile();
@@ -69,6 +82,7 @@ describe('TasksService', () => {
 
       mockTasksRepository.create.mockReturnValue(expectedTask);
       mockTasksRepository.save.mockResolvedValue(expectedTask);
+      mockCacheService.delByPattern.mockResolvedValue(undefined);
 
       const result = await tasksService.create(mockUserId, createTaskDto);
 
@@ -79,6 +93,9 @@ describe('TasksService', () => {
       });
       expect(mockTasksRepository.save).toHaveBeenCalledWith(expectedTask);
       expect(result.userId).toBe(mockUserId);
+      expect(mockCacheService.delByPattern).toHaveBeenCalledWith(
+        `tasks:${mockUserId}:*`,
+      );
     });
   });
 
@@ -86,6 +103,8 @@ describe('TasksService', () => {
     it('deve retornar apenas tarefas do usuário', async () => {
       const tasks = [mockTask];
       mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
+      mockCacheService.get.mockResolvedValue(undefined);
+      mockCacheService.set.mockResolvedValue(undefined);
 
       const result = await tasksService.findAll(mockUserId, {});
 
@@ -101,6 +120,8 @@ describe('TasksService', () => {
     it('deve aplicar filtros corretamente', async () => {
       const tasks = [mockTask];
       mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
+      mockCacheService.get.mockResolvedValue(undefined);
+      mockCacheService.set.mockResolvedValue(undefined);
 
       const filters = {
         status: TaskStatus.PENDING,
@@ -132,6 +153,8 @@ describe('TasksService', () => {
     it('deve aplicar busca em título e descrição', async () => {
       const tasks = [mockTask];
       mockTasksRepository.findAndCount.mockResolvedValue([tasks, 1]);
+      mockCacheService.get.mockResolvedValue(undefined);
+      mockCacheService.set.mockResolvedValue(undefined);
 
       const filters = {
         search: 'test',
@@ -152,6 +175,8 @@ describe('TasksService', () => {
     it('deve retornar paginação correta', async () => {
       const tasks = [mockTask];
       mockTasksRepository.findAndCount.mockResolvedValue([tasks, 25]);
+      mockCacheService.get.mockResolvedValue(undefined);
+      mockCacheService.set.mockResolvedValue(undefined);
 
       const result = await tasksService.findAll(mockUserId, {
         page: 2,
@@ -164,6 +189,19 @@ describe('TasksService', () => {
         limit: 10,
         totalPages: 3,
       });
+    });
+
+    it('deve retornar dados do cache se existir', async () => {
+      const cachedResult = {
+        data: [mockTask],
+        meta: { total: 1, page: 1, limit: 10, totalPages: 1 },
+      };
+      mockCacheService.get.mockResolvedValue(cachedResult);
+
+      const result = await tasksService.findAll(mockUserId, {});
+
+      expect(result).toEqual(cachedResult);
+      expect(mockTasksRepository.findAndCount).not.toHaveBeenCalled();
     });
   });
 
@@ -195,6 +233,7 @@ describe('TasksService', () => {
 
       mockTasksRepository.findOne.mockResolvedValue({ ...mockTask });
       mockTasksRepository.save.mockResolvedValue(updatedTask);
+      mockCacheService.delByPattern.mockResolvedValue(undefined);
 
       const result = await tasksService.update(
         mockUserId,
@@ -203,6 +242,9 @@ describe('TasksService', () => {
       );
 
       expect(result.title).toBe('Updated Title');
+      expect(mockCacheService.delByPattern).toHaveBeenCalledWith(
+        `tasks:${mockUserId}:*`,
+      );
     });
 
     it('deve preencher completedAt quando status = COMPLETED', async () => {
@@ -210,7 +252,10 @@ describe('TasksService', () => {
       const taskBeforeUpdate = { ...mockTask, status: TaskStatus.PENDING };
 
       mockTasksRepository.findOne.mockResolvedValue(taskBeforeUpdate);
-      mockTasksRepository.save.mockImplementation((task) => Promise.resolve(task));
+      mockTasksRepository.save.mockImplementation((task) =>
+        Promise.resolve(task),
+      );
+      mockCacheService.delByPattern.mockResolvedValue(undefined);
 
       const result = await tasksService.update(
         mockUserId,
@@ -231,7 +276,10 @@ describe('TasksService', () => {
       };
 
       mockTasksRepository.findOne.mockResolvedValue(completedTask);
-      mockTasksRepository.save.mockImplementation((task) => Promise.resolve(task));
+      mockTasksRepository.save.mockImplementation((task) =>
+        Promise.resolve(task),
+      );
+      mockCacheService.delByPattern.mockResolvedValue(undefined);
 
       const result = await tasksService.update(
         mockUserId,
@@ -248,10 +296,14 @@ describe('TasksService', () => {
     it('deve deletar tarefa existente', async () => {
       mockTasksRepository.findOne.mockResolvedValue(mockTask);
       mockTasksRepository.remove.mockResolvedValue(mockTask);
+      mockCacheService.delByPattern.mockResolvedValue(undefined);
 
       await tasksService.remove(mockUserId, mockTask.id);
 
       expect(mockTasksRepository.remove).toHaveBeenCalledWith(mockTask);
+      expect(mockCacheService.delByPattern).toHaveBeenCalledWith(
+        `tasks:${mockUserId}:*`,
+      );
     });
 
     it('deve lançar NotFoundException para tarefa inexistente', async () => {

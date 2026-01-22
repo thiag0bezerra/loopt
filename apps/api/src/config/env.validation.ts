@@ -63,6 +63,17 @@ class EnvironmentVariables {
   @IsString()
   @IsOptional()
   JWT_EXPIRES_IN: string = '1d';
+
+  // Redis
+  @IsString()
+  @IsNotEmpty()
+  REDIS_HOST!: string;
+
+  @IsNumber()
+  @Min(1)
+  @Max(65535)
+  @IsOptional()
+  REDIS_PORT: number = 6379;
 }
 
 /**

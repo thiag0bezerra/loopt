@@ -4,6 +4,10 @@ import { Repository, ILike, FindOptionsWhere } from 'typeorm';
 import { TaskStatus, PaginatedResponse } from '@loopt/shared';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto, UpdateTaskDto, TaskFilterDto } from './dto';
+import { CacheService } from '../cache';
+
+/** TTL do cache em milissegundos (5 minutos) */
+const CACHE_TTL = 300_000;
 
 /**
  * Serviço responsável pela lógica de negócio das tarefas
@@ -13,6 +17,7 @@ export class TasksService {
   constructor(
     @InjectRepository(Task)
     private readonly tasksRepository: Repository<Task>,
+    private readonly cacheService: CacheService,
   ) {}
 
   /**
@@ -28,7 +33,12 @@ export class TasksService {
       userId,
     });
 
-    return this.tasksRepository.save(task);
+    const savedTask = await this.tasksRepository.save(task);
+
+    // Invalida cache do usuário após criar tarefa
+    await this.invalidateUserCache(userId);
+
+    return savedTask;
   }
 
   /**
@@ -50,6 +60,14 @@ export class TasksService {
       sortBy = 'createdAt',
       sortOrder = 'DESC',
     } = filters;
+
+    // Gera chave de cache e verifica se existe
+    const cacheKey = this.cacheService.generateTasksCacheKey(userId, filters);
+    const cached = await this.cacheService.get<PaginatedResponse<Task>>(cacheKey);
+
+    if (cached) {
+      return cached;
+    }
 
     const where: FindOptionsWhere<Task>[] = [];
     const baseWhere: FindOptionsWhere<Task> = { userId };
@@ -81,7 +99,7 @@ export class TasksService {
 
     const totalPages = Math.ceil(total / limit);
 
-    return {
+    const result: PaginatedResponse<Task> = {
       data,
       meta: {
         total,
@@ -90,6 +108,11 @@ export class TasksService {
         totalPages,
       },
     };
+
+    // Salva no cache
+    await this.cacheService.set(cacheKey, result, CACHE_TTL);
+
+    return result;
   }
 
   /**
@@ -128,9 +151,15 @@ export class TasksService {
 
     // Atualiza completedAt com base na mudança de status
     if (dto.status !== undefined) {
-      if (dto.status === TaskStatus.COMPLETED && task.status !== TaskStatus.COMPLETED) {
+      if (
+        dto.status === TaskStatus.COMPLETED &&
+        task.status !== TaskStatus.COMPLETED
+      ) {
         task.completedAt = new Date();
-      } else if (dto.status !== TaskStatus.COMPLETED && task.status === TaskStatus.COMPLETED) {
+      } else if (
+        dto.status !== TaskStatus.COMPLETED &&
+        task.status === TaskStatus.COMPLETED
+      ) {
         task.completedAt = null;
       }
     }
@@ -138,12 +167,20 @@ export class TasksService {
     // Mescla os dados atualizados
     Object.assign(task, {
       ...dto,
-      dueDate: dto.dueDate !== undefined 
-        ? (dto.dueDate ? new Date(dto.dueDate) : null) 
-        : task.dueDate,
+      dueDate:
+        dto.dueDate !== undefined
+          ? dto.dueDate
+            ? new Date(dto.dueDate)
+            : null
+          : task.dueDate,
     });
 
-    return this.tasksRepository.save(task);
+    const savedTask = await this.tasksRepository.save(task);
+
+    // Invalida cache do usuário após atualizar tarefa
+    await this.invalidateUserCache(userId);
+
+    return savedTask;
   }
 
   /**
@@ -155,5 +192,16 @@ export class TasksService {
   async remove(userId: string, taskId: string): Promise<void> {
     const task = await this.findOne(userId, taskId);
     await this.tasksRepository.remove(task);
+
+    // Invalida cache do usuário após remover tarefa
+    await this.invalidateUserCache(userId);
+  }
+
+  /**
+   * Invalida todas as chaves de cache do usuário
+   * @param userId ID do usuário
+   */
+  private async invalidateUserCache(userId: string): Promise<void> {
+    await this.cacheService.delByPattern(`tasks:${userId}:*`);
   }
 }
