@@ -8,6 +8,8 @@ import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
 import { CacheService } from '../cache';
+import { NotificationsService } from '../notifications';
+import { UsersService } from '../users/users.service';
 
 describe('TasksService', () => {
   let tasksService: TasksService;
@@ -29,6 +31,15 @@ describe('TasksService', () => {
     completedAt: null,
   };
 
+  const mockUser = {
+    id: mockUserId,
+    email: 'test@example.com',
+    name: 'Test User',
+    password: 'hashed_password',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   const mockTasksRepository = {
     create: vi.fn(),
     save: vi.fn(),
@@ -45,6 +56,16 @@ describe('TasksService', () => {
     generateTasksCacheKey: vi.fn().mockReturnValue('tasks:user-uuid-123:{}'),
   };
 
+  const mockNotificationsService = {
+    sendHighPriorityNotification: vi.fn(),
+  };
+
+  const mockUsersService = {
+    findById: vi.fn().mockResolvedValue(mockUser),
+    findByEmail: vi.fn(),
+    create: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -58,6 +79,14 @@ describe('TasksService', () => {
         {
           provide: CacheService,
           useValue: mockCacheService,
+        },
+        {
+          provide: NotificationsService,
+          useValue: mockNotificationsService,
+        },
+        {
+          provide: UsersService,
+          useValue: mockUsersService,
         },
       ],
     }).compile();
