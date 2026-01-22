@@ -1,6 +1,18 @@
 import { TaskPriority, TaskStatus } from '../enums';
 
 /**
+ * Representa uma tag de categorização
+ */
+export interface Tag {
+  /** Identificador único da tag (UUID) */
+  id: string;
+  /** Nome da tag */
+  name: string;
+  /** Cor da tag em formato hexadecimal */
+  color: string;
+}
+
+/**
  * Representa uma tarefa do sistema
  */
 export interface Task {
@@ -24,6 +36,8 @@ export interface Task {
   updatedAt: Date;
   /** Data de conclusão (preenchida quando status = COMPLETED) */
   completedAt: Date | null;
+  /** Tags associadas à tarefa (opcional, preenchido quando relations são carregadas) */
+  tags?: Tag[];
 }
 
 /**

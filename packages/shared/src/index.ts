@@ -6,6 +6,7 @@ export type {
   User,
   CreateUser,
   Task,
+  Tag,
   CreateTask,
   UpdateTask,
   ApiResponse,

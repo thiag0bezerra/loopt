@@ -1,5 +1,5 @@
 export type { User, CreateUser } from './user.types';
-export type { Task, CreateTask, UpdateTask } from './task.types';
+export type { Task, Tag, CreateTask, UpdateTask } from './task.types';
 export type {
   ApiResponse,
   PaginatedResponse,
