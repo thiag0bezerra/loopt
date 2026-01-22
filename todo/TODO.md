@@ -839,51 +839,51 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 
 #### 8.1 Hooks de Tarefas
 
-- [ ] Criar src/hooks/use-tasks.ts
-- [ ] Implementar useTasks(filters): query GET /tasks com query params
-- [ ] Implementar useTask(id): query GET /tasks/:id
-- [ ] Implementar useCreateTask: mutation POST /tasks, invalidate useTasks
-- [ ] Implementar useUpdateTask: mutation PATCH /tasks/:id, invalidate useTasks e useTask
-- [ ] Implementar useDeleteTask: mutation DELETE /tasks/:id, invalidate useTasks
-- [ ] Implementar useTasksWebsocket: conectar ao socket e invalidar queries ao receber eventos
-  - [ ] Instalar dependência: `pnpm add socket.io-client`
-  - [ ] Conectar ao namespace /tasks com token JWT
-  - [ ] Ouvir eventos task:created, task:updated, task:deleted
-  - [ ] Invalidar queryClient.invalidateQueries(['tasks']) ao receber eventos
+- [x] Criar src/hooks/use-tasks.ts
+- [x] Implementar useTasks(filters): query GET /tasks com query params
+- [x] Implementar useTask(id): query GET /tasks/:id
+- [x] Implementar useCreateTask: mutation POST /tasks, invalidate useTasks
+- [x] Implementar useUpdateTask: mutation PATCH /tasks/:id, invalidate useTasks e useTask
+- [x] Implementar useDeleteTask: mutation DELETE /tasks/:id, invalidate useTasks
+- [x] Implementar useTasksWebsocket: conectar ao socket e invalidar queries ao receber eventos
+  - [x] Instalar dependência: `pnpm add socket.io-client`
+  - [x] Conectar ao namespace /tasks com token JWT
+  - [x] Ouvir eventos task:created, task:updated, task:deleted
+  - [x] Invalidar queryClient.invalidateQueries(['tasks']) ao receber eventos
 
 #### 8.2 Componentes de Tarefa (usando shadcn/ui)
 
-- [ ] Criar src/components/tasks/task-card.tsx:
-  - [ ] Usar shadcn Card, CardHeader, CardContent, CardFooter
-  - [ ] Exibir título (truncado se muito longo)
-  - [ ] Exibir descrição (truncada)
-  - [ ] Usar shadcn Badge para status com variants (pending: secondary, in_progress: default, completed: success)
-  - [ ] Usar shadcn Badge para prioridade com variants (low: outline, medium: secondary, high: destructive)
-  - [ ] Data de vencimento formatada (texto destructive se overdue)
-  - [ ] Usar shadcn Checkbox para marcar como concluída
-  - [ ] Usar shadcn DropdownMenu para opções: Editar, Excluir
-  - [ ] Criar src/stories/TaskCard.stories.tsx (estados: default, overdue, completed, high priority)
-- [ ] Criar src/components/tasks/task-list.tsx:
-  - [ ] Receber array de tasks
-  - [ ] Mapear TaskCard para cada task
-  - [ ] Usar shadcn Skeleton para loading state
-  - [ ] Empty state com ícone lucide-react quando não há tarefas
-  - [ ] Criar src/stories/TaskList.stories.tsx (estados: loading, empty, with tasks)
-- [ ] Criar src/components/tasks/task-filters.tsx:
-  - [ ] Usar shadcn Select para filtrar por status (Todos, Pendente, Em Progresso, Concluída)
-  - [ ] Usar shadcn Select para filtrar por prioridade (Todas, Baixa, Média, Alta)
-  - [ ] Usar shadcn Input para busca com debounce de 300ms
-  - [ ] Usar shadcn Select para ordenação (Data de criação, Data de vencimento, Prioridade)
-  - [ ] Usar shadcn Button com ícone para toggle ordem (ASC/DESC)
+- [x] Criar src/components/tasks/task-card.tsx:
+  - [x] Usar shadcn Card, CardHeader, CardContent, CardFooter
+  - [x] Exibir título (truncado se muito longo)
+  - [x] Exibir descrição (truncada)
+  - [x] Usar shadcn Badge para status com variants (pending: secondary, in_progress: default, completed: success)
+  - [x] Usar shadcn Badge para prioridade com variants (low: outline, medium: secondary, high: destructive)
+  - [x] Data de vencimento formatada (texto destructive se overdue)
+  - [x] Usar shadcn Checkbox para marcar como concluída
+  - [x] Usar shadcn DropdownMenu para opções: Editar, Excluir
+  - [x] Criar src/stories/TaskCard.stories.tsx (estados: default, overdue, completed, high priority)
+- [x] Criar src/components/tasks/task-list.tsx:
+  - [x] Receber array de tasks
+  - [x] Mapear TaskCard para cada task
+  - [x] Usar shadcn Skeleton para loading state
+  - [x] Empty state com ícone lucide-react quando não há tarefas
+  - [x] Criar src/stories/TaskList.stories.tsx (estados: loading, empty, with tasks)
+- [x] Criar src/components/tasks/task-filters.tsx:
+  - [x] Usar shadcn Select para filtrar por status (Todos, Pendente, Em Progresso, Concluída)
+  - [x] Usar shadcn Select para filtrar por prioridade (Todas, Baixa, Média, Alta)
+  - [x] Usar shadcn Input para busca com debounce de 300ms
+  - [x] Usar shadcn Select para ordenação (Data de criação, Data de vencimento, Prioridade)
+  - [x] Usar shadcn Button com ícone para toggle ordem (ASC/DESC)
   - [ ] Usar shadcn Select para filtrar por tag (se implementado)
-  - [ ] Criar src/stories/TaskFilters.stories.tsx
-- [ ] Criar src/components/tasks/pagination.tsx:
-  - [ ] Usar shadcn Pagination, PaginationContent, PaginationItem
-  - [ ] Exibir página atual e total de páginas
-  - [ ] Usar PaginationPrevious e PaginationNext
-  - [ ] Desabilitar Previous na primeira página
-  - [ ] Desabilitar Next na última página
-  - [ ] Criar src/stories/Pagination.stories.tsx
+  - [x] Criar src/stories/TaskFilters.stories.tsx
+- [x] Criar src/components/tasks/pagination.tsx:
+  - [x] Usar shadcn Pagination, PaginationContent, PaginationItem
+  - [x] Exibir página atual e total de páginas
+  - [x] Usar PaginationPrevious e PaginationNext
+  - [x] Desabilitar Previous na primeira página
+  - [x] Desabilitar Next na última página
+  - [x] Criar src/stories/Pagination.stories.tsx
 
 #### 8.3 Formulário de Tarefa (usando shadcn/ui)
 
