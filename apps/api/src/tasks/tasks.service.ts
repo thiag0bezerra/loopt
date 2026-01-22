@@ -8,6 +8,7 @@ import { CacheService } from '../cache';
 import { NotificationsService } from '../notifications';
 import { UsersService } from '../users/users.service';
 import { TagsService } from './tags.service';
+import { TasksGateway } from './tasks.gateway';
 
 /** TTL do cache em milissegundos (5 minutos) */
 const CACHE_TTL = 300_000;
@@ -24,6 +25,7 @@ export class TasksService {
     private readonly notificationsService: NotificationsService,
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
+    private readonly tasksGateway: TasksGateway,
   ) {}
 
   /**
@@ -49,6 +51,9 @@ export class TasksService {
 
     // Invalida cache do usuário após criar tarefa
     await this.invalidateUserCache(userId);
+
+    // Emite evento WebSocket para atualização em tempo real
+    this.tasksGateway.emitTaskCreated(userId, savedTask);
 
     // Envia notificação se a tarefa for de alta prioridade
     if (savedTask.priority === TaskPriority.HIGH) {
@@ -219,6 +224,9 @@ export class TasksService {
     // Invalida cache do usuário após atualizar tarefa
     await this.invalidateUserCache(userId);
 
+    // Emite evento WebSocket para atualização em tempo real
+    this.tasksGateway.emitTaskUpdated(userId, savedTask);
+
     return savedTask;
   }
 
@@ -234,6 +242,9 @@ export class TasksService {
 
     // Invalida cache do usuário após remover tarefa
     await this.invalidateUserCache(userId);
+
+    // Emite evento WebSocket para atualização em tempo real
+    this.tasksGateway.emitTaskDeleted(userId, taskId);
   }
 
   /**

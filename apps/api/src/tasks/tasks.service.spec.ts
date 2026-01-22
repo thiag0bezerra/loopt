@@ -11,6 +11,7 @@ import { CacheService } from '../cache';
 import { NotificationsService } from '../notifications';
 import { UsersService } from '../users/users.service';
 import { TagsService } from './tags.service';
+import { TasksGateway } from './tasks.gateway';
 
 describe('TasksService', () => {
   let tasksService: TasksService;
@@ -73,6 +74,12 @@ describe('TasksService', () => {
     findByIds: vi.fn().mockResolvedValue([]),
   };
 
+  const mockTasksGateway = {
+    emitTaskCreated: vi.fn(),
+    emitTaskUpdated: vi.fn(),
+    emitTaskDeleted: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.clearAllMocks();
 
@@ -98,6 +105,10 @@ describe('TasksService', () => {
         {
           provide: TagsService,
           useValue: mockTagsService,
+        },
+        {
+          provide: TasksGateway,
+          useValue: mockTasksGateway,
         },
       ],
     }).compile();
