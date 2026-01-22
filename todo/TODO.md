@@ -356,22 +356,22 @@ Implementar o módulo de tarefas com CRUD completo, garantindo que usuários só
 
 #### 3.6 Entity Tag (Categorias)
 
-- [ ] Criar entity Tag em src/tasks/entities/tag.entity.ts:
-  - [ ] id: UUID (PK)
-  - [ ] name: string (not null, max 50)
-  - [ ] color: string (hex color, default #6366f1)
-  - [ ] userId: UUID (FK -> User)
-  - [ ] Relacionamento ManyToMany com Task
-- [ ] Criar migration para Tag e tabela de junção task_tags
-- [ ] Criar CreateTagDto e UpdateTagDto
-- [ ] Implementar CRUD de tags no TasksService ou TagsService separado:
-  - [ ] POST /tags: criar tag do usuário
-  - [ ] GET /tags: listar tags do usuário
-  - [ ] PATCH /tags/:id: atualizar tag
-  - [ ] DELETE /tags/:id: deletar tag
-- [ ] Atualizar CreateTaskDto e UpdateTaskDto para incluir tagIds: string[]
-- [ ] Atualizar TasksService para associar tags às tarefas
-- [ ] Atualizar TaskFilterDto para incluir filtro por tagId
+- [x] Criar entity Tag em src/tasks/entities/tag.entity.ts:
+  - [x] id: UUID (PK)
+  - [x] name: string (not null, max 50)
+  - [x] color: string (hex color, default #6366f1)
+  - [x] userId: UUID (FK -> User)
+  - [x] Relacionamento ManyToMany com Task
+- [x] Criar migration para Tag e tabela de junção task_tags
+- [x] Criar CreateTagDto e UpdateTagDto
+- [x] Implementar CRUD de tags no TasksService ou TagsService separado:
+  - [x] POST /tags: criar tag do usuário
+  - [x] GET /tags: listar tags do usuário
+  - [x] PATCH /tags/:id: atualizar tag
+  - [x] DELETE /tags/:id: deletar tag
+- [x] Atualizar CreateTaskDto e UpdateTaskDto para incluir tagIds: string[]
+- [x] Atualizar TasksService para associar tags às tarefas
+- [x] Atualizar TaskFilterDto para incluir filtro por tagId
 
 ### Resultado Esperado
 
