@@ -1,4 +1,5 @@
 import { ProtectedRoute } from '@/components/auth/protected-route';
+import { AppLayout } from '@/components/layout';
 
 /**
  * Props do layout protegido
@@ -10,8 +11,12 @@ interface ProtectedLayoutProps {
 
 /**
  * Layout para páginas protegidas (requer autenticação)
- * Envolve o conteúdo com o componente ProtectedRoute
+ * Envolve o conteúdo com o componente ProtectedRoute e AppLayout
  */
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  return <ProtectedRoute>{children}</ProtectedRoute>;
+  return (
+    <ProtectedRoute>
+      <AppLayout>{children}</AppLayout>
+    </ProtectedRoute>
+  );
 }
