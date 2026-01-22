@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike, FindOptionsWhere } from 'typeorm';
-import { TaskStatus, PaginatedResponse } from '@loopt/shared';
+import { TaskStatus, TaskPriority, PaginatedResponse } from '@loopt/shared';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto, UpdateTaskDto, TaskFilterDto } from './dto';
 import { CacheService } from '../cache';
+import { NotificationsService } from '../notifications';
+import { UsersService } from '../users/users.service';
 
 /** TTL do cache em milissegundos (5 minutos) */
 const CACHE_TTL = 300_000;
@@ -18,6 +20,8 @@ export class TasksService {
     @InjectRepository(Task)
     private readonly tasksRepository: Repository<Task>,
     private readonly cacheService: CacheService,
+    private readonly notificationsService: NotificationsService,
+    private readonly usersService: UsersService,
   ) {}
 
   /**
@@ -37,6 +41,14 @@ export class TasksService {
 
     // Invalida cache do usuário após criar tarefa
     await this.invalidateUserCache(userId);
+
+    // Envia notificação se a tarefa for de alta prioridade
+    if (savedTask.priority === TaskPriority.HIGH) {
+      const user = await this.usersService.findById(userId);
+      if (user) {
+        this.notificationsService.sendHighPriorityNotification(savedTask, user);
+      }
+    }
 
     return savedTask;
   }
