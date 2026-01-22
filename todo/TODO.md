@@ -432,46 +432,46 @@ Criar integração com RabbitMQ para enviar mensagens quando tarefas de alta pri
 
 #### 5.1 Configuração RabbitMQ no Backend
 
-- [ ] Instalar dependências: `pnpm add @nestjs/microservices amqplib amqp-connection-manager`
-- [ ] Instalar tipos: `pnpm add -D @types/amqplib`
-- [ ] Criar NotificationsModule em src/notifications/notifications.module.ts
-- [ ] Configurar ClientsModule.registerAsync() com RabbitMQ transport
-- [ ] Definir nome da queue: high-priority-tasks
+- [x] Instalar dependências: `pnpm add @nestjs/microservices amqplib amqp-connection-manager`
+- [x] Instalar tipos: `pnpm add -D @types/amqplib`
+- [x] Criar NotificationsModule em src/notifications/notifications.module.ts
+- [x] Configurar ClientsModule.registerAsync() com RabbitMQ transport
+- [x] Definir nome da queue: high-priority-tasks
 
 #### 5.2 NotificationsService
 
-- [ ] Criar NotificationsService em src/notifications/notifications.service.ts
-- [ ] Injetar ClientProxy do RabbitMQ
-- [ ] Criar interface TaskNotificationPayload com: taskId, taskTitle, userId, userEmail, userName, createdAt
-- [ ] Implementar sendHighPriorityNotification(task: Task, user: User): void
-  - [ ] Montar payload
-  - [ ] Emitir mensagem com pattern 'task.created.high'
+- [x] Criar NotificationsService em src/notifications/notifications.service.ts
+- [x] Injetar ClientProxy do RabbitMQ
+- [x] Criar interface TaskNotificationPayload com: taskId, taskTitle, userId, userEmail, userName, createdAt
+- [x] Implementar sendHighPriorityNotification(task: Task, user: User): void
+  - [x] Montar payload
+  - [x] Emitir mensagem com pattern 'task.created.high'
 
 #### 5.3 Integração no TasksService
 
-- [ ] Injetar NotificationsService no TasksService
-- [ ] No método create, após salvar tarefa:
-  - [ ] Se priority === HIGH, chamar sendHighPriorityNotification
+- [x] Injetar NotificationsService no TasksService
+- [x] No método create, após salvar tarefa:
+  - [x] Se priority === HIGH, chamar sendHighPriorityNotification
 
 #### 5.4 Worker Separado
 
-- [ ] Criar app worker: `pnpm dlx @nestjs/cli@latest new worker --directory apps/worker --package-manager pnpm --skip-git`
-- [ ] Remover arquivos desnecessários
-- [ ] Adicionar dependência do @loopt/shared
-- [ ] Instalar: `pnpm add @nestjs/microservices amqplib amqp-connection-manager @nestjs/config`
-- [ ] Configurar main.ts como microservice (não HTTP)
-- [ ] Conectar ao RabbitMQ via Transport.RMQ
-- [ ] Criar NotificationConsumerService em src/notification-consumer.service.ts
-- [ ] Implementar handler com @MessagePattern('task.created.high')
-- [ ] Processar mensagem: logar no console simulando envio de notificação
-- [ ] Implementar tratamento de erros com try/catch
-- [ ] Adicionar script de start no package.json
+- [x] Criar app worker: `pnpm dlx @nestjs/cli@latest new worker --directory apps/worker --package-manager pnpm --skip-git`
+- [x] Remover arquivos desnecessários
+- [x] Adicionar dependência do @loopt/shared
+- [x] Instalar: `pnpm add @nestjs/microservices amqplib amqp-connection-manager @nestjs/config`
+- [x] Configurar main.ts como microservice (não HTTP)
+- [x] Conectar ao RabbitMQ via Transport.RMQ
+- [x] Criar NotificationConsumerService em src/notification-consumer.service.ts
+- [x] Implementar handler com @MessagePattern('task.created.high')
+- [x] Processar mensagem: logar no console simulando envio de notificação
+- [x] Implementar tratamento de erros com try/catch
+- [x] Adicionar script de start no package.json
 
 #### 5.5 Docker Compose
 
-- [ ] Adicionar serviço worker no docker-compose.yml
-- [ ] Configurar dependência do RabbitMQ
-- [ ] Configurar variáveis de ambiente
+- [x] Adicionar serviço worker no docker-compose.yml
+- [x] Configurar dependência do RabbitMQ
+- [x] Configurar variáveis de ambiente
 
 ### Resultado Esperado
 
