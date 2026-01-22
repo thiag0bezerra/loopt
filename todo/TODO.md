@@ -726,7 +726,7 @@ Criar a aplicação Next.js com App Router, configurar dependências, implementa
 - [x] Configurar para Next.js e TailwindCSS
 - [x] Criar src/stories/ para organização
 - [x] Configurar .storybook/preview.ts para carregar globals.css e CSS variables do shadcn
-- [ ] Configurar dark mode toggle no Storybook (addon-themes ou backgrounds)
+- [x] Configurar dark mode toggle no Storybook (addon-themes ou backgrounds)
 - [x] Criar stories para componentes base instalados:
   - [x] Button.stories.tsx (variants: default, destructive, outline, secondary, ghost, link)
   - [x] Input.stories.tsx (states: default, disabled, with error)
@@ -887,25 +887,25 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 
 #### 8.3 Formulário de Tarefa (usando shadcn/ui)
 
-- [ ] Criar src/components/tasks/task-form.tsx:
-  - [ ] Usar shadcn Form com react-hook-form
-  - [ ] Usar shadcn Input para title e description (Textarea)
-  - [ ] Usar shadcn Select para status e priority
-  - [ ] Usar shadcn DatePicker (Popover + Calendar) para dueDate
-  - [ ] Instalar shadcn calendar se necessário: `pnpm dlx shadcn@latest add calendar popover`
-  - [ ] Usar multi-select ou combobox para tags (shadcn Combobox ou custom)
-  - [ ] Validação com zod via FormField
-  - [ ] Receber initialData opcional para modo edição
-  - [ ] Callback onSubmit
-  - [ ] Usar shadcn Button com loading state
-  - [ ] Criar src/stories/TaskForm.stories.tsx
+- [x] Criar src/components/tasks/task-form.tsx:
+  - [x] Usar shadcn Form com react-hook-form
+  - [x] Usar shadcn Input para title e description (Textarea)
+  - [x] Usar shadcn Select para status e priority
+  - [x] Usar shadcn DatePicker (Popover + Calendar) para dueDate
+  - [x] Instalar shadcn calendar se necessário: `pnpm dlx shadcn@latest add calendar popover`
+  - [x] Usar multi-select ou combobox para tags (shadcn Combobox ou custom)
+  - [x] Validação com zod via FormField
+  - [x] Receber initialData opcional para modo edição
+  - [x] Callback onSubmit
+  - [x] Usar shadcn Button com loading state
+  - [x] Criar src/stories/TaskForm.stories.tsx
 
 #### 8.3.1 Gerenciamento de Tags
 
-- [ ] Criar src/hooks/use-tags.ts:
-  - [ ] Implementar useTags(): query GET /tags
-  - [ ] Implementar useCreateTag: mutation POST /tags
-  - [ ] Implementar useDeleteTag: mutation DELETE /tags/:id
+- [x] Criar src/hooks/use-tags.ts:
+  - [x] Implementar useTags(): query GET /tags
+  - [x] Implementar useCreateTag: mutation POST /tags
+  - [x] Implementar useDeleteTag: mutation DELETE /tags/:id
 - [ ] Criar src/components/tasks/tag-badge.tsx:
   - [ ] Usar shadcn Badge com cor dinâmica baseada na tag.color
   - [ ] Criar src/stories/TagBadge.stories.tsx
@@ -916,42 +916,42 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 
 #### 8.4 Modais (usando shadcn/ui)
 
-- [ ] Criar src/components/tasks/create-task-modal.tsx:
-  - [ ] Usar shadcn Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
-  - [ ] Incluir TaskForm no DialogContent
-  - [ ] onSubmit chama useCreateTask
-  - [ ] Fecha modal e mostra toast de sucesso (Sonner)
-- [ ] Criar src/components/tasks/edit-task-modal.tsx:
-  - [ ] Usar shadcn Dialog
-  - [ ] Receber taskId
-  - [ ] Buscar dados da tarefa com useTask
-  - [ ] Usar shadcn Skeleton enquanto carrega
-  - [ ] Modal com TaskForm preenchido
-  - [ ] onSubmit chama useUpdateTask
-- [ ] Criar src/components/tasks/delete-confirm-modal.tsx:
-  - [ ] Usar shadcn AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter
-  - [ ] AlertDialogTitle e AlertDialogDescription com mensagem de confirmação
-  - [ ] AlertDialogCancel e AlertDialogAction para botões
-  - [ ] onConfirm chama useDeleteTask
+- [x] Criar src/components/tasks/create-task-modal.tsx:
+  - [x] Usar shadcn Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
+  - [x] Incluir TaskForm no DialogContent
+  - [x] onSubmit chama useCreateTask
+  - [x] Fecha modal e mostra toast de sucesso (Sonner)
+- [x] Criar src/components/tasks/edit-task-modal.tsx:
+  - [x] Usar shadcn Dialog
+  - [x] Receber taskId
+  - [x] Buscar dados da tarefa com useTask
+  - [x] Usar shadcn Skeleton enquanto carrega
+  - [x] Modal com TaskForm preenchido
+  - [x] onSubmit chama useUpdateTask
+- [x] Criar src/components/tasks/delete-confirm-modal.tsx:
+  - [x] Usar shadcn AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter
+  - [x] AlertDialogTitle e AlertDialogDescription com mensagem de confirmação
+  - [x] AlertDialogCancel e AlertDialogAction para botões
+  - [x] onConfirm chama useDeleteTask
 
 #### 8.5 Toast/Notificações (usando shadcn Sonner)
 
-- [ ] shadcn Sonner já instalado no Ciclo 7.2
-- [ ] Toaster já configurado no providers (Ciclo 7.4)
-- [ ] Usar `toast.success()`, `toast.error()` do sonner para feedback
-- [ ] Integrar nos modais e operações CRUD
+- [x] shadcn Sonner já instalado no Ciclo 7.2
+- [x] Toaster já configurado no providers (Ciclo 7.4)
+- [x] Usar `toast.success()`, `toast.error()` do sonner para feedback
+- [x] Integrar nos modais e operações CRUD
 
 #### 8.6 Página de Tarefas
 
-- [ ] Criar src/app/(protected)/tasks/page.tsx
-- [ ] Header com título "Minhas Tarefas" e shadcn Button "Nova Tarefa" com ícone Plus
-- [ ] TaskFilters abaixo do header
-- [ ] TaskList no conteúdo principal
-- [ ] Pagination no footer
-- [ ] Usar shadcn Separator para dividir seções
-- [ ] Gerenciar estado local de filtros (useState)
-- [ ] Passar filtros para useTasks
-- [ ] Modais controlados por estado (createOpen, editOpen, deleteOpen, selectedTaskId)
+- [x] Criar src/app/(protected)/tasks/page.tsx
+- [x] Header com título "Minhas Tarefas" e shadcn Button "Nova Tarefa" com ícone Plus
+- [x] TaskFilters abaixo do header
+- [x] TaskList no conteúdo principal
+- [x] Pagination no footer
+- [x] Usar shadcn Separator para dividir seções
+- [x] Gerenciar estado local de filtros (useState)
+- [x] Passar filtros para useTasks
+- [x] Modais controlados por estado (createOpen, editOpen, deleteOpen, selectedTaskId)
 
 #### 8.7 Drag & Drop para Reordenação
 
@@ -981,12 +981,12 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 
 #### 8.9 Interações
 
-- [ ] Click em "Nova Tarefa" abre CreateTaskModal
-- [ ] Click em "Editar" no TaskCard abre EditTaskModal
-- [ ] Click em "Excluir" no TaskCard abre DeleteConfirmModal
-- [ ] Click no checkbox do TaskCard chama useUpdateTask com status: COMPLETED
-- [ ] Alterar filtros atualiza lista
-- [ ] Alterar página atualiza lista
+- [x] Click em "Nova Tarefa" abre CreateTaskModal
+- [x] Click em "Editar" no TaskCard abre EditTaskModal
+- [x] Click em "Excluir" no TaskCard abre DeleteConfirmModal
+- [x] Click no checkbox do TaskCard chama useUpdateTask com status: COMPLETED
+- [x] Alterar filtros atualiza lista
+- [x] Alterar página atualiza lista
 - [ ] Drag & Drop atualiza status/ordem da tarefa
 
 ### Resultado Esperado
