@@ -66,3 +66,54 @@ volumes:
 networks:
   loopt-network:
     driver: bridge
+
+# Nota: Para desenvolvimento local, os serviços api e worker são executados
+# fora do Docker usando "pnpm dev" para hot reload.
+# Os serviços abaixo podem ser usados em ambientes de CI/CD ou produção.
+# Para executar: docker compose --profile app up -d
+#
+# api:
+#   build:
+#     context: .
+#     dockerfile: apps/api/Dockerfile
+#   container_name: loopt-api
+#   restart: unless-stopped
+#   profiles:
+#     - app
+#   environment:
+#     - DATABASE_URL=postgresql://loopt:loopt@postgres:5432/loopt
+#     - REDIS_HOST=redis
+#     - REDIS_PORT=6379
+#     - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+#     - JWT_SECRET=${JWT_SECRET}
+#     - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+#     - API_PORT=3001
+#     - NODE_ENV=development
+#   ports:
+#     - "3001:3001"
+#   depends_on:
+#     postgres:
+#       condition: service_healthy
+#     redis:
+#       condition: service_healthy
+#     rabbitmq:
+#       condition: service_healthy
+#   networks:
+#     - loopt-network
+#
+# worker:
+#   build:
+#     context: .
+#     dockerfile: apps/worker/Dockerfile
+#   container_name: loopt-worker
+#   restart: unless-stopped
+#   profiles:
+#     - app
+#   environment:
+#     - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+#     - NODE_ENV=development
+#   depends_on:
+#     rabbitmq:
+#       condition: service_healthy
+#   networks:
+#     - loopt-network
