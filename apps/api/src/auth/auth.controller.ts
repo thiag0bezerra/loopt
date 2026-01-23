@@ -9,10 +9,8 @@ import {
 import { AuthService, AuthResponse, RefreshResponse } from './auth.service';
 import { RegisterDto, LoginDto, RefreshTokenDto } from './dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import {
-  CurrentUser,
-  CurrentUserPayload,
-} from './decorators/current-user.decorator';
+import { CurrentUser } from './decorators/current-user.decorator';
+import type { CurrentUserPayload } from './decorators/current-user.decorator';
 
 /**
  * Controller de autenticação

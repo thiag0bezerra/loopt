@@ -21,10 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { PaginatedResponse } from '@loopt/shared';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  CurrentUser,
-  CurrentUserPayload,
-} from '../auth/decorators/current-user.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import type { CurrentUserPayload } from '../auth/decorators/current-user.decorator';
 import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
 import {
