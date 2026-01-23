@@ -11,7 +11,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from '@workspace/ui/components/alert-dialog';
 import { useDeleteTask } from '@/hooks/use-tasks';
 
 /**

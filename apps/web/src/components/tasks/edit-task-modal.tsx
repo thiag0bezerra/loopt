@@ -7,8 +7,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
+} from '@workspace/ui/components/dialog';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 import { TaskForm, type TaskFormValues } from './task-form';
 import { useTask, useUpdateTask } from '@/hooks/use-tasks';
 import { useTags } from '@/hooks/use-tags';

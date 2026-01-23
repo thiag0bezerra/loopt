@@ -23,10 +23,10 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { TaskStatus, TaskPriority, type Task } from '@loopt/shared';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
+import { Card, CardContent } from '@workspace/ui/components/card';
+import { Badge } from '@workspace/ui/components/badge';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 import { CheckCircle, Clock, Loader2, ListTodo } from 'lucide-react';
 
 /**
@@ -248,7 +248,6 @@ interface KanbanColumnProps {
  * Componente de coluna do Kanban
  */
 function KanbanColumn({
-  id,
   title,
   icon: Icon,
   badgeVariant,

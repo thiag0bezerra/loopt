@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth.store';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 
 /**
  * Página inicial

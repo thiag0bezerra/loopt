@@ -3,13 +3,13 @@
 import * as React from 'react';
 import { Moon, Sun, Laptop } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@workspace/ui/components/dropdown-menu';
 
 /**
  * Componente para alternar entre temas (light, dark, system)

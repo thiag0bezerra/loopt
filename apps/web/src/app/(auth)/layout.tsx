@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckSquare } from 'lucide-react';
 import { useAuthStore } from '@/stores/auth.store';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 
 /**
  * Props do layout de autenticação

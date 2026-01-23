@@ -1,6 +1,6 @@
 'use client';
 
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '@workspace/ui/components/sonner';
 import { ReactNode } from 'react';
 
 /**

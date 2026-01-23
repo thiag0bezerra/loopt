@@ -3,18 +3,17 @@
 import * as React from 'react';
 import { ArrowDownAZ, ArrowUpZA, Search, X, Tag } from 'lucide-react';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { cn } from '@workspace/ui/lib/utils';
+import { Button } from '@workspace/ui/components/button';
+import { Input } from '@workspace/ui/components/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@workspace/ui/components/select';
 import { useTags } from '@/hooks/use-tags';
-import { TagBadge } from './tag-badge';
 
 /**
  * Valores de filtro de tarefas

@@ -8,7 +8,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@workspace/ui/components/dialog';
 import { TaskForm, type TaskFormValues } from './task-form';
 import { useCreateTask } from '@/hooks/use-tasks';
 import { useTags } from '@/hooks/use-tags';

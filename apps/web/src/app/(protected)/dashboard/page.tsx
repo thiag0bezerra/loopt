@@ -7,8 +7,8 @@ import {
   ListTodo,
   BarChart2,
 } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@workspace/ui/components/skeleton';
+import { Card, CardContent, CardHeader } from '@workspace/ui/components/card';
 import {
   useAnalyticsOverview,
   useAnalyticsByStatus,

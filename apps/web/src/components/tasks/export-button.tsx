@@ -5,13 +5,13 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Download, FileSpreadsheet, FileText } from 'lucide-react';
 import { TaskStatus, TaskPriority, type Task } from '@loopt/shared';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@workspace/ui/components/dropdown-menu';
 import { toast } from 'sonner';
 
 /**

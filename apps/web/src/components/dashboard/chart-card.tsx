@@ -5,8 +5,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+} from '@workspace/ui/components/card';
+import { cn } from '@workspace/ui/lib/utils';
 
 /**
  * Props para o componente ChartCard

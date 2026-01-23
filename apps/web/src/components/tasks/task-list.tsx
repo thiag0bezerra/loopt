@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { ClipboardList } from 'lucide-react';
 import type { Task } from '@loopt/shared';
-import { cn } from '@/lib/utils';
-import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
+import { Skeleton } from '@workspace/ui/components/skeleton';
 import { TaskCard } from './task-card';
 
 /**
