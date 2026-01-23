@@ -1129,65 +1129,65 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
 
 #### 10.1 Sidebar (usando shadcn/ui)
 
-- [ ] Criar src/components/layout/sidebar.tsx:
-  - [ ] Logo/nome do app no topo com ícone lucide-react
-  - [ ] Usar shadcn Button variant="ghost" para links de navegação
-  - [ ] Link para /tasks com ícone CheckSquare
-  - [ ] Link para /dashboard com ícone BarChart2
-  - [ ] Destacar link ativo (usePathname + variant="secondary")
-  - [ ] Usar shadcn Separator como divider
-  - [ ] Seção do usuário: nome e email do user logado
-  - [ ] Usar shadcn Button variant="outline" para logout
-- [ ] Criar src/components/layout/mobile-nav.tsx:
-  - [ ] Usar shadcn Sheet, SheetTrigger, SheetContent para drawer mobile
-  - [ ] Usar shadcn Button com ícone Menu para hamburger
-  - [ ] Mesmos links da sidebar dentro do SheetContent
-- [ ] Criar src/components/layout/header.tsx:
-  - [ ] Exibir apenas em mobile (hidden md:hidden)
-  - [ ] Logo e MobileNav (hamburger menu)
+- [x] Criar src/components/layout/sidebar.tsx:
+  - [x] Logo/nome do app no topo com ícone lucide-react
+  - [x] Usar shadcn Button variant="ghost" para links de navegação
+  - [x] Link para /tasks com ícone CheckSquare
+  - [x] Link para /dashboard com ícone BarChart2
+  - [x] Destacar link ativo (usePathname + variant="secondary")
+  - [x] Usar shadcn Separator como divider
+  - [x] Seção do usuário: nome e email do user logado
+  - [x] Usar shadcn Button variant="outline" para logout
+- [x] Criar src/components/layout/mobile-nav.tsx:
+  - [x] Usar shadcn Sheet, SheetTrigger, SheetContent para drawer mobile
+  - [x] Usar shadcn Button com ícone Menu para hamburger
+  - [x] Mesmos links da sidebar dentro do SheetContent
+- [x] Criar src/components/layout/header.tsx:
+  - [x] Exibir apenas em mobile (hidden md:hidden)
+  - [x] Logo e MobileNav (hamburger menu)
 
 #### 10.2 Layout Protegido
 
-- [ ] Atualizar src/app/(protected)/layout.tsx:
-  - [ ] Sidebar fixa à esquerda em desktop (w-64)
-  - [ ] Conteúdo principal à direita (flex-1)
-  - [ ] Header mobile com menu
-  - [ ] Responsivo: sidebar escondida em mobile
+- [x] Atualizar src/app/(protected)/layout.tsx:
+  - [x] Sidebar fixa à esquerda em desktop (w-64)
+  - [x] Conteúdo principal à direita (flex-1)
+  - [x] Header mobile com menu
+  - [x] Responsivo: sidebar escondida em mobile
 
 #### 10.3 Dark Mode (integrado com shadcn/ui)
 
-- [ ] shadcn já usa CSS variables, dark mode suportado nativamente
-- [ ] Instalar next-themes: `pnpm add next-themes`
-- [ ] Criar src/providers/theme-provider.tsx usando ThemeProvider do next-themes:
-  - [ ] Configurar attribute="class" e defaultTheme="system"
-  - [ ] Envolver app com ThemeProvider
-- [ ] Criar src/components/layout/theme-toggle.tsx:
-  - [ ] Usar shadcn Button variant="ghost" para toggle
-  - [ ] Usar shadcn DropdownMenu para opções: Light, Dark, System
-  - [ ] Ícones: Sun, Moon, Laptop do lucide-react
-  - [ ] Usar useTheme() do next-themes para setTheme
-- [ ] Adicionar ThemeToggle na sidebar
-- [ ] CSS variables do shadcn já definem cores para :root e .dark
-- [ ] Não precisa adicionar classes dark: manualmente - shadcn components já suportam
+- [x] shadcn já usa CSS variables, dark mode suportado nativamente
+- [x] Instalar next-themes: `pnpm add next-themes`
+- [x] Criar src/providers/theme-provider.tsx usando ThemeProvider do next-themes:
+  - [x] Configurar attribute="class" e defaultTheme="system"
+  - [x] Envolver app com ThemeProvider
+- [x] Criar src/components/layout/theme-toggle.tsx:
+  - [x] Usar shadcn Button variant="ghost" para toggle
+  - [x] Usar shadcn DropdownMenu para opções: Light, Dark, System
+  - [x] Ícones: Sun, Moon, Laptop do lucide-react
+  - [x] Usar useTheme() do next-themes para setTheme
+- [x] Adicionar ThemeToggle na sidebar
+- [x] CSS variables do shadcn já definem cores para :root e .dark
+- [x] Não precisa adicionar classes dark: manualmente - shadcn components já suportam
 
 #### 10.4 Notificações In-App
 
-- [ ] Criar src/components/layout/notifications-dropdown.tsx:
-  - [ ] Usar shadcn DropdownMenu com ícone Bell do lucide-react
-  - [ ] Badge com contador de não lidas
-  - [ ] Lista de notificações recentes (tarefas próximas do vencimento, tarefas atrasadas)
-  - [ ] Marcar como lida ao clicar
-  - [ ] Link para a tarefa relacionada
-- [ ] Criar src/stores/notifications.store.ts (Zustand):
-  - [ ] Estado: notifications[], unreadCount
-  - [ ] Actions: addNotification, markAsRead, markAllAsRead
-- [ ] Integrar com dados de analytics (dueSoon, overdueTasks)
+- [x] Criar src/components/layout/notifications-dropdown.tsx:
+  - [x] Usar shadcn DropdownMenu com ícone Bell do lucide-react
+  - [x] Badge com contador de não lidas
+  - [x] Lista de notificações recentes (tarefas próximas do vencimento, tarefas atrasadas)
+  - [x] Marcar como lida ao clicar
+  - [x] Link para a tarefa relacionada
+- [x] Criar src/stores/notifications.store.ts (Zustand):
+  - [x] Estado: notifications[], unreadCount
+  - [x] Actions: addNotification, markAsRead, markAllAsRead
+- [x] Integrar com dados de analytics (dueSoon, overdueTasks)
 - [ ] Criar src/stories/NotificationsDropdown.stories.tsx
 
 #### 10.5 Animações e Transições
 
-- [ ] shadcn components já possuem transições em hover
-- [ ] shadcn Dialog/AlertDialog já possuem animações de fade/scale
+- [x] shadcn components já possuem transições em hover
+- [x] shadcn Dialog/AlertDialog já possuem animações de fade/scale
 - [ ] Adicionar animações de entrada nas listas:
   - [ ] Usar CSS transitions ou framer-motion para stagger em TaskList
   - [ ] Animação de slide-in para novos itens
@@ -1199,10 +1199,10 @@ Implementar sistema de navegação (sidebar), adicionar dark mode como diferenci
 
 #### 10.6 Refinamentos Visuais e Acessibilidade
 
-- [ ] shadcn components já possuem focus-visible para acessibilidade (Radix UI)
+- [x] shadcn components já possuem focus-visible para acessibilidade (Radix UI)
 - [ ] Revisar contraste de cores em ambos os temas usando CSS variables
 - [ ] Customizar tailwind.config.ts se necessário ajustar cores do tema
-- [ ] Garantir ARIA labels em todos os ícones interativos
+- [x] Garantir ARIA labels em todos os ícones interativos
 - [ ] Testar navegação por teclado em todas as páginas
 - [ ] Verificar screen reader compatibility
 
