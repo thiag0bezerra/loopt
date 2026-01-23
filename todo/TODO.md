@@ -955,29 +955,29 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 
 #### 8.7 Drag & Drop para Reordenação
 
-- [ ] Instalar dependência: `pnpm add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`
-- [ ] Criar src/components/tasks/task-board.tsx (visão Kanban opcional):
-  - [ ] Colunas por status: Pendente, Em Progresso, Concluída
-  - [ ] Usar DndContext e SortableContext do @dnd-kit
-  - [ ] Permitir arrastar tarefas entre colunas (atualiza status)
-  - [ ] Permitir reordenar tarefas dentro da coluna
-- [ ] Adicionar campo `order` na entity Task para persistir ordenação
-- [ ] Implementar PATCH /tasks/reorder no backend para atualizar ordem em batch
-- [ ] Criar src/stories/TaskBoard.stories.tsx
+- [x] Instalar dependência: `pnpm add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`
+- [x] Criar src/components/tasks/task-board.tsx (visão Kanban opcional):
+  - [x] Colunas por status: Pendente, Em Progresso, Concluída
+  - [x] Usar DndContext e SortableContext do @dnd-kit
+  - [x] Permitir arrastar tarefas entre colunas (atualiza status)
+  - [x] Permitir reordenar tarefas dentro da coluna
+- [x] Adicionar campo `order` na entity Task para persistir ordenação
+- [x] Implementar PATCH /tasks/reorder no backend para atualizar ordem em batch
+- [x] Criar src/stories/TaskBoard.stories.tsx
 
 #### 8.8 Export de Dados
 
-- [ ] Criar src/components/tasks/export-button.tsx:
-  - [ ] Usar shadcn DropdownMenu com opções: CSV, PDF
-  - [ ] Ícone Download do lucide-react
-- [ ] Implementar exportação CSV:
-  - [ ] Gerar CSV client-side com dados das tarefas filtradas
-  - [ ] Download automático do arquivo
-- [ ] Implementar exportação PDF:
-  - [ ] Instalar dependência: `pnpm add jspdf jspdf-autotable`
-  - [ ] Gerar PDF com tabela de tarefas
-  - [ ] Incluir filtros aplicados no cabeçalho
-- [ ] Criar src/stories/ExportButton.stories.tsx
+- [x] Criar src/components/tasks/export-button.tsx:
+  - [x] Usar shadcn DropdownMenu com opções: CSV, PDF
+  - [x] Ícone Download do lucide-react
+- [x] Implementar exportação CSV:
+  - [x] Gerar CSV client-side com dados das tarefas filtradas
+  - [x] Download automático do arquivo
+- [x] Implementar exportação PDF:
+  - [x] Instalar dependência: `pnpm add jspdf jspdf-autotable`
+  - [x] Gerar PDF com tabela de tarefas
+  - [x] Incluir filtros aplicados no cabeçalho
+- [x] Criar src/stories/ExportButton.stories.tsx
 
 #### 8.9 Interações
 
@@ -987,7 +987,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
 - [x] Click no checkbox do TaskCard chama useUpdateTask com status: COMPLETED
 - [x] Alterar filtros atualiza lista
 - [x] Alterar página atualiza lista
-- [ ] Drag & Drop atualiza status/ordem da tarefa
+- [x] Drag & Drop atualiza status/ordem da tarefa
 
 ### Resultado Esperado
 
