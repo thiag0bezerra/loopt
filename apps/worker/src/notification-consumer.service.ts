@@ -1,10 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import {
-  MessagePattern,
-  Payload,
-  Ctx,
-  RmqContext,
-} from '@nestjs/microservices';
+import { EventPattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 
 /**
  * Interface que define o payload de uma notificação de tarefa
@@ -36,7 +31,7 @@ export class NotificationConsumerService {
    * @param payload Dados da notificação
    * @param context Contexto RabbitMQ
    */
-  @MessagePattern('task.created.high')
+  @EventPattern('task.created.high')
   async handleHighPriorityTask(
     @Payload() payload: TaskNotificationPayload,
     @Ctx() context: RmqContext,
