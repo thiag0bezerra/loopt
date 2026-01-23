@@ -51,7 +51,7 @@ Exemplos válidos:
 - `feat(auth): add jwt authentication`
 - `fix(api): resolve null pointer in user service`
 - `docs(readme): update installation instructions`
-- `refactor(database): migrate to prisma orm`
+- `refactor(database): migrate to orm`
 - `feat(api)!: change response format to camelCase`
 - `chore(deps): upgrade husky to v9`
 - `test(user): add unit tests for user creation`

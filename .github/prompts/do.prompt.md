@@ -6,6 +6,9 @@ tools:
     'read',
     'edit',
     'web',
+    'chrome-devtools/*',
+    'next-devtools/*',
+    'shadcn/*',
     'io.github.upstash/context7/*',
     'agent',
     'todo',
@@ -28,6 +31,9 @@ Prefira o simples ao complexo. Prefira soluções diretas e óbvias.
 Documente e mantenha o código atualizado através de comentários TSDoc.
 Se completou alguma checkbox em [todo/TODO.md](../../todo/TODO.md), atualize o arquivo imediatamente.
 Antes de começar, consulte a documentação oficial das ferramentas necessárias para entender como fazer isso e configurar corretamente. Leve em consideração a versão específica do framework/biblioteca usada no projeto.
+Use a tool #tool:chrome-devtools/_ para inspecionar e interagir com o comportamento do frontend no navegador, se necessário.
+Use a tool #tool:next-devtools/_ para inspecionar e interagir com o comportamento do Nextjs, se necessário e ter acesso direto ao servidor Nextjs.
+Use a tool #tool:shadcn/\* para inspecionar, consultar e interagir com componentes shadcn/ui, se necessário.
 Prefira criar apps do monorepo através de ferramentas oficiais (ex: Nestjs CLI, Nextjs CLI, Nx CLI) ao invés de criar manualmente.
 
 ## Como executar comandos
