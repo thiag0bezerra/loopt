@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 import { getAccessToken } from '@/lib/api';
+import { useAuthStore } from '@/stores/auth.store';
 import { TASKS_QUERY_KEY, TASK_QUERY_KEY } from './use-tasks';
 import type { Task } from '@loopt/shared';
 
@@ -41,6 +42,9 @@ interface UseTasksWebsocketReturn {
 export function useTasksWebsocket(): UseTasksWebsocketReturn {
   const queryClient = useQueryClient();
   const socketRef = useRef<Socket | null>(null);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   /**
    * Handler para eventos de tarefa recebidos via WebSocket
@@ -61,6 +65,11 @@ export function useTasksWebsocket(): UseTasksWebsocketReturn {
   );
 
   useEffect(() => {
+    // Aguarda a hidratação do auth store, autenticação e fim do loading antes de conectar
+    if (!isHydrated || !isAuthenticated || isLoading) {
+      return;
+    }
+
     const token = getAccessToken();
 
     // Não conecta se não há token de autenticação
@@ -112,7 +121,7 @@ export function useTasksWebsocket(): UseTasksWebsocketReturn {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [handleTaskEvent]);
+  }, [handleTaskEvent, isHydrated, isAuthenticated, isLoading]);
 
   /**
    * Retorna o estado da conexão
