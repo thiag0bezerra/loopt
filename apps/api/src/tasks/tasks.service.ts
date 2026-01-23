@@ -213,7 +213,7 @@ export class TasksService {
     }
 
     // Mescla os dados atualizados (exceto tagIds que já foi tratado)
-    const { tagIds, ...updateData } = dto;
+    const { tagIds: _tagIds, ...updateData } = dto;
     Object.assign(task, {
       ...updateData,
       dueDate:

@@ -16,8 +16,8 @@ vi.mock('bcrypt', () => ({
 
 describe('AuthService', () => {
   let authService: AuthService;
-  let usersService: UsersService;
-  let jwtService: JwtService;
+  let _usersService: UsersService;
+  let _jwtService: JwtService;
 
   const mockUser: User = {
     id: 'user-uuid-123',
@@ -56,8 +56,8 @@ describe('AuthService', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
-    usersService = module.get<UsersService>(UsersService);
-    jwtService = module.get<JwtService>(JwtService);
+    _usersService = module.get<UsersService>(UsersService);
+    _jwtService = module.get<JwtService>(JwtService);
   });
 
   describe('register', () => {

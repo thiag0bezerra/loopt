@@ -15,7 +15,7 @@ import { TasksGateway } from './tasks.gateway';
 
 describe('TasksService', () => {
   let tasksService: TasksService;
-  let tasksRepository: Repository<Task>;
+  let _tasksRepository: Repository<Task>;
 
   const mockUserId = 'user-uuid-123';
 
@@ -114,7 +114,7 @@ describe('TasksService', () => {
     }).compile();
 
     tasksService = module.get<TasksService>(TasksService);
-    tasksRepository = module.get<Repository<Task>>(getRepositoryToken(Task));
+    _tasksRepository = module.get<Repository<Task>>(getRepositoryToken(Task));
   });
 
   describe('create', () => {

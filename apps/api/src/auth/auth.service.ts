@@ -65,7 +65,7 @@ export class AuthService {
 
     const { accessToken, refreshToken } = this.generateTokens(user);
 
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return {
       accessToken,
       refreshToken,
@@ -87,7 +87,7 @@ export class AuthService {
 
     const { accessToken, refreshToken } = this.generateTokens(user);
 
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return {
       accessToken,
       refreshToken,
