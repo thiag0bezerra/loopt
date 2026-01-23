@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowDownAZ, ArrowUpZA, Search, X } from 'lucide-react';
+import { ArrowDownAZ, ArrowUpZA, Search, X, Tag } from 'lucide-react';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useTags } from '@/hooks/use-tags';
+import { TagBadge } from './tag-badge';
 
 /**
  * Valores de filtro de tarefas
@@ -22,6 +24,8 @@ export interface TaskFilterValues {
   status?: TaskStatus | 'all';
   /** Filtrar por prioridade */
   priority?: TaskPriority | 'all';
+  /** Filtrar por tag */
+  tagId?: string | 'all';
   /** Busca em título e descrição */
   search?: string;
   /** Campo para ordenação */
@@ -98,7 +102,7 @@ function useDebounce<T>(value: T, delay: number = 300): T {
 /**
  * Componente de filtros para a lista de tarefas
  *
- * Inclui filtros por status, prioridade, busca com debounce e ordenação.
+ * Inclui filtros por status, prioridade, tag, busca com debounce e ordenação.
  *
  * @example
  * ```tsx
@@ -114,6 +118,9 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
 
   // Valor debounced da busca
   const debouncedSearch = useDebounce(searchInput, 300);
+
+  // Busca as tags do usuário
+  const { data: tags = [] } = useTags();
 
   // Atualiza os filtros quando a busca debounced muda
   React.useEffect(() => {
@@ -144,6 +151,16 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
     onChange({
       ...values,
       priority: priority === 'all' ? undefined : (priority as TaskPriority),
+    });
+  };
+
+  /**
+   * Manipula mudança de tag
+   */
+  const handleTagChange = (tagId: string) => {
+    onChange({
+      ...values,
+      tagId: tagId === 'all' ? undefined : tagId,
     });
   };
 
@@ -189,6 +206,7 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
   const hasActiveFilters =
     values.status ||
     values.priority ||
+    values.tagId ||
     values.search ||
     values.sortBy !== 'createdAt' ||
     values.sortOrder !== 'DESC';
@@ -292,6 +310,34 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
             ))}
           </SelectContent>
         </Select>
+
+        {/* Filtro por tag */}
+        {tags.length > 0 && (
+          <Select value={values.tagId ?? 'all'} onValueChange={handleTagChange}>
+            <SelectTrigger className="w-full sm:w-44">
+              <SelectValue placeholder="Tag" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">
+                <span className="flex items-center gap-2">
+                  <Tag className="h-4 w-4 text-muted-foreground" />
+                  Todas as tags
+                </span>
+              </SelectItem>
+              {tags.map((tag) => (
+                <SelectItem key={tag.id} value={tag.id}>
+                  <span className="flex items-center gap-2">
+                    <span
+                      className="h-3 w-3 rounded-full"
+                      style={{ backgroundColor: tag.color }}
+                    />
+                    {tag.name}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         {/* Botão para limpar filtros */}
         {hasActiveFilters && (

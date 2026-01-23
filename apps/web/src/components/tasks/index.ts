@@ -21,3 +21,5 @@ export {
   DeleteConfirmModal,
   type DeleteConfirmModalProps,
 } from './delete-confirm-modal';
+export { TagBadge, type TagBadgeProps, type TagBadgeTag } from './tag-badge';
+export { TagManager, type TagManagerProps } from './tag-manager';
