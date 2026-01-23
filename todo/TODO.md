@@ -1243,43 +1243,43 @@ Implementar testes unitários no backend e testes de componentes no frontend.
 
 #### 11.1 Configuração Vitest Backend
 
-- [ ] Instalar: `pnpm add -D vitest @vitest/coverage-v8 unplugin-swc`
-- [ ] Criar vitest.config.ts no apps/api
-- [ ] Configurar para usar SWC (compatibilidade com decorators NestJS)
-- [ ] Ajustar scripts no package.json: test, test:cov
+- [x] Instalar: `pnpm add -D vitest @vitest/coverage-v8 unplugin-swc`
+- [x] Criar vitest.config.ts no apps/api
+- [x] Configurar para usar SWC (compatibilidade com decorators NestJS)
+- [x] Ajustar scripts no package.json: test, test:cov
 
 #### 11.2 Testes Backend
 
-- [ ] Teste 1: AuthService.register cria usuário com senha hasheada
-- [ ] Teste 2: AuthService.login retorna token para credenciais válidas
-- [ ] Teste 3: TasksService.create cria tarefa vinculada ao usuário
-- [ ] Teste 4: TasksService.findAll retorna tarefas paginadas
-- [ ] Teste 5: TasksService.update preenche completedAt quando status = COMPLETED
-- [ ] Teste 6: AnalyticsService.getOverview calcula métricas corretamente (extra)
+- [x] Teste 1: AuthService.register cria usuário com senha hasheada
+- [x] Teste 2: AuthService.login retorna token para credenciais válidas
+- [x] Teste 3: TasksService.create cria tarefa vinculada ao usuário
+- [x] Teste 4: TasksService.findAll retorna tarefas paginadas
+- [x] Teste 5: TasksService.update preenche completedAt quando status = COMPLETED
+- [x] Teste 6: AnalyticsService.getOverview calcula métricas corretamente (extra)
 
 #### 11.3 Configuração Vitest Frontend
 
-- [ ] Instalar: `pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react`
-- [ ] Criar vitest.config.ts no apps/web
-- [ ] Criar src/test/setup.ts com configuração do testing-library
-- [ ] Ajustar scripts no package.json: test, test:cov
+- [x] Instalar: `pnpm add -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react`
+- [x] Criar vitest.config.ts no apps/web
+- [x] Criar src/test/setup.ts com configuração do testing-library
+- [x] Ajustar scripts no package.json: test, test:cov
 
 #### 11.4 Testes Frontend (componentes shadcn/ui)
 
-- [ ] Teste 1: TaskCard renderiza título e shadcn Badges corretamente
-- [ ] Teste 2: TaskFilters chama callback ao alterar shadcn Select
-- [ ] Teste 3: LoginForm exibe erro de validação para campos vazios (shadcn Form)
-- [ ] Teste 4: KPICard renderiza valor e título no shadcn Card (extra)
+- [x] Teste 1: TaskCard renderiza título e shadcn Badges corretamente
+- [x] Teste 2: TaskFilters chama callback ao alterar shadcn Select
+- [x] Teste 3: LoginForm exibe erro de validação para campos vazios (shadcn Form)
+- [x] Teste 4: KPICard renderiza valor e título no shadcn Card (extra)
 
 #### 11.5 GitHub Actions CI
 
-- [ ] Criar .github/workflows/ci.yml
-- [ ] Trigger: push para main, pull_request
-- [ ] Job lint: rodar ESLint em todos os packages
-- [ ] Job typecheck: rodar tsc em todos os packages
-- [ ] Job test: rodar vitest em api e web
-- [ ] Configurar cache de pnpm
-- [ ] Configurar services para PostgreSQL, Redis e RabbitMQ nos testes
+- [x] Criar .github/workflows/ci.yml
+- [x] Trigger: push para main, pull_request
+- [x] Job lint: rodar ESLint em todos os packages
+- [x] Job typecheck: rodar tsc em todos os packages
+- [x] Job test: rodar vitest em api e web
+- [x] Configurar cache de pnpm
+- [x] Configurar services para PostgreSQL, Redis e RabbitMQ nos testes
 
 ### Resultado Esperado
 
