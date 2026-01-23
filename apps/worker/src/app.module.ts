@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { NotificationConsumerService } from './notification-consumer.service';
+import { validate } from './config/env.validation';
 
 /**
  * Módulo principal do worker
@@ -9,6 +10,7 @@ import { NotificationConsumerService } from './notification-consumer.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validate,
     }),
   ],
   providers: [NotificationConsumerService],
