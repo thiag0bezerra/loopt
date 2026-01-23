@@ -1287,11 +1287,11 @@ Projeto com cobertura de testes adequada (mínimo 5 backend, 3 frontend). GitHub
 
 ### Checklist de Validação
 
-- [ ] `pnpm --filter api test` executa 5+ testes sem falhas
-- [ ] `pnpm --filter web test` executa 3+ testes sem falhas
-- [ ] CI executa em push para main
-- [ ] CI executa em pull requests
-- [ ] Falha em lint ou teste quebra o CI
+- [x] `pnpm --filter api test` executa 5+ testes sem falhas
+- [x] `pnpm --filter web test` executa 3+ testes sem falhas
+- [x] CI executa em push para main
+- [x] CI executa em pull requests
+- [x] Falha em lint ou teste quebra o CI
 
 ---
 
