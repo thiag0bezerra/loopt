@@ -1395,30 +1395,30 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
 
 #### 12.2 Swagger
 
-- [ ] Revisar todos os endpoints no Swagger
-- [ ] Verificar descriptions em cada operação
-- [ ] Verificar examples de request e response
-- [ ] Verificar documentação de códigos de erro (400, 401, 404, 409)
-- [ ] Testar cada endpoint via Swagger UI
+- [x] Revisar todos os endpoints no Swagger
+- [x] Verificar descriptions em cada operação
+- [x] Verificar examples de request e response
+- [x] Verificar documentação de códigos de erro (400, 401, 404, 409)
+- [x] Testar cada endpoint via Swagger UI
 
 #### 12.3 Arquivo .env.example
 
-- [ ] Incluir todas as variáveis com valores de exemplo:
-  - [ ] DATABASE_URL
-  - [ ] REDIS_URL
-  - [ ] RABBITMQ_URL
-  - [ ] JWT_SECRET
-  - [ ] JWT_EXPIRES_IN
-  - [ ] API_PORT
-  - [ ] NEXT_PUBLIC_API_URL
+- [x] Incluir todas as variáveis com valores de exemplo:
+  - [x] DATABASE_URL
+  - [x] REDIS_URL
+  - [x] RABBITMQ_URL
+  - [x] JWT_SECRET
+  - [x] JWT_EXPIRES_IN
+  - [x] API_PORT
+  - [x] NEXT_PUBLIC_API_URL
 
 #### 12.4 Revisão de Código
 
-- [ ] Remover console.log desnecessários
-- [ ] Remover código comentado
-- [ ] Remover imports não utilizados
-- [ ] Executar `pnpm lint` e corrigir warnings
-- [ ] Executar `pnpm typecheck` e corrigir erros
+- [x] Remover console.log desnecessários
+- [x] Remover código comentado
+- [x] Remover imports não utilizados
+- [x] Executar `pnpm lint` e corrigir warnings
+- [x] Executar `pnpm typecheck` e corrigir erros
 
 #### 12.5 Git
 
