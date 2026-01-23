@@ -31,4 +31,4 @@ async function bootstrap(): Promise<void> {
   console.log('🚀 Worker microservice is listening for messages...');
 }
 
-bootstrap();
+void bootstrap();
