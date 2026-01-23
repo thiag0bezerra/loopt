@@ -22,9 +22,7 @@ This Turborepo includes the following packages & apps:
 │   ├── api                       # NestJS app (https://nestjs.com).
 │   └── web                       # Next.js app (https://nextjs.org).
 └── packages
-    ├── @repo/api                 # Shared `NestJS` resources.
     ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-    ├── @repo/jest-config         # `jest` configurations
     ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
     └── @repo/ui                  # Shareable stub React component library.
 ```
@@ -38,7 +36,7 @@ This `Turborepo` has some additional tools already set for you:
 - [TypeScript](https://www.typescriptlang.org/) for static type-safety
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
+- [Vitest](https://vitest.dev/) & [Playwright](https://playwright.dev/) for testing
 
 ### Commands
 
@@ -69,8 +67,6 @@ pnpm run test
 
 # You can launch e2e testes with `test:e2e`
 pnpm run test:e2e
-
-# See `@repo/jest-config` to customize the behavior.
 ```
 
 #### Lint
