@@ -875,7 +875,7 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
   - [x] Usar shadcn Input para busca com debounce de 300ms
   - [x] Usar shadcn Select para ordenação (Data de criação, Data de vencimento, Prioridade)
   - [x] Usar shadcn Button com ícone para toggle ordem (ASC/DESC)
-  - [ ] Usar shadcn Select para filtrar por tag (se implementado)
+  - [x] Usar shadcn Select para filtrar por tag (se implementado)
   - [x] Criar src/stories/TaskFilters.stories.tsx
 - [x] Criar src/components/tasks/pagination.tsx:
   - [x] Usar shadcn Pagination, PaginationContent, PaginationItem
@@ -906,13 +906,13 @@ Implementar a página de gestão de tarefas com listagem, criação, edição, e
   - [x] Implementar useTags(): query GET /tags
   - [x] Implementar useCreateTag: mutation POST /tags
   - [x] Implementar useDeleteTag: mutation DELETE /tags/:id
-- [ ] Criar src/components/tasks/tag-badge.tsx:
-  - [ ] Usar shadcn Badge com cor dinâmica baseada na tag.color
-  - [ ] Criar src/stories/TagBadge.stories.tsx
-- [ ] Criar src/components/tasks/tag-manager.tsx:
-  - [ ] Modal para criar/editar/deletar tags do usuário
-  - [ ] Color picker para cor da tag
-  - [ ] Criar src/stories/TagManager.stories.tsx
+- [x] Criar src/components/tasks/tag-badge.tsx:
+  - [x] Usar shadcn Badge com cor dinâmica baseada na tag.color
+  - [x] Criar src/stories/TagBadge.stories.tsx
+- [x] Criar src/components/tasks/tag-manager.tsx:
+  - [x] Modal para criar/editar/deletar tags do usuário
+  - [x] Color picker para cor da tag
+  - [x] Criar src/stories/TagManager.stories.tsx
 
 #### 8.4 Modais (usando shadcn/ui)
 
