@@ -24,7 +24,6 @@ import {
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from '@workspace/ui/components/collapsible';
 import { useTags } from '@/hooks/use-tags';
 
