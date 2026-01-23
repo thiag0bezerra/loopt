@@ -8,7 +8,7 @@ import type { Task } from '@loopt/shared';
 /**
  * URL base da API para conexão WebSocket
  */
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
 
 /**
  * Tipo de ação para eventos de tarefa
