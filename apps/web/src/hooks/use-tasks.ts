@@ -215,3 +215,36 @@ export function useDeleteTask() {
     },
   });
 }
+
+/**
+ * Dados para reordenação de tarefa
+ */
+export interface ReorderTaskInput {
+  /** ID da tarefa */
+  id: string;
+  /** Nova ordem (0 = primeiro) */
+  order: number;
+}
+
+/**
+ * Hook para reordenar múltiplas tarefas em batch
+ * @returns Mutation do React Query para reordenação de tarefas
+ */
+export function useReorderTasks() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (tasks: ReorderTaskInput[]) => {
+      await api.patch('/tasks/reorder', { tasks });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [TASKS_QUERY_KEY] });
+    },
+    onError: (error: AxiosError<ApiError>) => {
+      const message =
+        error.response?.data?.message ??
+        'Erro ao reordenar tarefas. Tente novamente.';
+      toast.error(message);
+    },
+  });
+}

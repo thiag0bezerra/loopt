@@ -23,3 +23,5 @@ export {
 } from './delete-confirm-modal';
 export { TagBadge, type TagBadgeProps, type TagBadgeTag } from './tag-badge';
 export { TagManager, type TagManagerProps } from './tag-manager';
+export { TaskBoard, type TaskBoardProps } from './task-board';
+export { ExportButton, type ExportButtonProps } from './export-button';
