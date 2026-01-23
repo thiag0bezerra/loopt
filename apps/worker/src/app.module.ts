@@ -13,6 +13,6 @@ import { validate } from './config/env.validation';
       validate,
     }),
   ],
-  providers: [NotificationConsumerService],
+  controllers: [NotificationConsumerService],
 })
 export class AppModule {}
