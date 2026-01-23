@@ -1,9 +1,17 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowDownAZ, ArrowUpZA, Search, X, Tag } from 'lucide-react';
+import {
+  ArrowDownAZ,
+  ArrowUpZA,
+  Search,
+  X,
+  Tag,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { TaskStatus, TaskPriority } from '@loopt/shared';
 import { cn } from '@workspace/ui/lib/utils';
+import { Badge } from '@workspace/ui/components/badge';
 import { Button } from '@workspace/ui/components/button';
 import { Input } from '@workspace/ui/components/input';
 import {
@@ -13,6 +21,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@workspace/ui/components/select';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@workspace/ui/components/collapsible';
 import { useTags } from '@/hooks/use-tags';
 
 /**
@@ -210,25 +223,36 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
     values.sortBy !== 'createdAt' ||
     values.sortOrder !== 'DESC';
 
+  // Conta quantos filtros estão ativos (excluindo ordenação)
+  const activeFiltersCount = [
+    values.status,
+    values.priority,
+    values.tagId,
+    values.search,
+  ].filter(Boolean).length;
+
+  // Estado para o collapsible em mobile
+  const [filtersOpen, setFiltersOpen] = React.useState(false);
+
   return (
-    <div className={cn('space-y-4', className)}>
-      {/* Linha 1: Busca e ordenação */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Campo de busca */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+    <div className={cn('space-y-3', className)}>
+      {/* Linha 1: Busca, toggle de filtros (mobile) e ordenação */}
+      <div className="flex flex-col gap-3">
+        {/* Busca - sempre visível e full width em mobile */}
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <Input
             type="text"
             placeholder="Buscar tarefas..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="pl-9 pr-9"
+            className="h-11 pl-10 pr-10 text-base md:h-10 md:text-sm"
           />
           {searchInput && (
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 md:h-8 md:w-8"
               onClick={clearSearch}
               aria-label="Limpar busca"
             >
@@ -237,17 +261,79 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
           )}
         </div>
 
-        {/* Ordenação */}
-        <div className="flex gap-2">
-          <Select
-            value={values.sortBy ?? 'createdAt'}
-            onValueChange={handleSortByChange}
+        {/* Linha de ações: ordenação + toggle filtros */}
+        <div className="flex items-center gap-2">
+          {/* Ordenação - compacta em mobile */}
+          <div className="flex flex-1 gap-2 sm:flex-initial">
+            <Select
+              value={values.sortBy ?? 'createdAt'}
+              onValueChange={handleSortByChange}
+            >
+              <SelectTrigger className="h-11 flex-1 sm:w-[180px] md:h-10">
+                <SelectValue placeholder="Ordenar por" />
+              </SelectTrigger>
+              <SelectContent>
+                {sortByOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleSortOrder}
+              className="h-11 w-11 shrink-0 md:h-10 md:w-10"
+              aria-label={
+                values.sortOrder === 'ASC'
+                  ? 'Ordenar decrescente'
+                  : 'Ordenar crescente'
+              }
+            >
+              {values.sortOrder === 'ASC' ? (
+                <ArrowUpZA className="h-4 w-4" />
+              ) : (
+                <ArrowDownAZ className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+
+          {/* Toggle de filtros para mobile */}
+          <Button
+            variant={activeFiltersCount > 0 ? 'default' : 'outline'}
+            onClick={() => setFiltersOpen(!filtersOpen)}
+            className="h-11 shrink-0 gap-2 sm:hidden"
           >
-            <SelectTrigger className="w-44">
-              <SelectValue placeholder="Ordenar por" />
+            <SlidersHorizontal className="h-4 w-4" />
+            Filtros
+            {activeFiltersCount > 0 && (
+              <Badge
+                variant="secondary"
+                className="ml-1 h-5 w-5 rounded-full p-0 text-xs"
+              >
+                {activeFiltersCount}
+              </Badge>
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Filtros - colapsáveis em mobile, sempre visíveis em desktop */}
+      <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+        {/* Desktop: sempre visível */}
+        <div className="hidden sm:flex sm:flex-wrap sm:items-center sm:gap-2">
+          {/* Filtro por status */}
+          <Select
+            value={values.status ?? 'all'}
+            onValueChange={handleStatusChange}
+          >
+            <SelectTrigger className="h-10 w-[160px]">
+              <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              {sortByOptions.map((option) => (
+              {statusOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
@@ -255,101 +341,150 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
             </SelectContent>
           </Select>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleSortOrder}
-            aria-label={
-              values.sortOrder === 'ASC'
-                ? 'Ordenar decrescente'
-                : 'Ordenar crescente'
-            }
+          {/* Filtro por prioridade */}
+          <Select
+            value={values.priority ?? 'all'}
+            onValueChange={handlePriorityChange}
           >
-            {values.sortOrder === 'ASC' ? (
-              <ArrowUpZA className="h-4 w-4" />
-            ) : (
-              <ArrowDownAZ className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-      </div>
-
-      {/* Linha 2: Filtros por status e prioridade */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Filtro por status */}
-        <Select
-          value={values.status ?? 'all'}
-          onValueChange={handleStatusChange}
-        >
-          <SelectTrigger className="w-full sm:w-44">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            {statusOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Filtro por prioridade */}
-        <Select
-          value={values.priority ?? 'all'}
-          onValueChange={handlePriorityChange}
-        >
-          <SelectTrigger className="w-full sm:w-44">
-            <SelectValue placeholder="Prioridade" />
-          </SelectTrigger>
-          <SelectContent>
-            {priorityOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Filtro por tag */}
-        {tags.length > 0 && (
-          <Select value={values.tagId ?? 'all'} onValueChange={handleTagChange}>
-            <SelectTrigger className="w-full sm:w-44">
-              <SelectValue placeholder="Tag" />
+            <SelectTrigger className="h-10 w-[180px]">
+              <SelectValue placeholder="Prioridade" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">
-                <span className="flex items-center gap-2">
-                  <Tag className="h-4 w-4 text-muted-foreground" />
-                  Todas as tags
-                </span>
-              </SelectItem>
-              {tags.map((tag) => (
-                <SelectItem key={tag.id} value={tag.id}>
-                  <span className="flex items-center gap-2">
-                    <span
-                      className="h-3 w-3 rounded-full"
-                      style={{ backgroundColor: tag.color }}
-                    />
-                    {tag.name}
-                  </span>
+              {priorityOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-        )}
 
-        {/* Botão para limpar filtros */}
-        {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            onClick={clearAllFilters}
-            className="text-muted-foreground"
-          >
-            <X className="mr-2 h-4 w-4" />
-            Limpar filtros
-          </Button>
-        )}
-      </div>
+          {/* Filtro por tag */}
+          {tags.length > 0 && (
+            <Select
+              value={values.tagId ?? 'all'}
+              onValueChange={handleTagChange}
+            >
+              <SelectTrigger className="h-10 w-[160px]">
+                <SelectValue placeholder="Tag" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">
+                  <span className="flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-muted-foreground" />
+                    Todas as tags
+                  </span>
+                </SelectItem>
+                {tags.map((tag) => (
+                  <SelectItem key={tag.id} value={tag.id}>
+                    <span className="flex items-center gap-2">
+                      <span
+                        className="h-3 w-3 rounded-full shrink-0"
+                        style={{ backgroundColor: tag.color }}
+                      />
+                      {tag.name}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          {/* Botão para limpar filtros */}
+          {hasActiveFilters && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearAllFilters}
+              className="h-10 text-muted-foreground hover:text-foreground"
+            >
+              <X className="mr-1 h-4 w-4" />
+              Limpar
+            </Button>
+          )}
+        </div>
+
+        {/* Mobile: colapsável */}
+        <CollapsibleContent className="sm:hidden">
+          <div className="flex flex-col gap-3 pt-3 border-t mt-3">
+            {/* Filtro por status */}
+            <Select
+              value={values.status ?? 'all'}
+              onValueChange={handleStatusChange}
+            >
+              <SelectTrigger className="h-11 w-full">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {statusOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Filtro por prioridade */}
+            <Select
+              value={values.priority ?? 'all'}
+              onValueChange={handlePriorityChange}
+            >
+              <SelectTrigger className="h-11 w-full">
+                <SelectValue placeholder="Prioridade" />
+              </SelectTrigger>
+              <SelectContent>
+                {priorityOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Filtro por tag */}
+            {tags.length > 0 && (
+              <Select
+                value={values.tagId ?? 'all'}
+                onValueChange={handleTagChange}
+              >
+                <SelectTrigger className="h-11 w-full">
+                  <SelectValue placeholder="Tag" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">
+                    <span className="flex items-center gap-2">
+                      <Tag className="h-4 w-4 text-muted-foreground" />
+                      Todas as tags
+                    </span>
+                  </SelectItem>
+                  {tags.map((tag) => (
+                    <SelectItem key={tag.id} value={tag.id}>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="h-3 w-3 rounded-full shrink-0"
+                          style={{ backgroundColor: tag.color }}
+                        />
+                        {tag.name}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+
+            {/* Botão para limpar filtros */}
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                onClick={clearAllFilters}
+                className="h-11 w-full text-muted-foreground"
+              >
+                <X className="mr-2 h-4 w-4" />
+                Limpar todos os filtros
+              </Button>
+            )}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

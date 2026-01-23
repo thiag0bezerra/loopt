@@ -157,28 +157,32 @@ export function TaskCard({
   return (
     <Card
       className={cn(
-        'transition-all hover:shadow-md',
+        'transition-all hover:shadow-md active:scale-[0.99]',
         isCompleted && 'opacity-60',
         className,
       )}
     >
-      <CardHeader className="pb-2">
-        <div className="flex items-start gap-3">
-          {/* Checkbox para marcar como concluída */}
-          <Checkbox
-            checked={isCompleted}
-            onCheckedChange={handleCheckboxChange}
-            aria-label={
-              isCompleted ? 'Desmarcar como concluída' : 'Marcar como concluída'
-            }
-            className="mt-1"
-          />
+      <CardHeader className="p-4 pb-3 sm:p-6 sm:pb-3">
+        <div className="flex items-start gap-3 sm:gap-4">
+          {/* Checkbox para marcar como concluída - maior em mobile */}
+          <div className="flex items-center justify-center h-6 w-6 sm:h-5 sm:w-5">
+            <Checkbox
+              checked={isCompleted}
+              onCheckedChange={handleCheckboxChange}
+              aria-label={
+                isCompleted
+                  ? 'Desmarcar como concluída'
+                  : 'Marcar como concluída'
+              }
+              className="h-5 w-5 sm:h-4 sm:w-4"
+            />
+          </div>
 
           {/* Título e descrição */}
           <div className="flex-1 min-w-0">
             <CardTitle
               className={cn(
-                'text-base line-clamp-1',
+                'text-base leading-tight line-clamp-2 sm:line-clamp-1',
                 isCompleted && 'line-through text-muted-foreground',
               )}
             >
@@ -188,7 +192,7 @@ export function TaskCard({
             {task.description && (
               <p
                 className={cn(
-                  'text-sm text-muted-foreground line-clamp-2 mt-1',
+                  'text-sm text-muted-foreground line-clamp-2 mt-1.5 sm:mt-1',
                   isCompleted && 'line-through',
                 )}
               >
@@ -197,25 +201,29 @@ export function TaskCard({
             )}
           </div>
 
-          {/* Menu de ações */}
+          {/* Menu de ações - maior em mobile para melhor toque */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 shrink-0"
+                className="h-10 w-10 sm:h-8 sm:w-8 shrink-0 -mr-2 sm:mr-0"
                 aria-label="Mais opções"
               >
-                <MoreVertical className="h-4 w-4" />
+                <MoreVertical className="h-5 w-5 sm:h-4 sm:w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleEdit}>
+              <DropdownMenuItem onClick={handleEdit} className="py-3 sm:py-2">
                 <Pencil className="mr-2 h-4 w-4" />
                 Editar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDelete} variant="destructive">
+              <DropdownMenuItem
+                onClick={handleDelete}
+                variant="destructive"
+                className="py-3 sm:py-2"
+              >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Excluir
               </DropdownMenuItem>
@@ -224,15 +232,21 @@ export function TaskCard({
         </div>
       </CardHeader>
 
-      <CardContent className="pt-2">
+      <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
         <div className="flex flex-wrap items-center gap-2">
           {/* Badge de status */}
-          <Badge variant={statusVariantMap[task.status]}>
+          <Badge
+            variant={statusVariantMap[task.status]}
+            className="text-xs px-2.5 py-0.5"
+          >
             {statusLabelMap[task.status]}
           </Badge>
 
           {/* Badge de prioridade */}
-          <Badge variant={priorityVariantMap[task.priority]}>
+          <Badge
+            variant={priorityVariantMap[task.priority]}
+            className="text-xs px-2.5 py-0.5"
+          >
             {priorityLabelMap[task.priority]}
           </Badge>
 
@@ -240,13 +254,13 @@ export function TaskCard({
           {dueDateFormatted && (
             <span
               className={cn(
-                'flex items-center gap-1 text-xs',
+                'flex items-center gap-1.5 text-xs',
                 overdue
                   ? 'text-destructive font-medium'
                   : 'text-muted-foreground',
               )}
             >
-              <Calendar className="h-3 w-3" />
+              <Calendar className="h-3.5 w-3.5" />
               {dueDateFormatted}
               {overdue && ' (atrasada)'}
             </span>

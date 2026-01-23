@@ -129,20 +129,20 @@ export function TaskPagination({
   return (
     <div
       className={cn(
-        'flex flex-col sm:flex-row items-center justify-between gap-4',
+        'flex flex-col items-center gap-4 sm:flex-row sm:justify-between',
         className,
       )}
     >
       {/* Informação de itens */}
       {totalItems !== undefined && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground order-2 sm:order-1">
           Mostrando {startItem}-{endItem} de {totalItems} tarefas
         </p>
       )}
 
       {/* Paginação */}
-      <Pagination>
-        <PaginationContent>
+      <Pagination className="order-1 sm:order-2">
+        <PaginationContent className="gap-1">
           {/* Previous */}
           <PaginationItem>
             <PaginationPrevious
@@ -150,28 +150,41 @@ export function TaskPagination({
               onClick={(e) => handlePageClick(e, currentPage - 1)}
               aria-disabled={isFirstPage}
               tabIndex={isFirstPage ? -1 : undefined}
-              className={cn(isFirstPage && 'pointer-events-none opacity-50')}
+              className={cn(
+                'h-10 w-10 p-0 sm:h-9 sm:w-auto sm:px-3',
+                isFirstPage && 'pointer-events-none opacity-50',
+              )}
             />
           </PaginationItem>
 
-          {/* Números de página */}
-          {pageNumbers.map((page, index) =>
-            page === 'ellipsis' ? (
-              <PaginationItem key={`ellipsis-${index}`}>
-                <PaginationEllipsis />
-              </PaginationItem>
-            ) : (
-              <PaginationItem key={page}>
-                <PaginationLink
-                  href="#"
-                  onClick={(e) => handlePageClick(e, page)}
-                  isActive={page === currentPage}
-                >
-                  {page}
-                </PaginationLink>
-              </PaginationItem>
-            ),
-          )}
+          {/* Números de página - esconde em mobile pequeno, mostra apenas current */}
+          <div className="hidden xs:flex gap-1">
+            {pageNumbers.map((page, index) =>
+              page === 'ellipsis' ? (
+                <PaginationItem key={`ellipsis-${index}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => handlePageClick(e, page)}
+                    isActive={page === currentPage}
+                    className="h-10 w-10 sm:h-9 sm:w-9"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ),
+            )}
+          </div>
+
+          {/* Mostra apenas página atual em mobile muito pequeno */}
+          <div className="flex xs:hidden items-center gap-1">
+            <span className="text-sm font-medium px-2">
+              {currentPage} / {totalPages}
+            </span>
+          </div>
 
           {/* Next */}
           <PaginationItem>
@@ -180,7 +193,10 @@ export function TaskPagination({
               onClick={(e) => handlePageClick(e, currentPage + 1)}
               aria-disabled={isLastPage}
               tabIndex={isLastPage ? -1 : undefined}
-              className={cn(isLastPage && 'pointer-events-none opacity-50')}
+              className={cn(
+                'h-10 w-10 p-0 sm:h-9 sm:w-auto sm:px-3',
+                isLastPage && 'pointer-events-none opacity-50',
+              )}
             />
           </PaginationItem>
         </PaginationContent>

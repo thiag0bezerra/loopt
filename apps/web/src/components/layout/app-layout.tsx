@@ -15,9 +15,9 @@ interface AppLayoutProps {
 /**
  * Layout principal da aplicação autenticada
  *
- * Layout responsivo:
- * - Desktop (md+): Sidebar fixa à esquerda com conteúdo à direita
+ * Layout responsivo mobile-first:
  * - Mobile (< md): Header com menu hamburguer no topo
+ * - Desktop (md+): Sidebar fixa à esquerda com conteúdo à direita
  *
  * @example
  * ```tsx
@@ -40,9 +40,11 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
-        {/* Main content */}
+        {/* Main content - mobile-first padding */}
         <main className="flex-1 md:ml-64">
-          <div className="container py-6">{children}</div>
+          <div className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 max-w-5xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>

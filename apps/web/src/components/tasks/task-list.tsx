@@ -30,18 +30,21 @@ export interface TaskListProps {
  */
 function TaskListSkeleton() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className="flex flex-col gap-3 rounded-xl border p-6">
-          <div className="flex items-start gap-3">
-            <Skeleton className="h-4 w-4 rounded" />
+        <div
+          key={index}
+          className="flex flex-col gap-3 rounded-xl border p-4 sm:p-6"
+        >
+          <div className="flex items-start gap-3 sm:gap-4">
+            <Skeleton className="h-5 w-5 sm:h-4 sm:w-4 rounded shrink-0" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-3 w-full" />
             </div>
-            <Skeleton className="h-8 w-8" />
+            <Skeleton className="h-10 w-10 sm:h-8 sm:w-8 shrink-0" />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Skeleton className="h-5 w-20" />
             <Skeleton className="h-5 w-16" />
             <Skeleton className="h-4 w-24" />
@@ -57,12 +60,12 @@ function TaskListSkeleton() {
  */
 function TaskListEmpty() {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <ClipboardList className="h-16 w-16 text-muted-foreground/50 mb-4" />
-      <h3 className="text-lg font-medium text-muted-foreground">
+    <div className="flex flex-col items-center justify-center py-12 sm:py-16 px-4 text-center">
+      <ClipboardList className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground/50 mb-4" />
+      <h3 className="text-base sm:text-lg font-medium text-muted-foreground">
         Nenhuma tarefa encontrada
       </h3>
-      <p className="text-sm text-muted-foreground/70 mt-1 max-w-sm">
+      <p className="text-sm text-muted-foreground/70 mt-1.5 max-w-xs sm:max-w-sm">
         Crie uma nova tarefa clicando no botão acima ou ajuste os filtros de
         busca.
       </p>
@@ -105,7 +108,7 @@ export function TaskList({
   }
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn('space-y-3 sm:space-y-4', className)}>
       {tasks.map((task) => (
         <TaskCard
           key={task.id}

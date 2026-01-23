@@ -120,19 +120,23 @@ export default function DashboardPage() {
   const hasData = overview && overview.totalTasks > 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
+      <div className="space-y-1">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-sm text-muted-foreground">
           Acompanhe suas métricas de produtividade.
         </p>
       </div>
 
       {/* KPIs */}
       <section>
-        <h2 className="mb-4 text-lg font-semibold">Visão Geral</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <h2 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold">
+          Visão Geral
+        </h2>
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
           {isLoadingOverview ? (
             <>
               <KPISkeleton />
@@ -188,8 +192,10 @@ export default function DashboardPage() {
         <>
           {/* Gráficos */}
           <section>
-            <h2 className="mb-4 text-lg font-semibold">Distribuições</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <h2 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold">
+              Distribuições
+            </h2>
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {/* Gráfico de Status */}
               {isLoadingByStatus ? (
                 <ChartSkeleton />
@@ -225,7 +231,9 @@ export default function DashboardPage() {
 
           {/* Tendência de Conclusão */}
           <section>
-            <h2 className="mb-4 text-lg font-semibold">Tendência</h2>
+            <h2 className="mb-3 sm:mb-4 text-base sm:text-lg font-semibold">
+              Tendência
+            </h2>
             {isLoadingTrend ? (
               <ChartSkeleton />
             ) : trend ? (

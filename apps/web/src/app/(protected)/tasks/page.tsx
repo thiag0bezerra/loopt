@@ -36,6 +36,7 @@ export default function TasksPage() {
   const [filters, setFilters] = React.useState<TaskFilterValues>({
     status: 'all',
     priority: 'all',
+    tagId: 'all',
     search: '',
     sortBy: 'createdAt',
     sortOrder: 'DESC',
@@ -76,6 +77,11 @@ export default function TasksPage() {
 
     if (filters.search?.trim()) {
       result.search = filters.search.trim();
+    }
+
+    // Filtro por tag
+    if (filters.tagId && filters.tagId !== 'all') {
+      result.tagId = filters.tagId;
     }
 
     return result;
@@ -145,16 +151,21 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Minhas Tarefas</h1>
-          <p className="text-muted-foreground">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header - mobile-first com botão sticky em mobile */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+            Minhas Tarefas
+          </h1>
+          <p className="text-sm text-muted-foreground">
             Gerencie suas tarefas e acompanhe seu progresso.
           </p>
         </div>
-        <Button onClick={() => setCreateModalOpen(true)}>
+        <Button
+          onClick={() => setCreateModalOpen(true)}
+          className="h-11 w-full sm:h-10 sm:w-auto"
+        >
           <Plus className="mr-2 h-4 w-4" />
           Nova Tarefa
         </Button>
