@@ -44,6 +44,7 @@ const sampleTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: null,
+    order: 0,
   },
   {
     id: '2',
@@ -56,6 +57,7 @@ const sampleTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: null,
+    order: 1,
   },
   {
     id: '3',
@@ -68,6 +70,7 @@ const sampleTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: new Date(),
+    order: 2,
   },
   {
     id: '4',
@@ -80,6 +83,7 @@ const sampleTasks: Task[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: null,
+    order: 3,
   },
 ];
 
@@ -131,6 +135,7 @@ export const ManyTasks: Story = {
         createdAt: new Date(),
         updatedAt: new Date(),
         completedAt: null,
+        order: 4,
       },
       {
         id: '6',
@@ -143,6 +148,7 @@ export const ManyTasks: Story = {
         createdAt: new Date(),
         updatedAt: new Date(),
         completedAt: null,
+        order: 5,
       },
     ],
     isLoading: false,

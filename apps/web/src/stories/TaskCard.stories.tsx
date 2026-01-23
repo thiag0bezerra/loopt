@@ -37,6 +37,7 @@ const baseTask: Task = {
   createdAt: new Date(),
   updatedAt: new Date(),
   completedAt: null,
+  order: 0,
 };
 
 /** Tarefa pendente com prioridade média */
