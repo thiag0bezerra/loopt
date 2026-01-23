@@ -27,7 +27,12 @@ import {
 } from '../auth/decorators/current-user.decorator';
 import { TasksService } from './tasks.service';
 import { Task } from './entities/task.entity';
-import { CreateTaskDto, UpdateTaskDto, TaskFilterDto } from './dto';
+import {
+  CreateTaskDto,
+  UpdateTaskDto,
+  TaskFilterDto,
+  ReorderTasksDto,
+} from './dto';
 
 /**
  * Controller responsável pelas rotas de tarefas
@@ -83,6 +88,36 @@ export class TasksController {
     @Query() filters: TaskFilterDto,
   ): Promise<PaginatedResponse<Task>> {
     return this.tasksService.findAll(user.id, filters);
+  }
+
+  /**
+   * Reordena múltiplas tarefas em batch
+   * @remarks Esta rota deve vir antes de `:id` para não ser confundida
+   */
+  @Patch('reorder')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Reordenar múltiplas tarefas em batch' })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: 'Tarefas reordenadas com sucesso',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Dados inválidos',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Uma ou mais tarefas não encontradas',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Não autenticado',
+  })
+  reorder(
+    @CurrentUser() user: CurrentUserPayload,
+    @Body() dto: ReorderTasksDto,
+  ): Promise<void> {
+    return this.tasksService.reorder(user.id, dto);
   }
 
   /**

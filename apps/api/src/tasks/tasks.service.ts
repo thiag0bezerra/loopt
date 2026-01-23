@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TaskStatus, TaskPriority, PaginatedResponse } from '@loopt/shared';
 import { Task } from './entities/task.entity';
-import { CreateTaskDto, UpdateTaskDto, TaskFilterDto } from './dto';
+import {
+  CreateTaskDto,
+  UpdateTaskDto,
+  TaskFilterDto,
+  ReorderTasksDto,
+} from './dto';
 import { CacheService } from '../cache';
 import { NotificationsService } from '../notifications';
 import { UsersService } from '../users/users.service';
@@ -245,6 +250,43 @@ export class TasksService {
 
     // Emite evento WebSocket para atualização em tempo real
     this.tasksGateway.emitTaskDeleted(userId, taskId);
+  }
+
+  /**
+   * Reordena múltiplas tarefas em batch
+   * @param userId ID do usuário proprietário
+   * @param dto Dados de reordenação
+   */
+  async reorder(userId: string, dto: ReorderTasksDto): Promise<void> {
+    // Verifica se todas as tarefas pertencem ao usuário
+    const taskIds = dto.tasks.map((t) => t.id);
+    const existingTasks = await this.tasksRepository.find({
+      where: { userId },
+      select: ['id'],
+    });
+    const existingIds = new Set(existingTasks.map((t) => t.id));
+
+    for (const taskId of taskIds) {
+      if (!existingIds.has(taskId)) {
+        throw new NotFoundException(
+          `Tarefa com ID ${taskId} não encontrada ou não pertence ao usuário`,
+        );
+      }
+    }
+
+    // Atualiza a ordem de todas as tarefas em uma transação
+    await this.tasksRepository.manager.transaction(async (manager) => {
+      for (const task of dto.tasks) {
+        await manager.update(
+          Task,
+          { id: task.id, userId },
+          { order: task.order },
+        );
+      }
+    });
+
+    // Invalida cache do usuário após reordenar tarefas
+    await this.invalidateUserCache(userId);
   }
 
   /**

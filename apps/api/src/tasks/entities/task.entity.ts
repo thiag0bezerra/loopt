@@ -75,6 +75,11 @@ export class Task {
   @Column({ type: 'timestamp', nullable: true, name: 'completed_at' })
   completedAt: Date | null;
 
+  /** Ordem da tarefa para reordenação dentro do Kanban (default: 0) */
+  @Column({ type: 'int', default: 0 })
+  @Index()
+  order: number;
+
   /** Relacionamento ManyToMany com tags */
   @ManyToMany(() => Tag, (tag) => tag.tasks, { cascade: ['insert'] })
   @JoinTable({

@@ -36,6 +36,8 @@ export interface Task {
   updatedAt: Date;
   /** Data de conclusão (preenchida quando status = COMPLETED) */
   completedAt: Date | null;
+  /** Ordem da tarefa para reordenação no Kanban (default: 0) */
+  order: number;
   /** Tags associadas à tarefa (opcional, preenchido quando relations são carregadas) */
   tags?: Tag[];
 }
