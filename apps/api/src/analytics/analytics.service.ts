@@ -211,22 +211,22 @@ export class AnalyticsService {
     // Busca tarefas criadas no período
     const createdTasks = await this.tasksRepository
       .createQueryBuilder('task')
-      .select("DATE(task.created_at AT TIME ZONE 'UTC')", 'date')
+      .select('DATE(task.created_at)', 'date')
       .addSelect('COUNT(*)::int', 'count')
       .where('task.user_id = :userId', { userId })
       .andWhere('task.created_at >= :startDate', { startDate })
-      .groupBy("DATE(task.created_at AT TIME ZONE 'UTC')")
-      .getRawMany<{ date: string; count: number }>();
+      .groupBy('DATE(task.created_at)')
+      .getRawMany<{ date: Date; count: number }>();
 
     // Busca tarefas completadas no período
     const completedTasks = await this.tasksRepository
       .createQueryBuilder('task')
-      .select("DATE(task.completed_at AT TIME ZONE 'UTC')", 'date')
+      .select('DATE(task.completed_at)', 'date')
       .addSelect('COUNT(*)::int', 'count')
       .where('task.user_id = :userId', { userId })
       .andWhere('task.completed_at >= :startDate', { startDate })
-      .groupBy("DATE(task.completed_at AT TIME ZONE 'UTC')")
-      .getRawMany<{ date: string; count: number }>();
+      .groupBy('DATE(task.completed_at)')
+      .getRawMany<{ date: Date; count: number }>();
 
     // Gera array com todos os dias do período
     const result: CompletionTrendItem[] = [];
@@ -236,12 +236,20 @@ export class AnalyticsService {
       const dateStr = currentDate.toISOString().split('T')[0];
 
       const created = createdTasks.find((t) => {
-        const taskDate = String(t.date).split('T')[0];
+        // PostgreSQL retorna Date object, converter para string YYYY-MM-DD
+        const taskDate =
+          t.date instanceof Date
+            ? t.date.toISOString().split('T')[0]
+            : String(t.date).split('T')[0];
         return taskDate === dateStr;
       });
 
       const completed = completedTasks.find((t) => {
-        const taskDate = String(t.date).split('T')[0];
+        // PostgreSQL retorna Date object, converter para string YYYY-MM-DD
+        const taskDate =
+          t.date instanceof Date
+            ? t.date.toISOString().split('T')[0]
+            : String(t.date).split('T')[0];
         return taskDate === dateStr;
       });
 
