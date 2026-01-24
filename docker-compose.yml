@@ -82,15 +82,14 @@ networks:
 #     - app
 #   environment:
 #     - DATABASE_URL=postgresql://loopt:loopt@postgres:5432/loopt
-#     - REDIS_HOST=redis
-#     - REDIS_PORT=6379
+#     - REDIS_URL=redis://redis:6379
 #     - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
 #     - JWT_SECRET=${JWT_SECRET}
 #     - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
-#     - API_PORT=3001
-#     - NODE_ENV=development
+#     - API_PORT=3000
+#     - NODE_ENV=production
 #   ports:
-#     - "3001:3001"
+#     - "3000:3000"
 #   depends_on:
 #     postgres:
 #       condition: service_healthy
@@ -111,7 +110,7 @@ networks:
 #     - app
 #   environment:
 #     - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
-#     - NODE_ENV=development
+#     - NODE_ENV=production
 #   depends_on:
 #     rabbitmq:
 #       condition: service_healthy

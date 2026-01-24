@@ -3,14 +3,13 @@
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
     "NODE_ENV",
-    "DB_HOST",
-    "DB_PORT",
-    "DB_USERNAME",
-    "DB_PASSWORD",
-    "DB_DATABASE",
-    "REDIS_HOST",
-    "REDIS_PORT",
-    "API_PORT"
+    "DATABASE_URL",
+    "REDIS_URL",
+    "RABBITMQ_URL",
+    "JWT_SECRET",
+    "JWT_EXPIRES_IN",
+    "API_PORT",
+    "NEXT_PUBLIC_API_URL"
   ],
   "tasks": {
     "dev": {
