@@ -39,14 +39,12 @@ O **Loopt** é um gerenciador de tarefas moderno e completo que permite aos usu�
 
 ---
 
-## Demo em Produ\u00e7\u00e3o
+## Demonstração em Produção
 
-A aplica\u00e7\u00e3o est\u00e1 dispon\u00edvel em produ\u00e7\u00e3o na Railway:
-
-| Serviço         | URL                                            |
-| --------------- | ---------------------------------------------- |
-| **Frontend**    | https://web-production-51c76.up.railway.app/   |
-| **Swagger API** | https://api-production-3aa6.up.railway.app/api |
+| Serviço            | URL                                            |
+| ------------------ | ---------------------------------------------- |
+| **Frontend**       | https://web-production-51c76.up.railway.app/   |
+| **API do Swagger** | https://api-production-3aa6.up.railway.app/api |
 
 **Credenciais de teste:**
 
