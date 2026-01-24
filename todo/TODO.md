@@ -1219,13 +1219,13 @@ Aplicação com navegação clara e intuitiva, dark mode funcional e totalmente 
 
 ### Checklist de Validação
 
-- [ ] Navegação entre /tasks e /dashboard funciona
-- [ ] Link ativo é destacado na sidebar
-- [ ] Dark mode alterna corretamente
-- [ ] Preferência de tema persiste após refresh
-- [ ] Sidebar colapsa em mobile (hamburger menu)
-- [ ] Layout funciona em todos os breakpoints
-- [ ] Logout funciona e redireciona para /login
+- [x] Navegação entre /tasks e /dashboard funciona
+- [x] Link ativo é destacado na sidebar
+- [x] Dark mode alterna corretamente
+- [x] Preferência de tema persiste após refresh
+- [x] Sidebar colapsa em mobile (hamburger menu)
+- [x] Layout funciona em todos os breakpoints
+- [x] Logout funciona e redireciona para /login
 
 ---
 
@@ -1309,55 +1309,55 @@ Configurar deploy do frontend no Vercel e backend no Railway ou Render.
 
 #### 11.5.1 Preparação para Deploy
 
-- [ ] Revisar variáveis de ambiente de produção
-- [ ] Configurar CORS no backend para domínio do frontend
-- [ ] Verificar que docker-compose.prod.yml está correto
-- [ ] Criar Dockerfile para api se necessário
-- [ ] Criar Dockerfile para worker se necessário
+- [x] Revisar variáveis de ambiente de produção
+- [x] Configurar CORS no backend para domínio do frontend
+- [x] Verificar que docker-compose.prod.yml está correto
+- [x] Criar Dockerfile para api se necessário
+- [x] Criar Dockerfile para worker se necessário
 
-#### 11.5.2 Deploy Backend (Railway ou Render)
+#### 11.5.2 Deploy Backend (Railway)
 
-- [ ] Criar conta no Railway ou Render
-- [ ] Criar serviço PostgreSQL
-- [ ] Criar serviço Redis
-- [ ] Criar serviço RabbitMQ (ou usar CloudAMQP)
-- [ ] Deploy da API:
-  - [ ] Conectar repositório GitHub
-  - [ ] Configurar variáveis de ambiente
-  - [ ] Configurar comando de build e start
-  - [ ] Executar migrations em produção
-- [ ] Deploy do Worker:
-  - [ ] Configurar como serviço separado
-  - [ ] Configurar variáveis de ambiente
+- [x] Criar conta no Railway
+- [x] Criar serviço PostgreSQL
+- [x] Criar serviço Redis
+- [x] Criar serviço RabbitMQ
+- [x] Deploy da API:
+  - [x] Conectar repositório GitHub
+  - [x] Configurar variáveis de ambiente
+  - [x] Configurar comando de build e start
+  - [x] Executar migrations em produção
+- [x] Deploy do Worker:
+  - [x] Configurar como serviço separado
+  - [x] Configurar variáveis de ambiente
 
-#### 11.5.3 Deploy Frontend (Vercel)
+#### 11.5.3 Deploy Frontend (Railway)
 
-- [ ] Criar conta no Vercel
-- [ ] Conectar repositório GitHub
-- [ ] Configurar root directory: apps/web
-- [ ] Configurar variáveis de ambiente:
-  - [ ] NEXT_PUBLIC_API_URL apontando para backend em produção
-- [ ] Verificar build e deploy automático
+- [x] Criar conta no Railway
+- [x] Conectar repositório GitHub
+- [x] Configurar root directory: apps/web
+- [x] Configurar variáveis de ambiente:
+  - [x] NEXT_PUBLIC_API_URL apontando para backend em produção
+- [x] Verificar build e deploy automático
 
 #### 11.5.4 Validação de Produção
 
-- [ ] Testar registro e login em produção
-- [ ] Testar CRUD de tarefas em produção
-- [ ] Testar dashboard em produção
-- [ ] Verificar logs de erro
+- [x] Testar registro e login em produção
+- [x] Testar CRUD de tarefas em produção
+- [x] Testar dashboard em produção
+- [x] Verificar logs de erro
 - [ ] Verificar performance
 
 ### Resultado Esperado
 
-Aplicação disponível publicamente com frontend no Vercel e backend no Railway/Render.
+Aplicação disponível publicamente no Railway.
 
 ### Checklist de Validação
 
-- [ ] Frontend acessível via URL do Vercel
-- [ ] API acessível via URL do Railway/Render
-- [ ] Swagger acessível em produção
-- [ ] Todas as funcionalidades operacionais
-- [ ] Websockets funcionando em produção
+- [x] Frontend acessível via URL do Railway
+- [x] API acessível via URL do Railway
+- [x] Swagger acessível em produção
+- [x] Todas as funcionalidades operacionais
+- [x] Websockets funcionando em produção
 
 ---
 
