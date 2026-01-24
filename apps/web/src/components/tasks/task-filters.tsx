@@ -133,17 +133,32 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
   // Busca as tags do usuário
   const { data: tags = [] } = useTags();
 
-  // Atualiza os filtros quando a busca debounced muda
+  // Referência para rastrear se a mudança de busca veio do input local
+  const isLocalChangeRef = React.useRef(false);
+
+  // Atualiza os filtros quando a busca debounced muda (apenas para mudanças locais)
   React.useEffect(() => {
-    if (debouncedSearch !== values.search) {
+    if (isLocalChangeRef.current && debouncedSearch !== values.search) {
       onChange({ ...values, search: debouncedSearch || undefined });
     }
+    isLocalChangeRef.current = false;
   }, [debouncedSearch, values, onChange]);
 
-  // Sincroniza o input local com os valores externos
+  // Sincroniza o input local com os valores externos (apenas quando difere)
   React.useEffect(() => {
-    setSearchInput(values.search ?? '');
-  }, [values.search]);
+    const externalSearch = values.search ?? '';
+    if (searchInput !== externalSearch && !isLocalChangeRef.current) {
+      setSearchInput(externalSearch);
+    }
+  }, [values.search, searchInput]);
+
+  /**
+   * Handler para mudanças no input de busca
+   */
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    isLocalChangeRef.current = true;
+    setSearchInput(e.target.value);
+  };
 
   /**
    * Manipula mudança de status
@@ -244,7 +259,7 @@ export function TaskFilters({ values, onChange, className }: TaskFiltersProps) {
             type="text"
             placeholder="Buscar tarefas..."
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={handleSearchChange}
             className="h-11 pl-10 pr-10 text-base md:h-10 md:text-sm"
           />
           {searchInput && (
