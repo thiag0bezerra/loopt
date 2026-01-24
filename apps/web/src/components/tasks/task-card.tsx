@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@workspace/ui/components/dropdown-menu';
+import { TagBadge } from './tag-badge';
 
 /**
  * Mapeamento de status para variantes de badge
@@ -266,6 +267,15 @@ export function TaskCard({
             </span>
           )}
         </div>
+
+        {/* Tags da tarefa */}
+        {task.tags && task.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {task.tags.map((tag) => (
+              <TagBadge key={tag.id} tag={tag} size="sm" />
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
