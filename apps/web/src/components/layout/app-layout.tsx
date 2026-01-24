@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Sidebar } from './sidebar';
 import { Header } from './header';
+import { useNotificationsFromAnalytics } from '@/hooks/use-notifications';
 
 /**
  * Props do componente AppLayout
@@ -27,6 +28,9 @@ interface AppLayoutProps {
  * ```
  */
 export function AppLayout({ children }: AppLayoutProps) {
+  // Gerar notificações baseadas nos dados de analytics (tarefas atrasadas, vencimento próximo)
+  useNotificationsFromAnalytics();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile Header */}
