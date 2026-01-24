@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, LayoutList, LayoutGrid, Tags } from 'lucide-react';
 import { TaskStatus } from '@loopt/shared';
 import { Button } from '@workspace/ui/components/button';
 import { Separator } from '@workspace/ui/components/separator';
@@ -12,14 +12,19 @@ import {
   CreateTaskModal,
   EditTaskModal,
   DeleteConfirmModal,
+  TaskBoard,
+  ExportButton,
+  TagManager,
   type TaskFilterValues,
 } from '@/components/tasks';
 import {
   useTasks,
   useUpdateTask,
+  useReorderTasks,
   type TaskFilters as Filters,
 } from '@/hooks/use-tasks';
 import { useTasksWebsocket } from '@/hooks/use-tasks-websocket';
+import { cn } from '@workspace/ui/lib/utils';
 
 /**
  * Página principal de gestão de tarefas
@@ -50,10 +55,14 @@ export default function TasksPage() {
   const [createModalOpen, setCreateModalOpen] = React.useState(false);
   const [editModalOpen, setEditModalOpen] = React.useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+  const [tagManagerOpen, setTagManagerOpen] = React.useState(false);
   const [selectedTaskId, setSelectedTaskId] = React.useState<string | null>(
     null,
   );
   const [selectedTaskTitle, setSelectedTaskTitle] = React.useState<string>('');
+
+  // Estado da visualização (lista ou kanban)
+  const [viewMode, setViewMode] = React.useState<'list' | 'kanban'>('list');
 
   // Conectar websocket para atualizações em tempo real
   useTasksWebsocket();
@@ -92,6 +101,9 @@ export default function TasksPage() {
 
   // Mutation para atualizar tarefa (checkbox concluída)
   const updateTask = useUpdateTask();
+
+  // Mutation para reordenar tarefas (drag & drop no Kanban)
+  const reorderTasks = useReorderTasks();
 
   /**
    * Manipula mudança nos filtros
@@ -150,6 +162,26 @@ export default function TasksPage() {
     }
   };
 
+  /**
+   * Manipula reordenação de tarefas no TaskBoard
+   */
+  const handleTaskReorder = async (tasks: { id: string; order: number }[]) => {
+    await reorderTasks.mutateAsync(tasks);
+  };
+
+  /**
+   * Manipula mudança de status de uma tarefa no TaskBoard (drag & drop entre colunas)
+   */
+  const handleTaskStatusChange = async (
+    taskId: string,
+    newStatus: TaskStatus,
+  ) => {
+    await updateTask.mutateAsync({
+      id: taskId,
+      data: { status: newStatus },
+    });
+  };
+
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Header - mobile-first com botão sticky em mobile */}
@@ -162,13 +194,69 @@ export default function TasksPage() {
             Gerencie suas tarefas e acompanhe seu progresso.
           </p>
         </div>
-        <Button
-          onClick={() => setCreateModalOpen(true)}
-          className="h-11 w-full sm:h-10 sm:w-auto"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Tarefa
-        </Button>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Toggle de visualização (Lista/Kanban) */}
+          <div className="hidden sm:flex items-center rounded-lg border bg-muted/50 p-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setViewMode('list')}
+              className={cn(
+                'h-8 px-3',
+                viewMode === 'list' && 'bg-background shadow-sm',
+              )}
+            >
+              <LayoutList className="h-4 w-4 mr-2" />
+              Lista
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setViewMode('kanban')}
+              className={cn(
+                'h-8 px-3',
+                viewMode === 'kanban' && 'bg-background shadow-sm',
+              )}
+            >
+              <LayoutGrid className="h-4 w-4 mr-2" />
+              Kanban
+            </Button>
+          </div>
+
+          {/* Botão de gerenciar tags */}
+          <Button
+            variant="outline"
+            onClick={() => setTagManagerOpen(true)}
+            className="h-10"
+          >
+            <Tags className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Tags</span>
+          </Button>
+
+          {/* Botão de exportar */}
+          <ExportButton
+            tasks={data?.data ?? []}
+            filters={{
+              status:
+                filters.status !== 'all'
+                  ? (filters.status as TaskStatus)
+                  : undefined,
+              priority:
+                filters.priority !== 'all' ? filters.priority : undefined,
+              search: filters.search || undefined,
+            }}
+            disabled={!data?.data?.length}
+          />
+
+          {/* Botão de nova tarefa */}
+          <Button
+            onClick={() => setCreateModalOpen(true)}
+            className="h-11 w-full sm:h-10 sm:w-auto"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Nova Tarefa
+          </Button>
+        </div>
       </div>
 
       <Separator />
@@ -176,22 +264,33 @@ export default function TasksPage() {
       {/* Filtros */}
       <TaskFilters values={filters} onChange={handleFiltersChange} />
 
-      {/* Lista de tarefas */}
-      <TaskList
-        tasks={data?.data ?? []}
-        isLoading={isLoading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onToggleComplete={handleToggleComplete}
-      />
+      {/* Lista ou Kanban de tarefas */}
+      {viewMode === 'list' ? (
+        <>
+          <TaskList
+            tasks={data?.data ?? []}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onToggleComplete={handleToggleComplete}
+          />
 
-      {/* Paginação */}
-      {data && data.meta.totalPages > 1 && (
-        <TaskPagination
-          currentPage={data.meta.page}
-          totalPages={data.meta.totalPages}
-          totalItems={data.meta.total}
-          onPageChange={setPage}
+          {/* Paginação - apenas no modo lista */}
+          {data && data.meta.totalPages > 1 && (
+            <TaskPagination
+              currentPage={data.meta.page}
+              totalPages={data.meta.totalPages}
+              totalItems={data.meta.total}
+              onPageChange={setPage}
+            />
+          )}
+        </>
+      ) : (
+        <TaskBoard
+          tasks={data?.data ?? []}
+          onTaskStatusChange={handleTaskStatusChange}
+          onTaskReorder={handleTaskReorder}
+          isLoading={isLoading}
         />
       )}
 
@@ -213,6 +312,8 @@ export default function TasksPage() {
         open={deleteModalOpen}
         onOpenChange={handleDeleteModalClose}
       />
+
+      <TagManager open={tagManagerOpen} onOpenChange={setTagManagerOpen} />
     </div>
   );
 }
