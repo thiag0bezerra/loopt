@@ -31,6 +31,7 @@ describe('TasksService', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     completedAt: null,
+    order: 0,
     tags: [],
   };
 

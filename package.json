@@ -23,6 +23,11 @@
     "prettier": "^3.2.5",
     "turbo": "^2.7.5"
   },
+  "pnpm": {
+    "overrides": {
+      "@types/node": "22.19.3"
+    }
+  },
   "packageManager": "pnpm@8.15.5",
   "engines": {
     "node": ">=18"
