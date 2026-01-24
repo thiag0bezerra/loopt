@@ -25,9 +25,9 @@ export interface PriorityBarChartProps {
  * Cores para cada prioridade
  */
 const PRIORITY_COLORS: Record<string, string> = {
-  low: 'hsl(var(--muted-foreground))',
-  medium: 'hsl(var(--primary))',
-  high: 'hsl(var(--destructive))',
+  low: '#22c55e', // Verde para baixa
+  medium: '#f59e0b', // Amarelo/âmbar para média
+  high: '#ef4444', // Vermelho para alta
 };
 
 /**

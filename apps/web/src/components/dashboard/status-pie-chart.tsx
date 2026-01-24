@@ -24,9 +24,9 @@ export interface StatusPieChartProps {
  * Cores para cada status
  */
 const STATUS_COLORS: Record<string, string> = {
-  pending: 'hsl(var(--muted-foreground))',
-  in_progress: 'hsl(var(--primary))',
-  completed: 'hsl(142.1 76.2% 36.3%)',
+  pending: '#f59e0b', // Amarelo/âmbar para pendente
+  in_progress: '#3b82f6', // Azul para em progresso
+  completed: '#22c55e', // Verde para concluída
 };
 
 /**
