@@ -1,11 +1,11 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
+dockerfilePath = "apps/web/Dockerfile"
 
-[build.nixpacks]
-aptPkgs = []
+[build.args]
+NEXT_PUBLIC_API_URL = "${{ NEXT_PUBLIC_API_URL }}"
 
 [deploy]
-startCommand = "npm run start"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"

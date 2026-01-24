@@ -20,6 +20,10 @@ RUN pnpm install --frozen-lockfile
 # Copy source files
 COPY . .
 
+# Build argument for Next.js public env var (required at build time)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 # Build the Web app
 RUN pnpm turbo run build --filter=web
 
