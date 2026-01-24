@@ -1375,23 +1375,24 @@ Criar README.md completo, finalizar documentação Swagger, revisar código e pr
 
 #### 12.1 README.md Principal
 
-- [ ] Escrever descrição do projeto
-- [ ] Listar tech stack utilizada
-- [ ] Descrever arquitetura e organização de pastas
-- [ ] Listar pré-requisitos: Node.js 24, pnpm, Docker
-- [ ] Documentar passo a passo para rodar o projeto:
-  - [ ] git clone
-  - [ ] pnpm install
-  - [ ] Copiar .env.example para .env
-  - [ ] docker compose up -d
-  - [ ] pnpm --filter api typeorm migration:run
-  - [ ] pnpm dev (inicia todos os apps)
-- [ ] Documentar como rodar testes: pnpm test
-- [ ] Incluir link para Swagger: http://localhost:3001/api
-- [ ] Documentar decisões técnicas e trade-offs
-- [ ] Listar diferenciais implementados
-- [ ] Documentar como IA foi usada no desenvolvimento
-- [ ] Adicionar screenshots das telas principais
+- [x] Escrever descrição do projeto
+- [x] Listar tech stack utilizada
+- [x] Descrever arquitetura e organização de pastas
+- [x] Listar pré-requisitos: Node.js 24, pnpm, Docker
+- [x] Documentar passo a passo para rodar o projeto:
+  - [x] git clone
+  - [x] pnpm install
+  - [x] Copiar .env.example para .env
+  - [x] docker compose up -d
+  - [x] pnpm --filter api typeorm migration:run -d src/data-source.ts
+  - [x] (Opcional) Seed
+  - [x] pnpm dev (inicia todos os apps)
+- [x] Documentar como rodar testes: pnpm test
+- [x] Incluir link para Swagger: http://localhost:3000/api
+- [x] Documentar decisões técnicas e trade-offs
+- [x] Listar diferenciais implementados
+- [x] Documentar como IA foi usada no desenvolvimento
+- [x] Adicionar screenshots das telas principais
 
 #### 12.2 Swagger
 
