@@ -19,12 +19,12 @@ const DEFAULT_CACHE_TTL = 300_000;
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const host = configService.get<string>('REDIS_HOST', 'localhost');
-        const port = configService.get<number>('REDIS_PORT', 6379);
-        const redisUrl = `redis://${host}:${port}`;
+        const redisUrl = configService.get<string>('REDIS_URL')!;
         const logger = new Logger('CacheModule');
 
-        logger.log(`Connecting to Redis at ${redisUrl}`);
+        logger.log(
+          `Connecting to Redis at ${redisUrl.replace(/\/\/.*@/, '//*****@')}`,
+        );
 
         const keyvRedis = new KeyvRedis(redisUrl);
         const keyv = new Keyv({ store: keyvRedis, namespace: 'loopt' });

@@ -11,15 +11,15 @@ dotenv.config({ path: '../../.env' });
  */
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-  username: process.env.DB_USERNAME || 'loopt',
-  password: process.env.DB_PASSWORD || 'loopt',
-  database: process.env.DB_DATABASE || 'loopt',
+  url: process.env.DATABASE_URL,
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : false,
 };
 
 const AppDataSource = new DataSource(dataSourceOptions);

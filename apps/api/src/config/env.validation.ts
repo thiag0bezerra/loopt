@@ -30,30 +30,12 @@ class EnvironmentVariables {
   @Min(1)
   @Max(65535)
   @IsOptional()
-  API_PORT: number = 3001;
+  API_PORT: number = 3000;
 
   // Database
   @IsString()
   @IsNotEmpty()
-  DB_HOST!: string;
-
-  @IsNumber()
-  @Min(1)
-  @Max(65535)
-  @IsOptional()
-  DB_PORT: number = 5432;
-
-  @IsString()
-  @IsNotEmpty()
-  DB_USERNAME!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  DB_PASSWORD!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  DB_DATABASE!: string;
+  DATABASE_URL!: string;
 
   // JWT
   @IsString()
@@ -62,18 +44,12 @@ class EnvironmentVariables {
 
   @IsString()
   @IsOptional()
-  JWT_EXPIRES_IN: string = '1d';
+  JWT_EXPIRES_IN: string = '7d';
 
   // Redis
   @IsString()
   @IsNotEmpty()
-  REDIS_HOST!: string;
-
-  @IsNumber()
-  @Min(1)
-  @Max(65535)
-  @IsOptional()
-  REDIS_PORT: number = 6379;
+  REDIS_URL!: string;
 
   // RabbitMQ
   @IsString()
